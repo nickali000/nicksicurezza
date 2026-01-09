@@ -1,0 +1,808 @@
+:root {
+    --bg-color: #0f172a;
+    --card-bg: #1e293b;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --accent: #3b82f6;
+    --accent-hover: #2563eb;
+    --border: #334155;
+    --matrix-cell: #0f172a;
+    --matrix-text: #38bdf8;
+    --highlight: #f43f5e;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    /* Wider for DES side-by-side */
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+}
+
+.input-section {
+    background-color: var(--card-bg);
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: flex-end;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.input-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: var(--bg-color);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.input-group input:focus {
+    outline: 2px solid var(--accent);
+    border-color: transparent;
+}
+
+button {
+    background-color: var(--accent);
+    color: white;
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: var(--accent-hover);
+}
+
+.results-section {
+    margin-top: 3rem;
+}
+
+.hidden {
+    display: none;
+}
+
+.summary {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.hex-display code {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--card-bg);
+    padding: 1rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    word-break: break-all;
+}
+
+/* Visualization Styles */
+.round-block {
+    margin-bottom: 3rem;
+    border-left: 4px solid var(--accent);
+    padding-left: 1.5rem;
+}
+
+.round-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-secondary);
+}
+
+.step {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    border: 1px solid var(--border);
+}
+
+.step-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.step-name {
+    font-weight: bold;
+    color: var(--accent);
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+}
+
+.matrices-container {
+    display: flex;
+    gap: 2rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    align-items: flex-start;
+}
+
+.matrix-wrapper {
+    text-align: center;
+}
+
+.matrix-label {
+    margin-bottom: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+/* DES Matrix: 2x2 for 4 bytes, or 1x8. Let's do 1x4 for Half Blocks */
+.matrix-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    background-color: var(--border);
+    padding: 4px;
+    border-radius: 4px;
+    width: 140px;
+}
+
+.matrix-8 {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 4px;
+    background-color: var(--border);
+    padding: 4px;
+    border-radius: 4px;
+    width: 280px;
+}
+
+.cell {
+    background-color: var(--matrix-cell);
+    color: var(--matrix-text);
+    padding: 6px 2px;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* 64-bit block visualization */
+.block-visual {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+/* Feistel Structure */
+.feistel-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 1rem;
+}
+
+.feistel-func {
+    background: var(--bg-color);
+    border: 1px solid var(--accent);
+    padding: 0.5rem;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: var(--accent);
+    margin: 1rem 0;
+}
+
+/* Animations */
+@keyframes xorFlashAnim {
+    0% {
+        background-color: var(--matrix-cell);
+        transform: scale(1);
+    }
+
+    50% {
+        background-color: #fff;
+        color: #000;
+        transform: scale(1.2);
+    }
+
+    100% {
+        background-color: var(--matrix-cell);
+        transform: scale(1);
+    }
+}
+
+.xor-flash {
+    animation: xorFlashAnim 0.5s ease-out;
+}
+
+.flying-byte {
+    position: absolute;
+    background-color: var(--accent);
+    color: white;
+    padding: 4px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: bold;
+    z-index: 1000;
+    transition: all 2.5s cubic-bezier(0.25, 1, 0.5, 1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.replay-btn {
+    background: none;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-left: 1rem;
+    transition: all 0.2s;
+}
+
+.replay-btn:hover {
+    background-color: var(--accent);
+    color: white;
+}
+
+/* Animation Control Buttons */
+.anim-controls {
+    display: inline-flex;
+    gap: 5px;
+    margin-left: 10px;
+    vertical-align: middle;
+}
+
+.control-btn {
+    padding: 0.4rem !important;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    line-height: 1;
+    border-radius: 4px;
+}
+
+.stop-btn {
+    background-color: #ef4444;
+}
+
+.stop-btn:hover {
+    background-color: #dc2626;
+}
+
+.control-btn:hover {
+    transform: scale(1.1);
+}
+
+
+/* Bit Expansion Visualization */
+.bit-expansion {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+}
+
+.byte-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.byte-hex {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent);
+    font-weight: bold;
+    background: var(--bg-color);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+}
+
+.byte-arrow {
+    color: var(--text-secondary);
+}
+
+.byte-bits {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-primary);
+    letter-spacing: 1px;
+}
+
+.byte-bits span {
+    margin-right: 0.5rem;
+    /* space between nibbles */
+}
+
+/* R0 Bit Visualization */
+.r0-bits-container {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.nibble-group {
+    display: flex;
+    gap: 2px;
+}
+
+.bit-source {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    padding: 2px;
+    background: var(--bg-color);
+    /* Was bg-dark which might not exist, use bg-color or card-bg */
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    min-width: 14px;
+    text-align: center;
+}
+
+.expanded-bit {
+    display: inline-block;
+    width: 14px;
+    text-align: center;
+    transition: color 0.3s;
+}
+
+/* Key Schedule Visualization */
+.key-schedule-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+
+.key-stage {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    width: 100%;
+}
+
+.register-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.bits-row-flex {
+    display: flex;
+    gap: 2px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 600px;
+    /* Force wrap if needed, but 28 bits fits */
+}
+
+.key-bit {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    background: var(--bg-color);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    transition: all 0.3s;
+}
+
+.ks-arrow {
+    color: var(--accent);
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* Specific colors */
+.key-bit-c,
+.key-bit-c-new {
+    border-color: #10b981;
+    color: #10b981;
+}
+
+.key-bit-d,
+.key-bit-d-new {
+    border-color: #f59e0b;
+    color: #f59e0b;
+}
+
+.key-final-bit {
+    border-color: var(--highlight);
+    color: var(--highlight);
+}
+
+
+.expansion-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.expansion-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.expansion-row .label {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.expansion-arrow {
+    color: var(--accent);
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.sbox-input-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    max-width: 600px;
+}
+
+.bit-group-6 {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 0.5rem;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 60px;
+}
+
+.bit-group-6 .group-label {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.2rem;
+}
+
+.bit-group-6 .bits {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+}
+
+/* XOR Visualization */
+.xor-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+    overflow-x: auto;
+    padding-bottom: 20px;
+}
+
+.xor-layout {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.xor-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.xor-symbol-column,
+.xor-arrow-column {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.xor-op-symbol {
+    color: var(--highlight);
+}
+
+.xor-result-arrow {
+    color: var(--accent);
+}
+
+.xor-grid-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.xor-grid-row {
+    display: flex;
+    gap: 2px;
+}
+
+.xor-bit {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    background: var(--bg-color);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+}
+
+.xor-source-key {
+    color: var(--highlight);
+    border-color: var(--highlight);
+}
+
+.xor-target-res {
+    background: var(--card-bg);
+    /* slightly diff bg */
+    border-color: var(--text-secondary);
+}
+
+.xor-flyer-exp {
+    background: var(--accent);
+    color: var(--text-primary);
+    border: 1px solid var(--accent);
+    z-index: 1000;
+}
+
+.xor-flyer-key {
+    background: var(--highlight);
+    color: var(--bg-color);
+    border: 1px solid var(--highlight);
+    z-index: 1000;
+}
+
+.xor-flash {
+    animation: flash-res 0.5s ease;
+}
+
+@keyframes flash-res {
+    0% {
+        background-color: white;
+        color: black;
+    }
+
+    100% {
+        background-color: var(--card-bg);
+        color: var(--text-primary);
+    }
+}
+
+/* S-Box Visualization */
+.sbox-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.sbox-row {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.sbox-groups-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.sbox-group-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sbox-group-label {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    margin-bottom: 2px;
+}
+
+.sbox-group-bits {
+    display: flex;
+    gap: 1px;
+    background: var(--bg-color);
+    padding: 2px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+}
+
+.sbox-input-bit,
+.sbox-output-bit {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    font-size: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.sbox-middle-row {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.sbox-module {
+    width: 50px;
+    height: 50px;
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s;
+}
+
+.sbox-title {
+    font-weight: bold;
+    color: var(--highlight);
+}
+
+.sbox-active {
+    transform: scale(1.2);
+    border-color: var(--accent);
+    box-shadow: 0 0 15px var(--accent);
+}
+
+/* P-Permutation Visualization */
+.pperm-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    padding-bottom: 2rem;
+}
+
+.pperm-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.pperm-arrow {
+    color: var(--accent);
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.pperm-bit-in,
+.pperm-bit-out {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    background: var(--bg-color);
+    border: 1px solid var(--border);
+    margin: 1px;
+    border-radius: 2px;
+}
+
+.pperm-bit-out {
+    border-color: var(--highlight);
+}
+
+/* Final XOR Bits */
+.fxor-src-l,
+.fxor-src-p,
+.fxor-target {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    background: var(--bg-color);
+    border: 1px solid var(--border);
+    margin: 1px;
+    border-radius: 2px;
+}
+
+.fxor-target {
+    border-color: var(--highlight);
+}
+
+/* Round Note */
+.round-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid var(--accent);
+    padding: 1rem;
+    border-radius: 8px;
+    max-width: 600px;
+    margin-top: 3rem;
+}
+
+.note-icon {
+    font-size: 1.5rem;
+    color: var(--accent);
+}
+
+.note-text {
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    line-height: 1.4;
+}

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AES Visualizer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=3">
+    <!-- Google Fonts for modern look -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>AES-128 Visualizer</h1>
+            <p>Inserisci testo e chiave per vedere ogni passaggio dell'algoritmo AES.</p>
+            <p><a href="/des" style="color: var(--accent); text-decoration: none; font-weight: bold;">&rarr; Vai alla
+                    Visualizzazione DES</a></p>
+        </header>
+
+        <div class="input-section">
+            <div class="input-group">
+                <label for="plaintext">Testo in Chiaro (Plaintext)</label>
+                <input type="text" id="plaintext" placeholder="Es: Hello World" value="Hello World">
+            </div>
+            <div class="input-group">
+                <label for="key">Chiave (Key)</label>
+                <input type="text" id="key" placeholder="Es: SecretKey123" value="SecretKey123">
+            </div>
+            <button id="encrypt-btn" onclick="runEncryption()">Esegui AES</button>
+        </div>
+
+        <div id="results" class="results-section hidden">
+            <div class="summary">
+                <div class="hex-display">
+                    <h3>Input Hex</h3>
+                    <code id="input-hex"></code>
+                </div>
+                <div class="hex-display">
+                    <h3>Key Hex (First block)</h3>
+                    <code id="key-hex"></code>
+                </div>
+            </div>
+
+            <div id="steps-container">
+                <!-- Steps will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}?v=3"></script>
+</body>
+
+</html>

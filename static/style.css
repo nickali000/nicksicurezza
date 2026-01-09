@@ -1,0 +1,674 @@
+:root {
+    --bg-color: #0f172a;
+    --card-bg: #1e293b;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --accent: #3b82f6;
+    --accent-hover: #2563eb;
+    --border: #334155;
+    --matrix-cell: #0f172a;
+    --matrix-text: #38bdf8;
+    --highlight: #f43f5e;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+}
+
+.input-section {
+    background-color: var(--card-bg);
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: flex-end;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.input-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: var(--bg-color);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.input-group input:focus {
+    outline: 2px solid var(--accent);
+    border-color: transparent;
+}
+
+button {
+    background-color: var(--accent);
+    color: white;
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: var(--accent-hover);
+}
+
+.results-section {
+    margin-top: 3rem;
+}
+
+.hidden {
+    display: none;
+}
+
+.summary {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.hex-display code {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--card-bg);
+    padding: 1rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    word-break: break-all;
+}
+
+/* Visualization Styles */
+.round-block {
+    margin-bottom: 3rem;
+    border-left: 4px solid var(--accent);
+    padding-left: 1.5rem;
+}
+
+.round-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-secondary);
+}
+
+.step {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    border: 1px solid var(--border);
+}
+
+.step-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.step-name {
+    font-weight: bold;
+    color: var(--accent);
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+}
+
+.matrices-container {
+    display: flex;
+    gap: 2rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+}
+
+.matrix-wrapper {
+    text-align: center;
+}
+
+.matrix-label {
+    margin-bottom: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.matrix {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    background-color: var(--border);
+    padding: 4px;
+    border-radius: 4px;
+    width: 140px;
+    /* fixed width for alignment */
+}
+
+.cell {
+    background-color: var(--matrix-cell);
+    color: var(--matrix-text);
+    padding: 6px 2px;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* Animations */
+@keyframes subBytesAnim {
+    0% {
+        transform: rotateY(0);
+        background-color: var(--matrix-cell);
+    }
+
+    40% {
+        transform: rotateY(90deg);
+        background-color: var(--highlight);
+        color: white;
+    }
+
+    60% {
+        transform: rotateY(90deg);
+        background-color: var(--highlight);
+    }
+
+    100% {
+        transform: rotateY(0);
+        background-color: var(--matrix-cell);
+    }
+}
+
+/* ShiftRows Animations for each row amount */
+/* AES ShiftRows: Row 0 no shift, Row 1 shift 1, R2 shift 2, R3 shift 3 */
+/* Since we display in a grid, we want to simulate horizontal movement */
+
+@keyframes shiftRow1 {
+    0% {
+        transform: translateX(0);
+    }
+
+    50% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+
+    51% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    /* Warp around */
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes shiftRow2 {
+    0% {
+        transform: translateX(0);
+    }
+
+    50% {
+        transform: translateX(-200%);
+        opacity: 0;
+    }
+
+    51% {
+        transform: translateX(200%);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes shiftRow3 {
+    0% {
+        transform: translateX(0);
+    }
+
+    50% {
+        transform: translateX(-300%);
+        opacity: 0;
+    }
+
+    51% {
+        transform: translateX(300%);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes mixColumnsAnim {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+        background-color: var(--accent);
+        color: white;
+        box-shadow: 0 0 10px var(--accent);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes addKeyAnim {
+    0% {
+        opacity: 0.3;
+        transform: scale(0.95);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+        text-shadow: 0 0 8px var(--accent);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.anim-sub_bytes .cell {
+    animation: subBytesAnim 1.5s ease-in-out forwards;
+}
+
+/* ShiftRows CSS animations removed in favor of JS sequential animation */
+
+.anim-mix_columns .cell {
+    animation: mixColumnsAnim 1.5s ease-in-out forwards;
+}
+
+/* Specific: Only animate the State matrix (first one), not the Key matrix */
+.anim-add_round_key .matrix-wrapper:first-child .cell {
+    animation: addKeyAnim 1.0s ease-out forwards;
+}
+
+@keyframes xorFlashAnim {
+    0% {
+        background-color: var(--matrix-cell);
+        transform: scale(1);
+    }
+
+    50% {
+        background-color: #fff;
+        color: #000;
+        transform: scale(1.2);
+    }
+
+    100% {
+        background-color: var(--matrix-cell);
+        transform: scale(1);
+    }
+}
+
+.xor-flash {
+    animation: xorFlashAnim 0.5s ease-out;
+}
+
+/* Delay for staggering effect in SubBytes/MixColumns only, not ShiftRows which needs sync */
+.anim-sub_bytes .cell:nth-child(1) {
+    animation-delay: 0.0s;
+}
+
+.anim-sub_bytes .cell:nth-child(2) {
+    animation-delay: 0.05s;
+}
+
+.anim-sub_bytes .cell:nth-child(3) {
+    animation-delay: 0.1s;
+}
+
+.anim-sub_bytes .cell:nth-child(4) {
+    animation-delay: 0.15s;
+}
+
+.anim-sub_bytes .cell:nth-child(5) {
+    animation-delay: 0.2s;
+}
+
+/* ... simplified staggering continues naturally or we leave it uniform */
+
+.repeat-block {
+    text-align: center;
+    padding: 2rem;
+    margin: 2rem 0;
+    background: var(--card-bg);
+    border: 1px dashed var(--text-secondary);
+    border-radius: 8px;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* Intro Animation */
+.flying-byte {
+    position: absolute;
+    background-color: var(--accent);
+    color: white;
+    padding: 4px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: bold;
+    z-index: 1000;
+    transition: all 2.5s cubic-bezier(0.25, 1, 0.5, 1);
+    /* Slowed down from 1.5s */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.input-highlight-byte {
+    display: inline-block;
+    padding: 0 2px;
+    border: 1px solid var(--accent);
+    margin: 0 1px;
+    border-radius: 2px;
+}
+
+.replay-btn {
+    background: none;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-left: 1rem;
+    transition: all 0.2s;
+}
+
+.replay-btn:hover {
+    background-color: var(--accent);
+    color: white;
+}
+
+/* S-Box visualization */
+.sbox-table {
+    display: grid;
+    grid-template-columns: repeat(17, 1fr);
+    /* 1 header + 16 data */
+    gap: 1px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 0.5rem;
+    border-radius: 8px;
+    margin-left: 2rem;
+    /* Add spacing from matrix */
+    align-self: center;
+}
+
+.sbox-cell {
+    width: 18px;
+    height: 18px;
+    font-size: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-main);
+    color: var(--text-muted);
+    cursor: default;
+}
+
+.sbox-header {
+    background: var(--bg-card);
+    color: var(--accent);
+    font-weight: bold;
+}
+
+.sbox-active {
+    background: var(--accent);
+    color: white;
+    transform: scale(1.4);
+    z-index: 50;
+    box-shadow: 0 0 8px var(--accent);
+    border-radius: 4px;
+}
+
+.sbox-highlight-line {
+    background-color: rgba(236, 72, 153, 0.15);
+    /* light pink */
+}
+
+.sbox-header-active {
+    background-color: var(--accent);
+    color: white;
+    font-weight: bold;
+    transform: scale(1.2);
+}
+/* MixColumns Matrix */
+.mix-matrix {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 0.5rem;
+    border-radius: 8px;
+    margin-left: 2rem;
+    align-self: center;
+}
+
+.mix-cell {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-main);
+    color: var(--text-muted);
+    font-size: 11px;
+    border-radius: 3px;
+}
+
+.mix-cell.highlight-mix-row {
+    background-color: var(--accent);
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 0 5px var(--accent);
+}
+
+/* Equation Overlay */
+.equation-overlay {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(17, 24, 39, 0.95);
+    border: 1px solid var(--accent);
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    color: #fff;
+    font-family: monospace;
+    font-size: 1.2rem;
+    z-index: 1000;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    display: none;
+    text-align: center;
+}
+
+.equation-part {
+    display: inline-block;
+    margin: 0 4px;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeInEq 0.3s forwards;
+}
+
+@keyframes fadeInEq {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.xor-symbol {
+    color: var(--accent);
+    font-weight: bold;
+    font-size: 1.4rem;
+}
+
+/* Animation Control Buttons */
+.anim-controls {
+    display: inline-flex;
+    gap: 5px;
+    margin-left: 10px;
+    vertical-align: middle;
+}
+
+.control-btn {
+    padding: 0.4rem !important; /* Override default button padding */
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    line-height: 1;
+    border-radius: 4px;
+}
+
+.stop-btn {
+    background-color: #ef4444; /* Red for stop */
+}
+
+.stop-btn:hover {
+    background-color: #dc2626;
+}
+
+.control-btn:hover {
+    transform: scale(1.1);
+}
+
+body.animations-paused .flying-byte,
+body.animations-paused .flying-split,
+body.animations-paused .equation-part {
+    animation-play-state: paused !important; /* Freeze CSS animations */
+    transition: none !important; /* Freeze JS transitions if possible (harder for JS-driven) */
+}
+
+/* Info Icon */
+.info-icon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-color: var(--text-secondary);
+    color: var(--bg-color);
+    border-radius: 50%;
+    text-align: center;
+    line-height: 16px;
+    font-size: 11px;
+    font-weight: bold;
+    margin-left: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.info-icon:hover {
+    background-color: var(--accent);
+    color: white;
+    transform: scale(1.1);
+}
+
+/* Modal Popup */
+.info-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.info-modal {
+    background: var(--card-bg);
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 600px;
+    width: 90%;
+    color: var(--text-primary);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    position: relative;
+    font-family: 'Inter', sans-serif;
+}
+
+.info-modal h3 {
+    margin-top: 0;
+    color: var(--accent);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.info-modal-content {
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.info-modal-content p {
+    margin-bottom: 0.8rem;
+}
+
+.info-modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+.info-modal-close:hover {
+    color: white;
+}

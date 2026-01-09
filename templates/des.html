@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DES Visualization Demo</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/static/des_style.css?v=5">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>DES Visualization</h1>
+            <p>Data Encryption Standard (64-bit Block Cipher)</p>
+            <a href="/" style="color: var(--accent); text-decoration: none; font-size: 0.9rem;">&larr; Back to AES</a>
+        </header>
+
+        <div class="input-section">
+            <div class="input-group">
+                <label for="plaintext">Plaintext (Hex or Text)</label>
+                <input type="text" id="plaintext" value="0123456789ABCDEF" placeholder="Enter 16 hex chars">
+            </div>
+            <div class="input-group">
+                <label for="key">Key (Hex or Text)</label>
+                <input type="text" id="key" value="133457799BBCDFF1" placeholder="Enter 16 hex chars">
+            </div>
+            <button onclick="runDesEncryption()">Encrypt & Visualize</button>
+        </div>
+
+        <div id="results" class="results-section hidden">
+            <div class="summary">
+                <div class="hex-display">
+                    <h3>Input Hex</h3>
+                    <code id="input-hex"></code>
+                </div>
+                <div class="hex-display">
+                    <h3>Key Hex</h3>
+                    <code id="key-hex"></code>
+                </div>
+            </div>
+
+            <div id="steps-container">
+                <!-- Visualization Steps will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/des_script.js?v=6"></script>
+</body>
+
+</html>
