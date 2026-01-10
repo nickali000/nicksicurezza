@@ -1,0 +1,131 @@
+/* Vigenere Styles */
+
+.container {
+    max-width: 1200px;
+    /* Wider container for the grid */
+}
+
+/* Tabula Recta Grid */
+#tabula-recta {
+    display: grid;
+    grid-template-columns: 40px repeat(26, 1fr);
+    /* Header col + 26 letters */
+    gap: 1px;
+    background: #444;
+    overflow-x: auto;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.tr-cell {
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #222;
+    color: #666;
+    font-size: 0.8em;
+    border-radius: 2px;
+}
+
+/* Headers */
+.tr-header-row,
+.tr-header-col {
+    background: #333;
+    color: #fff;
+    font-weight: bold;
+}
+
+.tr-header-corner {
+    background: #000;
+}
+
+/* Interaction Highlights */
+.tr-cell.highlight-row {
+    background: rgba(155, 89, 182, 0.3);
+    /* Purple tint */
+    color: #ddd;
+}
+
+.tr-cell.highlight-col {
+    background: rgba(155, 89, 182, 0.3);
+    color: #ddd;
+}
+
+.tr-cell.highlight-intersection {
+    background: #9b59b6;
+    color: #fff;
+    font-weight: bold;
+    transform: scale(1.2);
+    box-shadow: 0 0 10px #9b59b6;
+    z-index: 10;
+}
+
+
+/* Old container for results steps, now secondary */
+#vigenere-container {
+    margin: 30px 0;
+    overflow-x: auto;
+    display: flex;
+    gap: 15px;
+    padding-bottom: 20px;
+}
+
+.vigenere-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #2a2a2a;
+    padding: 10px;
+    border-radius: 8px;
+    min-width: 60px;
+    transition: background 0.3s;
+}
+
+.vigenere-col.active {
+    background: #444;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.vigenere-cell {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    margin: 5px 0;
+    position: relative;
+    background: #333;
+    font-weight: bold;
+    color: #fff;
+    opacity: 0.6;
+}
+
+.vigenere-cell.visible {
+    opacity: 1;
+}
+
+.vigenere-cell.key-cell {
+    border: 2px solid #9b59b6;
+}
+
+.vigenere-op {
+    font-size: 1.5em;
+    color: #9b59b6;
+    margin: -5px 0;
+}
+
+.vigenere-result {
+    background: #9b59b6;
+}
+
+#ciphertext-display {
+    font-family: monospace;
+    font-size: 1.5em;
+    color: #9b59b6;
+    letter-spacing: 2px;
+}

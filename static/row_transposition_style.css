@@ -1,0 +1,95 @@
+/* Inherit specific styles from main style if needed, but add grid specifics here */
+
+#grid-container {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    overflow-x: auto;
+}
+
+.cipher-grid {
+    display: grid;
+    gap: 2px;
+    background-color: #333;
+    padding: 2px;
+    border-radius: 4px;
+}
+
+.grid-cell {
+    width: 40px;
+    height: 40px;
+    background-color: #1e1e1e;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: monospace;
+    font-size: 1.2em;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.grid-header {
+    background-color: #007bff;
+    font-weight: bold;
+}
+
+.grid-char {
+    background-color: #2d2d2d;
+}
+
+.grid-cell.highlight {
+    background-color: #28a745; /* Green for active reading */
+    transform: scale(1.1);
+    z-index: 10;
+}
+
+.grid-cell.read {
+    background-color: #555; /* Dimmed after reading */
+    opacity: 0.7;
+}
+
+#output-container {
+    background: #222;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+#ciphertext-display {
+    font-family: monospace;
+    font-size: 1.5em;
+    color: #00ff99;
+    letter-spacing: 2px;
+    word-break: break-all;
+    min-height: 1.5em;
+}
+
+#log-container {
+    margin-top: 20px;
+    border-top: 1px solid #444;
+    padding-top: 10px;
+}
+
+#log-list {
+    list-style-type: none;
+    padding: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    font-family: monospace;
+    font-size: 0.9em;
+}
+
+#log-list li {
+    padding: 5px;
+    border-bottom: 1px solid #333;
+}
+
+#log-list li:last-child {
+    border-bottom: none;
+}
+
+span.chunk {
+    color: #00ff99;
+    font-weight: bold;
+}

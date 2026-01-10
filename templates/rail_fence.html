@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cifrario Rail Fence (Zig-Zag)</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='rail_fence_style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="back-link">← Torna alla Home</a>
+            <h1>Cifrario Rail Fence</h1>
+            <p>Visualizzazione zig-zag su più livelli (binari).</p>
+        </header>
+
+        <section class="controls">
+            <div class="input-group">
+                <label for="plaintext">Testo in Chiaro:</label>
+                <input type="text" id="plaintext" placeholder="Inserisci il testo" value="WEAREDISCOVEREDFLEEATONCE">
+            </div>
+
+            <div class="input-group">
+                <label for="rails">Numero di Binari (Rails):</label>
+                <input type="number" id="rails" min="2" max="10" value="3">
+            </div>
+
+            <button id="encryptBtn">Cifra</button>
+            <button id="resetBtn" class="secondary">Reset</button>
+        </section>
+
+        <section id="visualization" class="hidden">
+            <div id="rail-container"></div>
+
+            <div id="output-container">
+                <h3>Testo Cifrato:</h3>
+                <div id="ciphertext-display"></div>
+            </div>
+
+            <div id="log-container">
+                <h3>Log dei Passaggi:</h3>
+                <ul id="log-list"></ul>
+            </div>
+        </section>
+    </div>
+
+    <script src="{{ url_for('static', filename='rail_fence_script.js') }}"></script>
+</body>
+
+</html>

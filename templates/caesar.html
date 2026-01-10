@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cifrario di Cesare</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='caesar_style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="back-link">← Torna alla Home</a>
+            <h1>Cifrario di Cesare</h1>
+            <p>Sostituzione a Scorrimento (Shift)</p>
+        </header>
+
+        <section class="controls">
+            <div class="input-group">
+                <label for="plaintext">Testo in Chiaro:</label>
+                <input type="text" id="plaintext" placeholder="Es. CAESAR" value="CAESAR">
+            </div>
+
+            <div class="input-group">
+                <label for="shift">Shift (0-25):</label>
+                <input type="number" id="shift" min="0" max="25" value="3">
+            </div>
+
+            <button id="encryptBtn">Cifra</button>
+            <button id="resetBtn" class="secondary">Reset</button>
+        </section>
+
+        <section id="visualization" class="hidden">
+            <div class="caesar-wheel-display">
+                <div class="strip-container">
+                    <div class="strip-label">Chiaro (A-Z)</div>
+                    <div class="alphabet-strip plain-strip" id="plain-strip">
+                        <!-- Filled by JS -->
+                    </div>
+                </div>
+
+                <div class="strip-connector">⬇</div>
+
+                <div class="strip-container">
+                    <div class="strip-label">Cifrato (Shiftato)</div>
+                    <div class="alphabet-strip cipher-strip-wrapper">
+                        <!-- This inner div will slide -->
+                        <div class="sliding-alphabet" id="cipher-strip">
+                            <!-- Filled by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-details" id="current-step-display"></div>
+
+            <div id="output-container">
+                <h3>Risultato:</h3>
+                <div id="ciphertext-display"></div>
+            </div>
+        </section>
+    </div>
+
+    <script src="{{ url_for('static', filename='caesar_script.js') }}"></script>
+</body>
+
+</html>

@@ -1,0 +1,199 @@
+/* Hill Cipher Styles */
+
+.matrix-display {
+    display: none;
+    /* Hidden by default, handling in JS manually now */
+}
+
+/* Intro Section */
+.hill-intro {
+    background: #222;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #444;
+}
+
+.conversion-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.arrow-right {
+    font-size: 2em;
+    color: #666;
+}
+
+/* Step Container */
+.hill-step {
+    background: #2a2a2a;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.equation-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+/* Matrix Boxes */
+.matrix-box,
+.vector-box {
+    display: grid;
+    gap: 5px;
+    padding: 10px;
+    background: #111;
+    border-left: 2px solid #fff;
+    border-right: 2px solid #fff;
+    border-radius: 8px;
+    position: relative;
+    transition: all 0.3s;
+}
+
+.secondary {
+    border-color: #888;
+}
+
+.vector-box {
+    grid-template-rows: repeat(2, 1fr);
+    min-width: 50px;
+}
+
+.result-box {
+    border-color: #9b59b6;
+    /* Purple for result */
+    min-height: 100px;
+    /* Pre-allocate space */
+}
+
+/* Cells */
+.matrix-cell {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #333;
+    color: #fff;
+    font-family: monospace;
+    font-size: 1.1em;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+.char-cell {
+    color: #aaa;
+}
+
+.num-cell {
+    color: #00ff99;
+    font-weight: bold;
+}
+
+.res-cell {
+    background: #9b59b6;
+    color: #fff;
+    animation: popIn 0.5s;
+}
+
+/* Animation Cell (Text -> Num) */
+.anim-cell {
+    flex-direction: column;
+    font-size: 0.9em;
+}
+
+.anim-cell .top {
+    font-size: 0.8em;
+    color: #aaa;
+    margin-bottom: 2px;
+}
+
+.anim-cell .bot {
+    font-size: 1.2em;
+    color: #00ff99;
+    font-weight: bold;
+}
+
+
+/* Highlights */
+.matrix-cell.highlight {
+    background: #00ff99;
+    color: #000;
+    transform: scale(1.1);
+    box-shadow: 0 0 10px #00ff99;
+}
+
+.matrix-cell.highlight-sec {
+    background: #fff;
+    color: #000;
+    box-shadow: 0 0 8px #fff;
+    border: 2px solid #000;
+}
+
+/* Math Log */
+.math-log {
+    background: #1a1a1a;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: left;
+    font-family: monospace;
+    font-size: 0.9em;
+    border-left: 4px solid #9b59b6;
+}
+
+.math-entry {
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #333;
+    animation: slideDown 0.5s;
+}
+
+/* Animations */
+@keyframes popIn {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-10px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.operator {
+
+    #key-matrix,
+    #inverse-key-matrix,
+    #main-key-matrix,
+    .matrix-box.secondary {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+
+    .vector-box {
+        grid-template-rows: repeat(3, 1fr) !important;
+    }
+
+    .inverse-box {
+        border-color: #9b59b6;
+    }

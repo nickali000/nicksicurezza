@@ -1,0 +1,70 @@
+/* OTP Styles */
+
+#otp-container {
+    margin: 20px 0;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.otp-block {
+    display: inline-block;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    background: #2a2a2a;
+    padding: 10px;
+    border-radius: 5px;
+    vertical-align: top;
+    text-align: center;
+    min-width: 120px;
+}
+
+.otp-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 0;
+}
+
+.otp-label {
+    color: #888;
+    font-size: 0.8em;
+    margin-right: 10px;
+}
+
+.otp-bits {
+    color: #00ff99;
+}
+
+.otp-bits.key {
+    color: #ff9900;
+}
+
+.otp-bits.result {
+    color: #00bfff;
+    font-weight: bold;
+    border-top: 1px solid #555;
+    padding-top: 2px;
+    margin-top: 2px;
+}
+
+.otp-char {
+    display: block;
+    font-size: 1.5em;
+    margin-bottom: 5px;
+    color: #fff;
+    background: #444;
+    border-radius: 3px;
+    width: 100%;
+}
+
+.xor-operator {
+    color: #ff5555;
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+#ciphertext-display {
+    font-family: monospace;
+    font-size: 1.2em;
+    color: #00bfff;
+    word-break: break-all;
+}

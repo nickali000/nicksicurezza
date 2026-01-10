@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cifrario di Hill (2x2)</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='hill_style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="back-link">← Torna alla Home</a>
+            <h1>Cifrario di Hill</h1>
+            <p>Poligrafico: Algebra Lineare con Matrice 2x2</p>
+        </header>
+
+        <section class="controls">
+            <div class="input-group">
+                <label for="plaintext">Testo in Chiaro (Lettere):</label>
+                <input type="text" id="plaintext" placeholder="Es. ACT" value="ACT">
+            </div>
+
+            <div class="input-group">
+                <label for="key">Chiave (Esattamente 9 Lettere):</label>
+                <input type="text" id="key" placeholder="Es. GYBNQKURP" value="GYBNQKURP" maxlength="9">
+            </div>
+
+            <button id="encryptBtn">Cifra con Hill</button>
+            <button id="resetBtn" class="secondary">Reset</button>
+        </section>
+
+        <section id="visualization" class="hidden">
+            <div class="matrix-display">
+                <h3>Matrice Chiave (K)</h3>
+                <div id="key-matrix" class="matrix-box">
+                    <!-- Javascript will fill this -->
+                </div>
+            </div>
+
+            <div id="hill-feeder"></div>
+
+            <div id="output-container">
+                <h3>Risultato:</h3>
+                <div id="ciphertext-display"></div>
+            </div>
+
+            <div class="decryption-section hidden" id="decryption-section">
+                <h3>Logica di Decrittazione</h3>
+                <p>Per decifrare, moltiplichiamo il Cifrato per la Matrice Inversa della Chiave ($C \times K^{-1}$).</p>
+                <div class="matrix-display">
+                    <h4>Matrice Inversa ($K^{-1}$)</h4>
+                    <div id="inverse-key-matrix" class="matrix-box inverse-box"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="{{ url_for('static', filename='hill_script.js') }}"></script>
+</body>
+
+</html>

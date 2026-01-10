@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cifrario a Trasposizione di Riga</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='row_transposition_style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="back-link">← Torna alla Home</a>
+            <h1>Cifrario a Trasposizione di Riga</h1>
+            <p>Visualizzazione passo-passo della trasposizione colonnare.</p>
+        </header>
+
+        <section class="controls">
+            <div class="input-group">
+                <label for="plaintext">Testo in Chiaro:</label>
+                <input type="text" id="plaintext" placeholder="Inserisci il testo da cifrare" value="ATTACKATDAWN">
+            </div>
+
+            <div class="input-group">
+                <label for="key">Chiave (Solo Numeri):</label>
+                <input type="text" id="key" placeholder="Es. 3142" value="3142">
+            </div>
+
+            <button id="encryptBtn">Cifra</button>
+            <button id="resetBtn" class="secondary">Reset</button>
+        </section>
+
+        <section id="visualization" class="hidden">
+            <div id="grid-container"></div>
+            <div id="output-container">
+                <h3>Testo Cifrato:</h3>
+                <div id="ciphertext-display"></div>
+            </div>
+            <div id="log-container">
+                <h3>Log dei Passaggi:</h3>
+                <ul id="log-list"></ul>
+            </div>
+        </section>
+    </div>
+
+    <script src="{{ url_for('static', filename='row_transposition_script.js') }}"></script>
+</body>
+
+</html>

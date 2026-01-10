@@ -31,6 +31,20 @@ header {
     margin-bottom: 3rem;
 }
 
+
+.back-link {
+    display: inline-block;
+    color: var(--text-secondary);
+    text-decoration: none;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+}
+
+.back-link:hover {
+    color: var(--accent);
+}
+
 header h1 {
     font-size: 2.5rem;
     color: var(--accent);
@@ -481,6 +495,7 @@ button:hover {
     font-weight: bold;
     transform: scale(1.2);
 }
+
 /* MixColumns Matrix */
 .mix-matrix {
     display: grid;
@@ -527,7 +542,7 @@ button:hover {
     font-family: monospace;
     font-size: 1.2rem;
     z-index: 1000;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     display: none;
     text-align: center;
 }
@@ -541,7 +556,10 @@ button:hover {
 }
 
 @keyframes fadeInEq {
-    to { opacity: 1; transform: translateY(0); }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .xor-symbol {
@@ -559,7 +577,8 @@ button:hover {
 }
 
 .control-btn {
-    padding: 0.4rem !important; /* Override default button padding */
+    padding: 0.4rem !important;
+    /* Override default button padding */
     width: 32px;
     height: 32px;
     display: flex;
@@ -571,7 +590,8 @@ button:hover {
 }
 
 .stop-btn {
-    background-color: #ef4444; /* Red for stop */
+    background-color: #ef4444;
+    /* Red for stop */
 }
 
 .stop-btn:hover {
@@ -585,8 +605,10 @@ button:hover {
 body.animations-paused .flying-byte,
 body.animations-paused .flying-split,
 body.animations-paused .equation-part {
-    animation-play-state: paused !important; /* Freeze CSS animations */
-    transition: none !important; /* Freeze JS transitions if possible (harder for JS-driven) */
+    animation-play-state: paused !important;
+    /* Freeze CSS animations */
+    transition: none !important;
+    /* Freeze JS transitions if possible (harder for JS-driven) */
 }
 
 /* Info Icon */
@@ -634,7 +656,7 @@ body.animations-paused .equation-part {
     max-width: 600px;
     width: 90%;
     color: var(--text-primary);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     position: relative;
     font-family: 'Inter', sans-serif;
 }

@@ -1,0 +1,106 @@
+/* Monoalphabetic Styles */
+
+/* Override default container for wider view */
+.container {
+    max-width: 1300px !important;
+}
+
+.alphabet-display {
+    margin-bottom: 30px;
+    background: #222;
+    padding: 15px;
+    border-radius: 8px;
+    overflow-x: auto;
+}
+
+.alphabet-container {
+    display: grid;
+    grid-template-columns: 80px repeat(26, 1fr);
+    grid-template-rows: repeat(2, 45px);
+    /* Increased row height */
+    gap: 5px;
+    align-items: center;
+}
+
+.row-label {
+    font-weight: bold;
+    color: #aaa;
+    text-align: right;
+    padding-right: 10px;
+}
+
+.alpha-cell {
+    width: 40px;
+    /* Increased from 30px */
+    height: 40px;
+    /* Increased from 35px */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #333;
+    border-radius: 3px;
+    font-family: monospace;
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+.plain-row .alpha-cell {
+    color: #fff;
+    border-bottom: 2px solid #555;
+}
+
+.cipher-row .alpha-cell {
+    color: #00ff99;
+    border-top: 2px solid #555;
+}
+
+/* Highlights */
+.alpha-cell.active-input {
+    background: #fff;
+    color: #000;
+    transform: scale(1.1);
+    box-shadow: 0 0 10px #fff;
+}
+
+.alpha-cell.active-output {
+    background: #00ff99;
+    color: #000;
+    transform: scale(1.1);
+    box-shadow: 0 0 10px #00ff99;
+}
+
+/* Feeder / Stream */
+#mono-feeder {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin: 20px 0;
+    font-size: 1.5em;
+    font-family: monospace;
+}
+
+.char-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.char-plain {
+    color: #888;
+    font-size: 0.8em;
+    margin-bottom: 5px;
+}
+
+.char-cipher {
+    color: #00ff99;
+    font-weight: bold;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s;
+}
+
+.char-cipher.visible {
+    opacity: 1;
+    transform: translateY(0);
+}

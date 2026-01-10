@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cifrario Monoalfabetico</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='monoalphabetic_style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="back-link">← Torna alla Home</a>
+            <h1>Cifrario Monoalfabetico</h1>
+            <p>Sostituzione con Alfabeto Misto (Keyword)</p>
+        </header>
+
+        <section class="controls">
+            <div class="input-group">
+                <label for="plaintext">Testo in Chiaro:</label>
+                <input type="text" id="plaintext" placeholder="Es. HELLO WORLD" value="HELLO WORLD">
+            </div>
+
+            <div class="input-group">
+                <label for="key">Chiave (Keyword):</label>
+                <input type="text" id="key" placeholder="Es. ZEBRA" value="ZEBRA">
+            </div>
+
+            <button id="encryptBtn">Cifra</button>
+            <button id="resetBtn" class="secondary">Reset</button>
+        </section>
+
+        <section id="visualization" class="hidden">
+            <div class="alphabet-display">
+                <h3>Mappatura Alfabeto</h3>
+                <div class="alphabet-container" id="alphabet-container">
+                    <!-- JS will generate rows -->
+                </div>
+            </div>
+
+            <div id="mono-feeder"></div>
+
+            <div id="output-container">
+                <h3>Risultato:</h3>
+                <div id="ciphertext-display"></div>
+            </div>
+        </section>
+    </div>
+
+    <script src="{{ url_for('static', filename='monoalphabetic_script.js') }}"></script>
+</body>
+
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cifrario di Vigenère</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='vigenere_style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="back-link">← Torna alla Home</a>
+            <h1>Cifrario di Vigenère</h1>
+            <p>Polialfabetico: La chiave si ripete per cifrare il testo</p>
+        </header>
+
+        <section class="controls">
+            <div class="input-group">
+                <label for="plaintext">Testo in Chiaro (Solo Lettere):</label>
+                <input type="text" id="plaintext" placeholder="Inserisci testo" value="ATTACKATDAWN">
+            </div>
+
+            <div class="input-group">
+                <label for="key">Chiave (Solo Lettere):</label>
+                <input type="text" id="key" placeholder="Parola chiave..." value="LEMON">
+            </div>
+
+            <button id="encryptBtn">Cifra con Vigenère</button>
+            <button id="resetBtn" class="secondary">Reset</button>
+        </section>
+
+        <div id="tabula-recta"></div>
+
+        <section id="visualization" class="hidden">
+            <div id="vigenere-container"></div>
+
+            <div id="output-container">
+                <h3>Risultato:</h3>
+                <div id="ciphertext-display"></div>
+            </div>
+        </section>
+    </div>
+
+    <script src="{{ url_for('static', filename='vigenere_script.js') }}"></script>
+</body>
+
+</html>

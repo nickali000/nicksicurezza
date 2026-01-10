@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cifrario di Vernam (Addizione Modulare)</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='vernam_style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="back-link">← Torna alla Home</a>
+            <h1>Cifrario di Vernam</h1>
+            <p>Addizione Modulare (Mod 26): C = (P + K) % 26</p>
+        </header>
+
+        <section class="controls">
+            <div class="input-group">
+                <label for="plaintext">Testo in Chiaro (Solo Lettere):</label>
+                <input type="text" id="plaintext" placeholder="Inserisci test" value="HELLO">
+            </div>
+
+            <div class="input-group">
+                <label for="key">Chiave (Lascia vuoto per generare):</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="key" placeholder="Chiave..." value="">
+                    <!-- Button could be added to JS to pre-fill -->
+                </div>
+            </div>
+
+            <button id="encryptBtn">Cifra con Addizione Modulare</button>
+            <button id="resetBtn" class="secondary">Reset</button>
+        </section>
+
+        <section id="visualization" class="hidden">
+            <div id="vernam-container"></div>
+
+            <div id="output-container">
+                <h3>Risultato:</h3>
+                <div id="ciphertext-display"></div>
+            </div>
+        </section>
+    </div>
+
+    <script src="{{ url_for('static', filename='vernam_script.js') }}"></script>
+</body>
+
+</html>

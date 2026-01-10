@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cifrario Playfair</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='playfair_style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="back-link">← Torna alla Home</a>
+            <h1>Cifrario Playfair</h1>
+            <p>Digrafico: Matrice 5x5 e Regole Geometriche</p>
+        </header>
+
+        <section class="controls">
+            <div class="input-group">
+                <label for="plaintext">Testo in Chiaro:</label>
+                <input type="text" id="plaintext" placeholder="Es. BALLOON" value="BALLOON">
+            </div>
+
+            <div class="input-group">
+                <label for="key">Chiave (Keyword):</label>
+                <input type="text" id="key" placeholder="Es. MONARCHY" value="MONARCHY">
+            </div>
+
+            <button id="encryptBtn">Cifra con Playfair</button>
+            <button id="pauseBtn" class="secondary"
+                style="background-color: #f59e0b; color: white; display: none;">Pausa</button>
+            <button id="resetBtn" class="secondary">Reset</button>
+        </section>
+
+        <section id="visualization" class="hidden">
+            <div class="rules-legend">
+                <h4>📜 Regole Playfair</h4>
+                <ul>
+                    <li><strong>Lettere Doppie:</strong> Se una coppia ha due lettere uguali (es. 'LL'), si inserisce
+                        una 'X' ('LX').</li>
+                    <li><strong>Lunghezza Dispari:</strong> Se avanza una lettera alla fine, si aggiunge una 'X'.</li>
+                    <li><strong>Stessa Riga:</strong> Si prendono le lettere a destra.</li>
+                    <li><strong>Stessa Colonna:</strong> Si prendono le lettere sotto.</li>
+                    <li><strong>Rettangolo:</strong> Si prendono gli angoli opposti della stessa riga.</li>
+                </ul>
+            </div>
+
+            <div class="pf-layout">
+                <div class="pf-sidebar">
+                    <h3>Matrice Playfair</h3>
+                    <div id="playfair-grid" class="pf-grid"></div>
+                </div>
+
+                <div class="pf-content">
+                    <div id="preprocessing-log" class="hidden">
+                        <h4>Note di Preprocessing:</h4>
+                        <ul id="prep-list"></ul>
+                    </div>
+                    <h3>Elaborazione <span id="current-rule" class="rule-badge"></span></h3>
+                    <p id="rule-description" style="color: #aaa; font-style: italic; min-height: 20px;"></p>
+                    <div id="digraph-stream"></div>
+
+                    <div id="output-container">
+                        <h4>Risultato Finale</h4>
+                        <div id="ciphertext-display"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="{{ url_for('static', filename='playfair_script.js') }}"></script>
+</body>
+
+</html>

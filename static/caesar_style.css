@@ -1,0 +1,131 @@
+/* Caesar Styles */
+
+/* Override default container for wider view */
+.container {
+    max-width: 1300px !important;
+}
+
+.caesar-wheel-display {
+    background: #222;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow-x: auto;
+    /* Allow scrolling if too wide */
+    overflow-y: hidden;
+}
+
+.strip-container {
+    position: relative;
+    margin: 10px 0;
+}
+
+.strip-label {
+    font-size: 0.8em;
+    color: #888;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.alphabet-strip {
+    display: flex;
+    gap: 2px;
+}
+
+.plain-strip {
+    /* Static */
+    justify-content: flex-start;
+    min-width: fit-content;
+}
+
+.cipher-strip-wrapper {
+    /* This creates the window */
+    overflow: hidden;
+    /* Hide the sliding buffer */
+    position: relative;
+    height: 45px;
+    border: 1px solid #444;
+    border-radius: 4px;
+    background: #1a1a1a;
+    /* Width will be set by JS to match exactly 26 cells */
+}
+
+
+
+.sliding-alphabet {
+    display: flex;
+    gap: 2px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: transform 1.0s cubic-bezier(0.25, 0.1, 0.25, 1.0);
+    /* Smooth slide */
+    will-change: transform;
+}
+
+.c-cell,
+.p-cell {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    /* Fixed width is crucial for calc */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #333;
+    color: #fff;
+    font-family: monospace;
+    font-size: 1.2em;
+    border-radius: 4px;
+}
+
+.p-cell {
+    background: #444;
+    border-bottom: 2px solid #666;
+}
+
+.c-cell {
+    background: #333;
+    border-top: 2px solid #00ff99;
+}
+
+.strip-connector {
+    text-align: center;
+    font-size: 2em;
+    color: #555;
+    margin: -10px 0;
+    z-index: 10;
+    position: relative;
+}
+
+/* Highlights */
+.p-cell.active,
+.c-cell.active {
+    background: #fff;
+    color: #000;
+    transform: scale(1.1);
+    box-shadow: 0 0 10px #fff;
+    z-index: 5;
+}
+
+.c-cell.active {
+    background: #00ff99;
+    box-shadow: 0 0 10px #00ff99;
+}
+
+.step-details {
+    text-align: center;
+    font-family: monospace;
+    color: #ccc;
+    height: 1.5em;
+    margin-bottom: 10px;
+}
+
+#ciphertext-display {
+    font-size: 1.5em;
+    letter-spacing: 3px;
+    color: #00ff99;
+    min-height: 1.5em;
+}

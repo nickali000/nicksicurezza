@@ -131,6 +131,9 @@ function processInput(raw) {
 }
 
 async function runDesEncryption() {
+    // Stop any ongoing animations
+    if (animCtrl) animCtrl.stop();
+
     const rawText = document.getElementById('plaintext').value;
     const rawKey = document.getElementById('key').value;
 
@@ -608,6 +611,74 @@ function renderFeistelRound(container, step) {
     // Bind Animation
     setTimeout(() => {
         // ... (Existing Bindings) ...
+
+        // Expansion Animation Binding
+        const btnExp = document.getElementById(`play-expansion-btn-${step.round_num}`);
+        if (btnExp) {
+            btnExp.addEventListener('click', () => {
+                const header = btnExp.closest('.step-header').querySelector('.step-header-content');
+                animCtrl.start(header, () => {
+                    const container = document.querySelector('.expansion-container');
+                    if (container) {
+                        const targets = container.querySelectorAll('.expanded-bit');
+                        targets.forEach(t => t.style.color = '');
+                    }
+                });
+
+                animateExpansion(step).then(() => {
+                    animCtrl.reset();
+                    btnExp.style.display = 'inline-block';
+                }).catch(e => { if (e !== 'STOPPED') console.error(e); });
+
+                btnExp.style.display = 'none';
+            });
+        }
+
+        // Key Schedule Animation Binding
+        const btnKey = document.getElementById(`play-key-btn-${step.round_num}`);
+        if (btnKey) {
+            btnKey.addEventListener('click', () => {
+                const header = btnKey.closest('.step-header').querySelector('.step-header-content');
+                animCtrl.start(header, () => {
+                    // Cleanup Key Schedule
+                    const cNew = document.querySelectorAll('.key-bit-c-new');
+                    const dNew = document.querySelectorAll('.key-bit-d-new');
+                    const kFinal = document.querySelectorAll('.key-final-bit');
+                    cNew.forEach(t => t.style.color = '');
+                    dNew.forEach(t => t.style.color = '');
+                    kFinal.forEach(t => t.style.color = '');
+                });
+
+                animateKeySchedule(step).then(() => {
+                    animCtrl.reset();
+                    btnKey.style.display = 'inline-block';
+                }).catch(e => { if (e !== 'STOPPED') console.error(e); });
+
+                btnKey.style.display = 'none';
+            });
+        }
+
+        // XOR Animation Binding
+        const btnXor = document.getElementById(`play-xor-btn-${step.round_num}`);
+        if (btnXor) {
+            btnXor.addEventListener('click', () => {
+                const header = btnXor.closest('.step-header').querySelector('.step-header-content');
+                animCtrl.start(header, () => {
+                    const container = document.getElementById(`xor-section-${step.round_num}`);
+                    if (container) {
+                        const targets = container.querySelectorAll('.xor-target-res');
+                        targets.forEach(t => t.style.color = '');
+                    }
+                });
+
+                animateXorSection(step).then(() => {
+                    animCtrl.reset();
+                    btnXor.style.display = 'inline-block';
+                }).catch(e => { if (e !== 'STOPPED') console.error(e); });
+
+                btnXor.style.display = 'none';
+            });
+        }
 
         // S-Box Animation Binding
         const btnSbox = document.getElementById(`play-sbox-btn-${step.round_num}`);

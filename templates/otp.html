@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cifrario One Time Pad (OTP)</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='otp_style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="back-link">← Torna alla Home</a>
+            <h1>Cifrario One Time Pad (XOR)</h1>
+            <p>Secrecy perfetta tramite operazione XOR bit a bit.</p>
+        </header>
+
+        <section class="controls">
+            <div class="input-group">
+                <label for="plaintext">Testo in Chiaro:</label>
+                <input type="text" id="plaintext" placeholder="Inserisci il testo" value="HELLO">
+            </div>
+
+            <div class="input-group">
+                <label for="key">Chiave (Lascia vuoto per generare casualmente):</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="key" placeholder="Chiave..." value="">
+                    <button id="genKeyBtn" class="secondary" style="white-space: nowrap;">Genera Chiave</button>
+                </div>
+            </div>
+
+            <button id="encryptBtn">Cifra con XOR</button>
+            <button id="resetBtn" class="secondary">Reset</button>
+        </section>
+
+        <section id="visualization" class="hidden">
+            <div id="otp-container"></div>
+
+            <div id="output-container">
+                <h3>Risultato (Messaggio):</h3>
+                <div id="ciphertext-display"></div>
+            </div>
+        </section>
+    </div>
+
+    <script src="{{ url_for('static', filename='otp_script.js') }}"></script>
+</body>
+
+</html>

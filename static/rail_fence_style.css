@@ -1,0 +1,101 @@
+/* Inherit container/inputs from style.css */
+
+#rail-container {
+    margin: 30px 0;
+    overflow-x: auto;
+    background-color: #222;
+    padding: 20px;
+    border-radius: 8px;
+    position: relative;
+    min-height: 200px;
+}
+
+.rail-row {
+    display: flex;
+    /* Or relative for absolute positioning */
+    position: relative;
+    height: 50px;
+    border-bottom: 1px dashed #444;
+    width: 100%;
+    /* Will expand based on text length */
+}
+
+.rail-row:last-child {
+    border-bottom: none;
+}
+
+/* We might use absolute positioning for cells to get exact zigzag look easily */
+.rail-cell {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    transform: scale(0);
+    /* Start hidden */
+    transition: transform 0.3s, background-color 0.3s;
+    font-family: monospace;
+}
+
+.rail-cell.visible {
+    transform: scale(1);
+}
+
+.rail-cell.highlight {
+    background-color: #28a745;
+    box-shadow: 0 0 10px #28a745;
+    z-index: 10;
+    transform: scale(1.2);
+}
+
+.rail-cell.read {
+    background-color: #555;
+    opacity: 0.8;
+}
+
+#output-container {
+    background: #1a1a1a;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+#ciphertext-display {
+    font-family: monospace;
+    font-size: 1.5em;
+    color: #ffd700;
+    /* Gold */
+    letter-spacing: 2px;
+    min-height: 1.5em;
+}
+
+#log-container {
+    margin-top: 20px;
+    border-top: 1px solid #444;
+    padding-top: 10px;
+}
+
+#log-list {
+    list-style-type: none;
+    padding: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    font-family: monospace;
+    font-size: 0.9em;
+}
+
+#log-list li {
+    padding: 5px;
+    border-bottom: 1px solid #333;
+}
+
+span.chunk {
+    color: #ffd700;
+    font-weight: bold;
+}

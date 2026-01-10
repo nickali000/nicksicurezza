@@ -1,0 +1,78 @@
+/* Vernam Styles */
+
+#vernam-container {
+    margin: 30px 0;
+    overflow-x: auto;
+    display: flex;
+    gap: 15px;
+    padding-bottom: 20px;
+}
+
+.vernam-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #2a2a2a;
+    padding: 10px;
+    border-radius: 8px;
+    min-width: 60px;
+}
+
+.vernam-cell {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    margin: 5px 0;
+    position: relative;
+    background: #333;
+    font-weight: bold;
+    color: #fff;
+    opacity: 0;
+    /* Start hidden */
+}
+
+.vernam-cell.visible {
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+
+.vernam-cell span.char {
+    font-size: 1.4em;
+}
+
+.vernam-cell span.idx {
+    font-size: 0.7em;
+    color: #aaa;
+    position: absolute;
+    bottom: 2px;
+    right: 4px;
+}
+
+.vernam-op {
+    font-size: 1.5em;
+    color: #ff9900;
+    margin: -5px 0;
+}
+
+.vernam-result {
+    background: #007bff;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+}
+
+.math-detail {
+    font-size: 0.8em;
+    color: #00ff99;
+    font-family: monospace;
+    margin: 5px 0;
+}
+
+#ciphertext-display {
+    font-family: monospace;
+    font-size: 1.5em;
+    color: #00ff99;
+    letter-spacing: 2px;
+}

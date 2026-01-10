@@ -4,54 +4,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AES Visualizer</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=3">
-    <!-- Google Fonts for modern look -->
+    <title>Crypto Visualizer Hub</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;700&display=swap"
         rel="stylesheet">
+    <style>
+        .category-section {
+            margin-bottom: 4rem;
+        }
+
+        .category-title {
+            font-size: 1.8rem;
+            color: var(--accent);
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .cipher-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .cipher-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .cipher-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .cipher-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .tag {
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: #333;
+            color: #aaa;
+            margin-top: auto;
+            /* Push to bottom */
+            margin-top: 1rem;
+        }
+    </style>
 </head>
 
 <body>
     <div class="container">
         <header>
-            <h1>AES-128 Visualizer</h1>
-            <p>Inserisci testo e chiave per vedere ogni passaggio dell'algoritmo AES.</p>
-            <p><a href="/des" style="color: var(--accent); text-decoration: none; font-weight: bold;">&rarr; Vai alla
-                    Visualizzazione DES</a></p>
+            <h1>Crypto Visualizer Hub</h1>
+            <p>Esplora algoritmi di cifratura classici e moderni.</p>
         </header>
 
-        <div class="input-section">
-            <div class="input-group">
-                <label for="plaintext">Testo in Chiaro (Plaintext)</label>
-                <input type="text" id="plaintext" placeholder="Es: Hello World" value="Hello World">
+        <!-- Tecniche di Sostituzione -->
+        <section class="category-section">
+            <h2 class="category-title">Tecniche di Sostituzione</h2>
+            <div class="cards-grid">
+                <a href="/caesar" class="cipher-card">
+                    <span class="cipher-name">Cifrario di Cesare</span>
+                    <span class="cipher-desc">Sostituzione semplice tramite shift (scorrimento).</span>
+                    <span class="tag">Classico</span>
+                </a>
+                <a href="/monoalphabetic" class="cipher-card">
+                    <span class="cipher-name">Cifrario Monoalfabetico</span>
+                    <span class="cipher-desc">Sostituzione con alfabeto misto basato su keyword.</span>
+                    <span class="tag">Classico</span>
+                </a>
+                <a href="/playfair" class="cipher-card">
+                    <span class="cipher-name">Playfair</span>
+                    <span class="cipher-desc">Cifratura di digrammi (coppie) su matrice 5x5.</span>
+                    <span class="tag">Digrammi</span>
+                </a>
+                <a href="/hill" class="cipher-card">
+                    <span class="cipher-name">Hill</span>
+                    <span class="cipher-desc">Cifratura algebrica tramite moltiplicazione matriciale.</span>
+                    <span class="tag">Algebrico</span>
+                </a>
+                <a href="/vigenere" class="cipher-card">
+                    <span class="cipher-name">Vigenère</span>
+                    <span class="cipher-desc">Polialfabetico con parola chiave ripetuta.</span>
+                    <span class="tag">Polialfabetico</span>
+                </a>
+                <a href="/vernam" class="cipher-card">
+                    <span class="cipher-name">Vernam</span>
+                    <span class="cipher-desc">Cifratura perfetta se la chiave è casuale (Stream Cipher).</span>
+                    <span class="tag">XOR</span>
+                </a>
+                <a href="/otp" class="cipher-card">
+                    <span class="cipher-name">One Time Pad</span>
+                    <span class="cipher-desc">Versione incondizionatamente sicura di Vernam.</span>
+                    <span class="tag">Sicurezza Perfetta</span>
+                </a>
             </div>
-            <div class="input-group">
-                <label for="key">Chiave (Key)</label>
-                <input type="text" id="key" placeholder="Es: SecretKey123" value="SecretKey123">
-            </div>
-            <button id="encrypt-btn" onclick="runEncryption()">Esegui AES</button>
-        </div>
+        </section>
 
-        <div id="results" class="results-section hidden">
-            <div class="summary">
-                <div class="hex-display">
-                    <h3>Input Hex</h3>
-                    <code id="input-hex"></code>
-                </div>
-                <div class="hex-display">
-                    <h3>Key Hex (First block)</h3>
-                    <code id="key-hex"></code>
-                </div>
+        <!-- Tecniche di Trasposizione -->
+        <section class="category-section">
+            <h2 class="category-title">Tecniche di Trasposizione</h2>
+            <div class="cards-grid">
+                <a href="/rail_fence" class="cipher-card">
+                    <span class="cipher-name">Rail Fence</span>
+                    <span class="cipher-desc">Scrittura a zigzag e lettura per righe.</span>
+                    <span class="tag">Trasposizione</span>
+                </a>
+                <a href="/row_transposition" class="cipher-card">
+                    <span class="cipher-name">Row Transposition</span>
+                    <span class="cipher-desc">Permutazione delle colonne di una griglia.</span>
+                    <span class="tag">Permutazione</span>
+                </a>
             </div>
+        </section>
 
-            <div id="steps-container">
-                <!-- Steps will be injected here -->
+        <!-- Tecniche Ibride / Moderne -->
+        <section class="category-section">
+            <h2 class="category-title">Tecniche Ibride & Moderne</h2>
+            <div class="cards-grid">
+                <a href="/des" class="cipher-card">
+                    <span class="cipher-name">DES</span>
+                    <span class="cipher-desc">Data Encryption Standard (Feistel Network).</span>
+                    <span class="tag">Blocchi (64-bit)</span>
+                </a>
+                <a href="/aes" class="cipher-card">
+                    <span class="cipher-name">AES</span>
+                    <span class="cipher-desc">Advanced Encryption Standard (Rijndael).</span>
+                    <span class="tag">Blocchi (128-bit)</span>
+                </a>
             </div>
-        </div>
+        </section>
+
     </div>
-
-    <script src="{{ url_for('static', filename='script.js') }}?v=3"></script>
 </body>
 
 </html>
