@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSH Visualization</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='ssh_style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <a href="/" class="home-btn"><i class="fas fa-arrow-left"></i> Menu</a>
+
+    <div class="container">
+        <h1>SSH (Secure Shell)</h1>
+        <div class="subtitle">L'Amministratore Remoto Sicuro</div>
+
+        <!-- SECTION 1: LAYER CAKE -->
+        <h2 style="text-align:center;">1. L'Architettura a 3 Strati (Layer Cake)</h2>
+        <p style="text-align:center; color:#8b949e; margin-bottom: 20px;">
+            SSH non è un monolite. È una suite costruita su livelli.
+        </p>
+
+        <div class="layer-cake">
+            <!-- LAYER 3 -->
+            <div class="layer l-conn">
+                <div style="font-size: 1.2em; margin-bottom: 5px;"><i class="fas fa-network-wired"></i> 3. Connection
+                    Protocol (Multiplexing)</div>
+                <div class="layer-desc">
+                    <strong>Cosa fa:</strong> Divide il tunnel cifrato in tanti "canali" logici.<br>
+                    <ul style="text-align: left; display: inline-block; margin: 5px 0 0 0; padding-left: 20px;">
+                        <li>Un canale per la <strong>Shell</strong> (Terminale)</li>
+                        <li>Un canale per trasferire file (<strong>SFTP</strong>)</li>
+                        <li>Un canale per il <strong>Port Forwarding</strong></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- LAYER 2 -->
+            <div class="layer l-auth">
+                <div style="font-size: 1.2em; margin-bottom: 5px;"><i class="fas fa-user-lock"></i> 2. User
+                    Authentication Protocol</div>
+                <div class="layer-desc">
+                    <strong>Cosa fa:</strong> Verifica l'identità dell'<strong>Umano</strong> (Login).<br>
+                    <ul style="text-align: left; display: inline-block; margin: 5px 0 0 0; padding-left: 20px;">
+                        <li>Gira <strong>dentro</strong> il tunnel sicuro (livello 1)</li>
+                        <li>Metodi: Password, Public Key, Host-based</li>
+                        <li><em>La password non viaggia mai in chiaro!</em></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- LAYER 1 -->
+            <div class="layer l-trans">
+                <div style="font-size: 1.2em; margin-bottom: 5px;"><i class="fas fa-shield-alt"></i> 1. Transport Layer
+                    Protocol</div>
+                <div class="layer-desc">
+                    <strong>Cosa fa:</strong> Crea il <strong>Tunnel Cifrato</strong> iniziale.<br>
+                    <ul style="text-align: left; display: inline-block; margin: 5px 0 0 0; padding-left: 20px;">
+                        <li>Negozia chiavi (Diffie-Hellman) e Algoritmi</li>
+                        <li>Autentica il <strong>SERVER</strong> (Host Key) per evitare MitM</li>
+                        <li><em>Nota: Qui l'utente non è ancora loggato.</em></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="layer l-tcp">
+                TCP / IP (Il substrato inaffidabile)
+            </div>
+        </div>
+
+        <!-- SECTION 2: TOFU -->
+        <h2 style="text-align:center; margin-top:60px;">2. Il Modello di Fiducia: TOFU</h2>
+        <p style="text-align:center; color:#8b949e; margin-bottom: 10px;">
+            Trust On First Use: "Mi fido perché è lo stesso dell'ultima volta".
+        </p>
+
+        <div class="terminal-window">
+            <div class="term-prompt"></div>
+            <div id="term-output">
+                <!-- Dynamic Output -->
+            </div>
+        </div>
+
+        <div style="text-align:center; margin-bottom: 50px;">
+            <p id="status-msg" style="color:#8b949e; margin-bottom: 10px;">Stato: Mai connesso</p>
+            <div class="term-controls" style="justify-content: center;">
+                <button class="btn-term btn-yes" onclick="startTofu('yes')">Simula "YES"</button>
+                <button class="btn-term btn-no" onclick="startTofu('no')">Simula "NO"</button>
+                <button class="btn-term" onclick="startTofu('connect')">Riconnetti (Dopo YES)</button>
+                <button class="btn-term" onclick="resetTofu()" style="border-color:#555;">Reset Memoria</button>
+            </div>
+        </div>
+
+        <!-- SECTION 3: PORT FORWARDING -->
+        <h2 style="text-align:center;">3. Port Forwarding (Il "Tunnel")</h2>
+        <p style="text-align:center; color:#8b949e; margin-bottom: 20px;">
+            Bucare i firewall usando SSH come "trasporto sicuro" per altri protocolli (es. MySQL).
+            <br><code>ssh -L 3306:localhost:3306 ...</code>
+        </p>
+
+        <div class="tunnel-scene">
+            <div class="firewall"></div> <!-- The Wall -->
+
+            <!-- The Tunnel Tube -->
+            <div class="ssh-tunnel">
+                <div class="tunnel-label"><i class="fas fa-lock"></i> Tunnel SSH (Porta 22)</div>
+            </div>
+
+            <!-- The Data Packet -->
+            <div id="packet" class="payload-packet">
+                <i class="fas fa-database"></i>
+            </div>
+
+            <!-- Labels -->
+            <div style="position: absolute; left: 10px; bottom: 10px; color: #8b949e;">Client (Tu)</div>
+            <div style="position: absolute; right: 10px; bottom: 10px; color: #8b949e;">Server (MySQL)</div>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 60px;">
+            <button class="btn-term" onclick="runTunnel()" style="font-size: 1em; padding: 10px 20px;">
+                <i class="fas fa-play"></i> Invia Dati nel Tunnel
+            </button>
+        </div>
+
+
+        <!-- SECTION 4: PUBKEY AUTH -->
+        <h2 style="text-align:center;">4. Autenticazione a Chiave Pubblica</h2>
+        <p style="text-align:center; color:#8b949e; margin-bottom: 20px;">
+            Senza password. La chiave privata NON lascia mai il tuo PC.
+        </p>
+
+        <div class="auth-flow">
+            <div class="auth-actor">
+                <div class="key-icon" style="color: #f85149;"><i class="fas fa-key"></i></div>
+                <strong>Alice (Client)</strong><br>
+                <small style="color:#aaa;">Ha Chiave Privata</small>
+            </div>
+
+            <div class="auth-arrow">
+                <div class="msg-bubble">1. Voglio entrare (user: Alice)</div>
+                <div class="arrow-line"></div>
+
+                <div class="msg-bubble" style="margin-top:20px;">3. Decifro la sfida con la Privata</div>
+                <div class="arrow-line arrow-reverse"></div>
+                <div class="msg-bubble" style="margin-top:-10px;">2. Sfida Cifrata con Pubblica</div>
+
+                <div class="arrow-line" style="margin-top:20px;"></div>
+                <div class="msg-bubble" style="margin-top:-10px;">4. Ecco la risposta corretta</div>
+
+            </div>
+
+            <div class="auth-actor">
+                <div class="key-icon" style="color: #58a6ff;"><i class="fas fa-lock-open"></i></div>
+                <strong>Server</strong><br>
+                <small style="color:#aaa;">Ha Chiave Pubblica (authorized_keys)</small>
+            </div>
+        </div>
+
+
+        <div style="text-align: center; margin-top: 50px; margin-bottom: 20px;">
+            <a href="/" style="text-decoration: none;">
+                <button
+                    style="padding: 10px 20px; font-size: 1em; background: #30363d; color: #fff; border: 1px solid #8b949e; border-radius: 6px; cursor: pointer;">
+                    <i class="fas fa-arrow-left"></i> Torna al Menu
+                </button>
+            </a>
+        </div>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='ssh_script.js') }}"></script>
+</body>
+
+</html>

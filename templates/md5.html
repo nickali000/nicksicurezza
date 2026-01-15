@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MD5 - Crypto Visualizer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='hash_style.css') }}">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="home-btn"><i class="fas fa-arrow-left"></i> Menu</a>
+            <h1>MD5 (Message Digest 5)</h1>
+            <p>L'algoritmo storico, veloce ma ormai insicuro.</p>
+        </header>
+
+        <!-- 1. Structure Overview -->
+        <section class="section md5-overview">
+            <h2>1. La Struttura</h2>
+            <div class="cards-grid">
+                <div class="cipher-card">
+                    <span class="cipher-name">Digest</span>
+                    <span class="cipher-desc">128 bit</span>
+                    <span class="tag" style="background: #ef4444; color: white;">Molto Piccolo</span>
+                </div>
+                <div class="cipher-card">
+                    <span class="cipher-name">Blocco</span>
+                    <span class="cipher-desc">512 bit</span>
+                </div>
+                <div class="cipher-card">
+                    <span class="cipher-name">Round</span>
+                    <span class="cipher-desc">4 Round</span>
+                    <span class="tag" style="background: #ef4444; color: white;">Pochi (vs 80 SHA-512)</span>
+                </div>
+            </div>
+            <p style="margin-top: 15px; color: #aaa;">
+                A causa dei soli 4 round, MD5 è <strong>molto veloce</strong>, ma questa velocità è anche la sua
+                debolezza strutturale.
+            </p>
+        </section>
+
+        <!-- 2. Security Vulnerability -->
+        <section class="section md5-vuln" style="margin-top: 3rem; border-left: 5px solid #ef4444; padding-left: 15px;">
+            <h2>2. La Domanda Classica: "Perché MD5 non è più sicuro?"</h2>
+            <div class="step-box" style="background: #1f1f1f;">
+                <h3>Resistenza alle Collisioni Violata</h3>
+                <p>
+                    Oggi, con un PC normale, si possono generare <strong>due file diversi</strong> (es. due PDF con
+                    contenuto diverso)
+                    che producono lo <strong>stesso hash MD5</strong> in pochi secondi.
+                </p>
+                <div class="visual-collision"
+                    style="display: flex; align-items: center; justify-content: center; gap: 20px; margin-top: 20px; text-align: center;">
+                    <div>
+                        <div style="font-size: 2rem;">📄 A</div>
+                        <div style="font-size: 0.8rem; color: #aaa;">Contratto 100€</div>
+                    </div>
+                    <div style="font-size: 1.5rem; color: #ef4444;">≠</div>
+                    <div>
+                        <div style="font-size: 2rem;">📄 B</div>
+                        <div style="font-size: 0.8rem; color: #aaa;">Contratto 9000€</div>
+                    </div>
+                    <div style="font-size: 1.5rem;">→</div>
+                    <div
+                        style="background: #333; padding: 10px; border-radius: 4px; font-family: 'JetBrains Mono'; color: #ef4444;">
+                        Hash MD5 Uguale!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Use Cases -->
+        <section class="section md5-use" style="margin-top: 3rem;">
+            <h2>3. Utilizzo Odierno</h2>
+            <p>Se è rotto, perché si usa ancora?</p>
+            <div class="info-box" style="border-left: 4px solid #f59e0b;">
+                <p><strong>Solo per Checksum (Integrità Accidentale)</strong></p>
+                <p>
+                    Viene usato per verificare se un file scaricato è corrotto (errore di download).
+                    In questo caso non c'è un "attaccante" intelligente, quindi la probabilità di una collisione casuale
+                    è bassissima.
+                </p>
+                <p><strong>MAI USARE PER PASSWORD O FIRME DIGITALI.</strong></p>
+            </div>
+        </section>
+
+        <div style="text-align: center; margin-top: 50px; margin-bottom: 20px;">
+            <a href="/" style="text-decoration: none;">
+                <button
+                    style="padding: 10px 20px; font-size: 1em; background: #30363d; color: #fff; border: 1px solid #8b949e; border-radius: 6px; cursor: pointer;">
+                    <i class="fas fa-arrow-left"></i> Torna al Menu
+                </button>
+            </a>
+        </div>
+
+    </div>
+</body>
+
+</html>

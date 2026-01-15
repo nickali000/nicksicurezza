@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHA-512 - Crypto Visualizer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='hash_style.css') }}">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="home-btn"><i class="fas fa-arrow-left"></i> Menu</a>
+            <h1>SHA-512 Deep Dive</h1>
+            <p>Analisi approfondita dell'algoritmo di hashing a 512 bit.</p>
+        </header>
+
+        <!-- SHA-512 Deep Dive Content -->
+        <section class="section sha512-dive" style="border-left: 5px solid #d946ef;">
+            <h2>Approfondimento: SHA-512 Step-by-Step</h2>
+            <p>Come richiesto per l'esame, ecco i 4 stadi fondamentali di SHA-512.</p>
+
+            <!-- 1. Pre-processing -->
+            <div class="step-box">
+                <h3>1. Pre-elaborazione: Padding e Lunghezza</h3>
+                <p>SHA-512 lavora solo su blocchi da <strong>1024 bit</strong>. Il messaggio va "preparato".</p>
+                <div class="padding-visual">
+                    <span class="block-msg">Messaggio Originale</span>
+                    <span class="block-one">1</span>
+                    <span class="block-zeros">000...000</span>
+                    <span class="block-len">Lunghezza (128 bit)</span>
+                </div>
+                <ul style="margin-top: 10px; font-size: 0.9rem; color: #ccc;">
+                    <li>Aggiungi un bit <strong>1</strong>.</li>
+                    <li>Aggiungi tanti <strong>zeri</strong> fino ad arrivare quasi alla fine.</li>
+                    <li>Negli ultimi <strong>128 bit</strong> scrivi la lunghezza originale del messaggio.</li>
+                </ul>
+            </div>
+
+            <!-- 2. Initialization -->
+            <div class="step-box">
+                <h3>2. Inizializzazione Buffer (IV)</h3>
+                <p>L'algoritmo usa 8 registri da 64-bit ciascuno: <strong>a, b, c, d, e, f, g, h</strong>.</p>
+                <div class="registers-grid">
+                    <div class="reg">a</div>
+                    <div class="reg">b</div>
+                    <div class="reg">c</div>
+                    <div class="reg">d</div>
+                    <div class="reg">e</div>
+                    <div class="reg">f</div>
+                    <div class="reg">g</div>
+                    <div class="reg">h</div>
+                </div>
+                <p class="small-text" style="text-align:center; color:#888; margin-top:5px;">Inizializzati con valori
+                    costanti standard (radici di numeri primi).</p>
+            </div>
+
+            <!-- 3. Block Processing -->
+            <div class="step-box">
+                <h3>3. Elaborazione dei Blocchi</h3>
+                <p>Il messaggio viene processato a fette di <strong>1024 bit</strong>.</p>
+                <p>Ogni blocco attraversa una <strong>Funzione di Compressione</strong> che usa l'output del blocco
+                    precedente e il blocco attuale.</p>
+            </div>
+
+            <!-- 4. Round Logic -->
+            <div class="step-box">
+                <h3>4. La Logica del Singolo "Round"</h3>
+                <p>Ci sono <strong>80 Round</strong> in totale.</p>
+                <div class="round-diagram">
+                    <div class="round-diagram-content" style="line-height: 1.8;">
+                        [Registri a-h] <br>
+                        ⬇️ <br>
+                        <strong>Mescolamento</strong> (&Sigma;, Ch, Maj) + <strong>K<sub>t</sub></strong> (Costante) +
+                        <strong>W<sub>t</sub></strong> (Msg) <br>
+                        ⬇️ <br>
+                        [Nuovi a-h]
+                    </div>
+                </div>
+                <div class="magic-phrase"
+                    style="background: #2a2a2a; padding: 15px; border-left: 4px solid #4ec9b0; margin-top: 15px; font-style: italic; color: #ddd;">
+                    "La struttura è basata sul modello <strong>Merkle-Damgård</strong>.
+                    Alla fine di tutti gli 80 round, <strong>l'output dei registri viene sommato all'input
+                        originale</strong> del blocco per produrre il nuovo stato.
+                    Questo si ripete per tutti i blocchi."
+                </div>
+            </div>
+
+            <!-- Summary Numbers -->
+            <div class="step-box summary-box" style="background: #1e293b; border: 1px solid #3b82f6;">
+                <h3>Memorizza questi Numeri (SHA-512)</h3>
+                <ul class="summary-list">
+                    <li><strong>Dimensione Blocco:</strong> 1024 bit</li>
+                    <li><strong>Dimensione Parola:</strong> 64 bit</li>
+                    <li><strong>Digest (Output):</strong> 512 bit</li>
+                    <li><strong>Numero Round:</strong> 80</li>
+                    <li><strong>Buffer:</strong> 8 registri (a-h)</li>
+                </ul>
+            </div>
+        </section>
+
+        <div style="text-align: center; margin-top: 50px; margin-bottom: 20px;">
+            <a href="/" style="text-decoration: none;">
+                <button
+                    style="padding: 10px 20px; font-size: 1em; background: #30363d; color: #fff; border: 1px solid #8b949e; border-radius: 6px; cursor: pointer;">
+                    <i class="fas fa-arrow-left"></i> Torna al Menu
+                </button>
+            </a>
+        </div>
+    </div>
+
+    </div>
+</body>
+
+</html>

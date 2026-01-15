@@ -20,6 +20,20 @@ body {
     line-height: 1.6;
 }
 
+.home-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: 0.9em;
+    z-index: 100;
+}
+
+.home-btn:hover {
+    color: var(--text-primary);
+}
+
 .container {
     max-width: 1200px;
     /* Wider for DES side-by-side */

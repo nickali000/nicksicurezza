@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PGP Visualization</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='pgp_style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <a href="/" class="home-btn"><i class="fas fa-arrow-left"></i> Menu</a>
+
+    <div class="container">
+        <h1>PGP (Pretty Good Privacy)</h1>
+        <div class="subtitle">Sicurezza Email Ibrida & Decentralizzata</div>
+
+        <!-- SECTION 1: TOOLBOX -->
+        <h2 style="text-align:center;">1. La Scatola degli Attrezzi (5 Servizi)</h2>
+        <p style="text-align:center; color:#8b949e; margin-bottom: 20px;">
+            PGP non è solo cifratura. Offre 5 servizi distinti "all-in-one".
+        </p>
+
+        <div class="toolbox-grid">
+            <div class="tool-card" style="border-top: 3px solid var(--pgp-auth);">
+                <i class="fas fa-file-signature tool-icon" style="color:var(--pgp-auth);"></i>
+                <strong>Autenticazione</strong>
+                <div style="font-size:0.8em; margin-top:5px;">Firma Digitale<br>(Hash + Priv Key)</div>
+            </div>
+            <div class="tool-card" style="border-top: 3px solid var(--pgp-conf);">
+                <i class="fas fa-user-secret tool-icon" style="color:var(--pgp-conf);"></i>
+                <strong>Confidenzialità</strong>
+                <div style="font-size:0.8em; margin-top:5px;">Cifratura Simmetrica<br>+ Session Key</div>
+            </div>
+            <div class="tool-card" style="border-top: 3px solid var(--pgp-zip);">
+                <i class="fas fa-file-archive tool-icon" style="color:var(--pgp-zip);"></i>
+                <strong>Compressione</strong>
+                <div style="font-size:0.8em; margin-top:5px;">Algoritmo ZIP<br>(Prima di cifrare!)</div>
+            </div>
+            <div class="tool-card" style="border-top: 3px solid var(--pgp-radix);">
+                <i class="fas fa-envelope-open-text tool-icon" style="color:var(--pgp-radix);"></i>
+                <strong>Compatibilità Email</strong>
+                <div style="font-size:0.8em; margin-top:5px;">Radix-64 (Base64)<br>Binario -> ASCII</div>
+            </div>
+            <div class="tool-card" style="border-top: 3px solid #ccc;">
+                <i class="fas fa-cut tool-icon" style="color:#ccc;"></i>
+                <strong>Segmentazione</strong>
+                <div style="font-size:0.8em; margin-top:5px;">Divide messaggi<br>troppo grandi.</div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: THE FLOW -->
+        <h2 style="text-align:center; margin-top:60px;">2. Il Flusso Operativo (Alice -> Bob)</h2>
+        <p style="text-align:center; color:#8b949e; margin-bottom: 20px;">
+            Come una "Cipolla": il messaggio viene avvolto in strati successivi.
+        </p>
+
+        <div class="flow-container">
+            <div style="margin-bottom: 20px; font-weight: bold; color:#aaa;">Lato MITTENTE (Alice)</div>
+
+            <div style="height: 100px; display: flex; align-items: center; justify-content: center;">
+                <div id="msg-box" class="message-box">Messaggio</div>
+            </div>
+
+            <div id="step-label" class="step-label">0. Testo in Chiaro</div>
+
+            <div class="flow-controls">
+                <button onclick="prevStep()" class="btn-control"><i class="fas fa-backward"></i> Indietro</button>
+                <button onclick="nextStep()" class="btn-control"><i class="fas fa-forward"></i> Avanti</button>
+                <button onclick="resetFlow()" class="btn-control"><i class="fas fa-undo"></i> Reset</button>
+            </div>
+        </div>
+
+        <!-- SECTION 3: WEB OF TRUST -->
+        <h2 style="text-align:center; margin-top:60px;">3. Modelli di Fiducia (X.509 vs PGP)</h2>
+        <p style="text-align:center; color:#8b949e; margin-bottom: 20px;">
+            La differenza filosofica fondamentale.
+        </p>
+
+        <div class="trust-comparison">
+            <!-- X.509 -->
+            <div class="trust-model">
+                <h3 style="color:var(--pgp-conf);">X.509 (Gerarchico)</h3>
+                <div class="trust-diagram">
+                    <i class="fas fa-landmark"
+                        style="font-size:3em; color:var(--pgp-conf); position:absolute; top:10px;"></i>
+                    <i class="fas fa-user"
+                        style="font-size:1.5em; color:#aaa; position:absolute; bottom:20px; left:40px;"></i>
+                    <i class="fas fa-user"
+                        style="font-size:1.5em; color:#aaa; position:absolute; bottom:20px; right:40px;"></i>
+                    <!-- Simple CSS lines -->
+                    <div
+                        style="position:absolute; width:2px; height:50px; background:#555; top:50px; left:95px; transform:rotate(20deg);">
+                    </div>
+                    <div
+                        style="position:absolute; width:2px; height:50px; background:#555; top:50px; right:95px; transform:rotate(-20deg);">
+                    </div>
+                </div>
+                <p><strong>Dittatura.</strong><br>Tutti si fidano della CA (Autorità Centrale).</p>
+            </div>
+
+            <!-- PGP -->
+            <div class="trust-model">
+                <h3 style="color:var(--accent-color);">PGP (Web of Trust)</h3>
+                <div class="trust-diagram">
+                    <div class="web-node" style="top:20px; left:50%;"></div>
+                    <div class="web-node" style="bottom:20px; left:30%;"></div>
+                    <div class="web-node" style="bottom:20px; right:30%;"></div>
+                    <div class="web-node" style="top:60%; left:10%;"></div>
+                    <div class="web-node" style="top:60%; right:10%;"></div>
+
+                    <!-- Web lines -->
+                    <div class="web-line" style="width:100px; top:35%; left:35%; transform:rotate(45deg);"></div>
+                    <div class="web-line" style="width:100px; top:35%; right:35%; transform:rotate(-45deg);"></div>
+                    <div class="web-line" style="width:120px; bottom:25%; left:32%;"></div>
+                </div>
+                <p><strong>Democrazia.</strong><br>Io mi fido dei miei amici, e un po' degli amici dei miei amici.</p>
+            </div>
+        </div>
+
+        <div
+            style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; margin-top: 30px; font-style: italic; text-align: center; color: #ccc;">
+            "A differenza di S/MIME che è integrato e centralizzato, PGP richiede che gli utenti gestiscano
+            personalmente il proprio anello di fiducia (Key Ring), rendendolo ideale contro la sorveglianza ma complesso
+            per le masse."
+        </div>
+
+        <div style="text-align: center; margin-top: 50px; margin-bottom: 20px;">
+            <a href="/" style="text-decoration: none;">
+                <button
+                    style="padding: 10px 20px; font-size: 1em; background: #30363d; color: #fff; border: 1px solid #8b949e; border-radius: 6px; cursor: pointer;">
+                    <i class="fas fa-arrow-left"></i> Torna al Menu
+                </button>
+            </a>
+        </div>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='pgp_script.js') }}"></script>
+</body>
+
+</html>

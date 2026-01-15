@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizzazione ElGamal</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/static/elgamal_style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="home-btn"><i class="fas fa-arrow-left"></i> Menu</a>
+            <h1>ElGamal Encryption</h1>
+            <p>Cifratura a chiave pubblica basata sul Logaritmo Discreto.</p>
+        </header>
+
+        <section class="section key-generation">
+            <h2>1. Generazione delle Chiavi</h2>
+            <div class="input-group">
+                <label for="p">Numero Primo p (Modulo)</label>
+                <input type="number" id="p" value="107" placeholder="Inserisci un numero primo">
+            </div>
+            <div class="input-group">
+                <label for="g">Generatore g</label>
+                <input type="number" id="g" value="2" placeholder="Inserisci un generatore">
+            </div>
+            <button onclick="generateKeys()">Genera Chiavi</button>
+
+            <div id="key-results" class="results-box hidden">
+                <div class="key-display">
+                    <h3>Chiave Privata (x)</h3>
+                    <code id="private-key-display"></code>
+                </div>
+                <div class="key-display">
+                    <h3>Chiave Pubblica (p, g, y)</h3>
+                    <code id="public-key-display"></code>
+                </div>
+
+                <h3>Passaggi Generazione</h3>
+                <div id="keygen-steps" class="steps-container"></div>
+            </div>
+        </section>
+
+        <section class="section encryption">
+            <h2>2. Cifratura</h2>
+            <div class="input-group">
+                <label for="plaintext">Messaggio</label>
+                <input type="text" id="plaintext" value="ABC" placeholder="Inserisci il messaggio">
+            </div>
+            <button onclick="encryptMessage()">Cifra Messaggio</button>
+
+            <div id="encryption-results" class="results-box hidden">
+                <h3>Passaggi di Cifratura</h3>
+                <div id="encryption-steps" class="steps-container"></div>
+                <div class="final-output">
+                    <h4>Messaggio Cifrato (Coppie a, b):</h4>
+                    <code id="ciphertext-display"></code>
+                </div>
+            </div>
+        </section>
+
+        <section class="section decryption">
+            <h2>3. Decifratura</h2>
+            <p>Decifratura utilizzando la chiave privata x.</p>
+            <button onclick="decryptMessage()">Decifra Messaggio</button>
+
+            <div id="decryption-results" class="results-box hidden">
+                <h3>Passaggi di Decifratura</h3>
+                <div id="decryption-steps" class="steps-container"></div>
+                <div class="final-output">
+                    <h4>Testo Decifrato:</h4>
+                    <code id="decrypted-text-display"></code>
+                </div>
+            </div>
+        </section>
+
+        <div style="text-align: center; margin-top: 50px; margin-bottom: 20px;">
+            <a href="/" style="text-decoration: none;">
+                <button
+                    style="padding: 10px 20px; font-size: 1em; background: #30363d; color: #fff; border: 1px solid #8b949e; border-radius: 6px; cursor: pointer;">
+                    <i class="fas fa-arrow-left"></i> Torna al Menu
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <script src="/static/elgamal_script.js"></script>
+</body>
+
+</html>

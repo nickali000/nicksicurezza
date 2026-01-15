@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firewall & Architecture</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='firewall_style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <a href="/" class="home-btn"><i class="fas fa-arrow-left"></i> Menu</a>
+
+    <div class="container">
+        <h1>Architettura di Difesa</h1>
+        <div class="subtitle">Firewall, DMZ & Security Policies</div>
+
+        <!-- SECTION 1: THE 3 TYPES -->
+        <h2 style="text-align:center;">1. L'Evoluzione (I 3 Tipi)</h2>
+        <div class="types-grid">
+            <!-- Type 1 -->
+            <div class="type-card" style="border-top: 3px solid var(--fw-l3);">
+                <div class="type-badge l3-color">L3 - Network</div>
+                <i class="fas fa-filter type-icon l3-color"></i>
+                <h3>Packet Filter</h3>
+                <p><em>"Il Portiere Stupido"</em></p>
+                <div style="text-align: left; margin-top: 15px; font-size: 0.9em; color: #aaa;">
+                    <ul>
+                        <li><strong>Stateless:</strong> Non ricorda nulla.</li>
+                        <li>Guarda solo IP & Porta.</li>
+                        <li>Vulnerabile a IP Spoofing.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Type 2 -->
+            <div class="type-card" style="border-top: 3px solid var(--fw-l4);">
+                <div class="type-badge l4-color">L4 - Transport</div>
+                <i class="fas fa-memory type-icon l4-color"></i>
+                <h3>Stateful Inspection</h3>
+                <p><em>"Il Portiere con Memoria"</em></p>
+                <div style="text-align: left; margin-top: 15px; font-size: 0.9em; color: #aaa;">
+                    <ul>
+                        <li><strong>State Table:</strong> Ricorda le connessioni aperte.</li>
+                        <li>Blocca traffico non richiesto.</li>
+                        <li>Standard moderno minimo.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Type 3 -->
+            <div class="type-card" style="border-top: 3px solid var(--fw-l7);">
+                <div class="type-badge l7-color">L7 - App</div>
+                <i class="fas fa-user-secret type-icon l7-color"></i>
+                <h3>Application Proxy</h3>
+                <p><em>"L'Intermediario Paranoico"</em></p>
+                <div style="text-align: left; margin-top: 15px; font-size: 0.9em; color: #aaa;">
+                    <ul>
+                        <li>Spezza la connessione in due.</li>
+                        <li>Ispeziona il <strong>Contenuto</strong> (Virus, Comandi).</li>
+                        <li>Più lento, ma più sicuro.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: DMZ ARCHITECTURE -->
+        <h2 style="text-align:center; margin-top: 60px;">2. La DMZ (Il "Panino")</h2>
+        <p style="text-align:center; color:#8b949e; margin-bottom: 20px;">
+            Come esporre servizi pubblici senza rischiare i dati interni.
+        </p>
+
+        <div class="dmz-container">
+            <!-- INTERNET -->
+            <div class="zone-box zone-internet">
+                <span class="zone-label" style="color:var(--zone-internet);">Internet (Insecure)</span>
+                <i class="fas fa-globe" style="font-size:2em; color:var(--zone-internet);"></i>
+            </div>
+
+            <!-- EXT FW -->
+            <div class="fw-bar">
+                <i class="fas fa-brick-wall" style="margin-right:10px;"></i> Firewall Esterno
+            </div>
+            <div style="font-size:0.8em; color:#aaa; margin-top:-10px; margin-bottom:5px;">Apre solo Porta 80/443</div>
+
+            <!-- DMZ -->
+            <div class="zone-box zone-dmz">
+                <span class="zone-label" style="color:var(--zone-dmz);">DMZ (Zona Cuscinetto)</span>
+                <div style="display:flex; justify-content:center;">
+                    <div class="server-icon">
+                        <i class="fas fa-server"></i>
+                        <div>Web Server</div>
+                    </div>
+                    <div class="server-icon">
+                        <i class="fas fa-envelope"></i>
+                        <div>Mail Relay</div>
+                    </div>
+                    <div class="server-icon">
+                        <i class="fas fa-sitemap"></i>
+                        <div>DNS Pub</div>
+                    </div>
+                </div>
+                <p style="margin:5px 0 0 0; font-size:0.8em; color:#d29922;"><em>"Contenimento: Se bucano qui, non
+                        entrano in LAN."</em></p>
+            </div>
+
+            <!-- INT FW -->
+            <div class="fw-bar">
+                <i class="fas fa-brick-wall" style="margin-right:10px;"></i> Firewall Interno
+            </div>
+            <div style="font-size:0.8em; color:#aaa; margin-top:-10px; margin-bottom:5px;">Blocca QUASI tutto (Molto
+                Restrittivo)</div>
+
+            <!-- LAN -->
+            <div class="zone-box zone-lan">
+                <span class="zone-label" style="color:var(--zone-lan);">LAN Interna (Secure)</span>
+                <div style="display:flex; justify-content:center;">
+                    <div class="server-icon">
+                        <i class="fas fa-desktop"></i>
+                        <div>PC Dipendenti</div>
+                    </div>
+                    <div class="server-icon">
+                        <i class="fas fa-database"></i>
+                        <div>DB Sensibile</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: POLICIES -->
+        <h2 style="text-align:center; margin-top: 60px;">3. Le Politiche (Filosofia)</h2>
+
+        <div class="policies-container">
+            <div id="policy-allow" class="policy-box" onclick="togglePolicy('allow')">
+                <i class="fas fa-door-open policy-icon" style="color:#da3633;"></i>
+                <h3>Default Allow</h3>
+                <p>"Tutto permesso tranne..."</p>
+            </div>
+
+            <div id="policy-deny" class="policy-box" onclick="togglePolicy('deny')">
+                <i class="fas fa-door-closed policy-icon" style="color:#2ea043;"></i>
+                <h3>Default Deny</h3>
+                <p>"Tutto vietato tranne..."</p>
+            </div>
+        </div>
+
+        <div id="policy-desc"
+            style="background:#21262d; border:1px solid #30363d; padding:15px; margin-top:20px; text-align:center; border-radius:6px;">
+            <!-- Content will be injected by JS -->
+        </div>
+
+        <div style="text-align: center; margin-top: 50px; margin-bottom: 20px;">
+            <a href="/" style="text-decoration: none;">
+                <button
+                    style="padding: 10px 20px; font-size: 1em; background: #30363d; color: #fff; border: 1px solid #8b949e; border-radius: 6px; cursor: pointer;">
+                    <i class="fas fa-arrow-left"></i> Torna al Menu
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='firewall_script.js') }}"></script>
+</body>
+
+</html>

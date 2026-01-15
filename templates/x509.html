@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificato X.509</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <!-- Bump version to v=3 to force reload -->
+    <link rel="stylesheet" href="/static/x509_style.css?v=3">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="home-btn"><i class="fas fa-arrow-left"></i> Menu</a>
+            <h1>Certificato X.509</h1>
+            <p>La "Carta d'Identità Digitale" (Standard X.509 v3)</p>
+        </header>
+
+        <!-- 1. Anatomy Section -->
+        <section class="section anatomy">
+            <h2>1. Struttura del Certificato</h2>
+
+            <!-- visual representation as a "Packet/Document" object -->
+            <div class="cert-packet">
+
+                <!-- ZONE A: HEADER -->
+                <div class="packet-section header-section">
+                    <div class="section-badge">A. INTESTAZIONE</div>
+
+                    <div class="field-box">
+                        <div class="field-label">Versione (Version)</div>
+                        <div class="field-content">3 (v3)</div>
+                        <div class="field-description">Standard X.509 versione 3 (supporta estensioni).</div>
+                    </div>
+
+                    <div class="field-box">
+                        <div class="field-label">Numero Seriale (Serial Number)</div>
+                        <div class="field-content mono">5F:1B:3C:99:A2:00:4E</div>
+                        <div class="field-description">Identificativo <strong>univoco</strong> assegnato dalla CA. Usato
+                            per la <strong>Revoca</strong> (CRL).</div>
+                    </div>
+
+                    <div class="field-box">
+                        <div class="field-label">Algoritmo Firma (Signature Algo)</div>
+                        <div class="field-content">sha256WithRSAEncryption</div>
+                        <div class="field-description">L'algoritmo usato dalla CA per firmare questo certificato.</div>
+                    </div>
+                </div>
+
+                <!-- ZONE B: BODY -->
+                <div class="packet-section body-section">
+                    <div class="section-badge">B. DATI (IL CUORE)</div>
+
+                    <div class="field-box">
+                        <div class="field-label">Emittente (Issuer)</div>
+                        <div class="field-content">DigiCert Global Root CA</div>
+                        <div class="field-description">L'Autorità (CA) che garantisce questo certificato.</div>
+                    </div>
+
+                    <div class="field-box">
+                        <div class="field-label">Validità (Validity)</div>
+                        <div class="field-content">
+                            <div>Dal: 2024-01-01</div>
+                            <div>Al: 2025-01-01</div>
+                        </div>
+                        <div class="field-description">Scadenza necessaria per sicurezza (Crypto Agility).</div>
+                    </div>
+
+                    <div class="field-box">
+                        <div class="field-label">Soggetto (Subject)</div>
+                        <div class="field-content"><strong>nicksicurezza.it</strong> (Nicola Alì)</div>
+                        <div class="field-description">Il proprietario dell'identità.</div>
+                    </div>
+
+                    <!-- PUBLIC KEY INFO -->
+                    <div class="field-box highlight-box">
+                        <div class="field-label" style="color: #2563eb;">🔑 Chiave Pubblica (Subject Public Key Info)
+                        </div>
+                        <div class="field-content">
+                            <div style="font-size: 0.9em; color: #555;">RSA (2048 bit)</div>
+                            <div class="mono" style="font-size: 0.8em; word-break: break-all;">30 82 01 0a 02 82 01 01
+                                00 b5...</div>
+                        </div>
+                        <div class="field-description" style="color: #2563eb; font-weight: bold;">
+                            Lo SCOPO del certificato è legare questa chiave al Soggetto!
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ZONE C: SEAL -->
+                <div class="packet-section seal-section">
+                    <div class="section-badge">C. SIGILLO (FIRMA)</div>
+
+                    <div class="field-box signature-container">
+                        <div class="field-label" style="color: #ef4444;">✒️ Firma della CA (Signature)</div>
+                        <div class="field-content mono" style="color: #991b1b; font-size: 0.8em;">8a 2f 1c 4d 5e...
+                        </div>
+                        <div class="field-description">
+                            Hash(A + B) cifrato con la <strong>Chiave PRIVATA della CA</strong>. Garantisce Autenticità
+                            e Integrità.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="exam-alert">
+                <h3>⚠️ NOTA PER L'ESAME</h3>
+                <p><strong>D: Dov'è la chiave privata dell'utente?</strong></p>
+                <p><strong>R: NON C'È!</strong> Il certificato contiene SOLO la Chiave Pubblica. La privata non esce mai
+                    dal PC del proprietario.</p>
+            </div>
+        </section>
+
+        <!-- 2. Chain of Trust -->
+        <section class="section chain">
+            <h2>2. Chain of Trust (Gerarchia di Fiducia)</h2>
+            <div class="chain-vis">
+                <!-- Root -->
+                <div class="chain-node root-node">
+                    <div class="node-icon">🌳</div>
+                    <div class="node-title">Root CA</div>
+                    <div class="node-desc">Si autocertifica.</div>
+                </div>
+                <div class="chain-arrow">⬇️ Firma</div>
+                <!-- Intermediate -->
+                <div class="chain-node inter-node">
+                    <div class="node-icon">🏢</div>
+                    <div class="node-title">Intermediate CA</div>
+                    <div class="node-desc">Delegata dalla Root.</div>
+                </div>
+                <div class="chain-arrow">⬇️ Firma</div>
+                <!-- End Entity -->
+                <div class="chain-node end-node">
+                    <div class="node-icon">👤</div>
+                    <div class="node-title">End Entity</div>
+                    <div class="node-desc">Certificato Finale.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Revocation -->
+        <section class="section revocation">
+            <h2>3. Revoca (Controllo Validità)</h2>
+            <div class="revoc-grid">
+                <div class="revoc-card">
+                    <h3>📜 CRL</h3>
+                    <p><strong>Certificate Revocation List</strong></p>
+                    <p>Una "Lista Nera" file firmato dalla CA con i serial number revocati.</p>
+                </div>
+                <div class="revoc-card">
+                    <h3>⚡ OCSP</h3>
+                    <p><strong>Online Certificate Status Protocol</strong></p>
+                    <p>Interrogazione diretta alla CA in tempo reale.</p>
+                </div>
+            </div>
+        </section>
+        </section>
+
+        <div style="text-align: center; margin-top: 50px; margin-bottom: 20px;">
+            <a href="/" style="text-decoration: none;">
+                <button
+                    style="padding: 10px 20px; font-size: 1em; background: #30363d; color: #fff; border: 1px solid #8b949e; border-radius: 6px; cursor: pointer;">
+                    <i class="fas fa-arrow-left"></i> Torna al Menu
+                </button>
+            </a>
+        </div>
+    </div>
+</body>
+
+</html>

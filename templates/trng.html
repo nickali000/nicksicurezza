@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizzazione TRNG</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/static/trng_style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="home-btn"><i class="fas fa-arrow-left"></i> Menu</a>
+            <h1>TRNG: True Random Number Generator</h1>
+            <p>Generatori basati su fenomeni fisici imprevedibili (Entropia).</p>
+        </header>
+
+        <!-- System Source -->
+        <section class="section">
+            <h2>1. Sorgente di Sistema (OS Entropy)</h2>
+            <div class="theory-box">
+                <p>La maggior parte dei sistemi operativi raccoglie entropia da interrupt hardware, timing della
+                    tastiera, attività del disco, ecc.</p>
+                <div class="code-block">/dev/urandom (Linux/Unix)</div>
+            </div>
+            <button onclick="getSystemEntropy()">Ottieni 16 Byte Random da OS</button>
+            <div id="system-result" class="result-box hidden">
+                <code id="system-bytes"></code>
+                <div class="entropy-source" id="system-source"></div>
+            </div>
+        </section>
+
+        <!-- User Interaction Source -->
+        <section class="section interactive">
+            <h2>2. Raccolta Entropia Utente (Simulazione)</h2>
+            <div class="theory-box">
+                <p>Simuliamo la creazione di un "Pool di Entropia" raccogliendo eventi fisici umani: muovi il mouse
+                    nell'area sottostante.</p>
+            </div>
+
+            <div class="entropy-collector-container">
+                <div id="entropy-area" class="entropy-area">
+                    <span class="instruction">Muovi il mouse qui per generare caos!</span>
+                    <canvas id="noiseCanvas"></canvas>
+                </div>
+                <div class="progress-bar-container">
+                    <div id="entropy-progress" class="progress-bar"></div>
+                </div>
+                <span id="entropy-percent">0% Entropia</span>
+            </div>
+
+            <button id="mix-btn" disabled onclick="mixEntropy()">Mixa Entropia e Genera Chiave</button>
+
+            <div id="user-result" class="result-box hidden">
+                <h3>Risultato (Hash del Pool)</h3>
+                <code id="user-hash"></code>
+                <p>Eventi raccolti: <span id="event-count"></span></p>
+                <p class="tiny-detail">Raw Data Sample: <span id="raw-sample"></span></p>
+            </div>
+        </section>
+
+        <div style="text-align: center; margin-top: 50px; margin-bottom: 20px;">
+            <a href="/" style="text-decoration: none;">
+                <button
+                    style="padding: 10px 20px; font-size: 1em; background: #30363d; color: #fff; border: 1px solid #8b949e; border-radius: 6px; cursor: pointer;">
+                    <i class="fas fa-arrow-left"></i> Torna al Menu
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <script src="/static/trng_script.js"></script>
+</body>
+
+</html>

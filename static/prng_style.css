@@ -1,0 +1,214 @@
+:root {
+    --bg-color: #0f172a;
+    --card-bg: #1e293b;
+    --input-bg: #334155;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --accent-color: #f59e0b;
+    /* Amber */
+    --accent-hover: #d97706;
+    --border-color: #475569;
+    --code-font: 'JetBrains Mono', monospace;
+    --body-font: 'Inter', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: var(--body-font);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.home-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: 0.9em;
+    z-index: 100;
+}
+
+.home-btn:hover {
+    color: var(--text-primary);
+}
+
+.container {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+header {
+    text-align: center;
+}
+
+h1 {
+    color: var(--accent-color);
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.section {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    border: 1px solid var(--border-color);
+}
+
+h2 {
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+.theory-box {
+    background: rgba(245, 158, 11, 0.1);
+    border-left: 4px solid var(--accent-color);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+}
+
+.formula-block {
+    font-family: var(--code-font);
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.8rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    margin: 1rem 0;
+    font-size: 1.1rem;
+    color: #e2e8f0;
+}
+
+/* Controls */
+.controls-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: var(--input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    color: white;
+    font-family: var(--code-font);
+}
+
+.hint {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    display: block;
+    margin-top: 0.2rem;
+}
+
+button {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 1rem;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+button:hover {
+    background-color: var(--accent-hover);
+}
+
+.presets {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.preset-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    width: auto;
+    padding: 0.4rem 0.8rem;
+    margin: 0;
+    font-size: 0.85rem;
+}
+
+.preset-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+}
+
+.hidden {
+    display: none;
+}
+
+.graph-container {
+    background: rgba(255, 255, 255, 0.02);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+    height: 400px;
+}
+
+code {
+    font-family: var(--code-font);
+    word-break: break-all;
+    color: #e2e8f0;
+}
+
+.step-item {
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-family: var(--code-font);
+    font-size: 0.85rem;
+    border-left: 3px solid var(--accent-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.step-formula {
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.step-res {
+    font-weight: bold;
+    color: var(--text-primary);
+}
+
+.cycle-detected {
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+}

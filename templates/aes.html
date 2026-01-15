@@ -15,7 +15,7 @@
 <body>
     <div class="container">
         <header>
-            <a href="/" class="back-link">← Torna alla Home</a>
+            <a href="/" class="home-btn"><i class="fas fa-arrow-left"></i> Menu</a>
             <h1>AES-128 Visualizer</h1>
             <p>Inserisci testo e chiave per vedere ogni passaggio dell'algoritmo AES.</p>
         </header>
@@ -48,6 +48,16 @@
                 <!-- Steps will be injected here -->
             </div>
         </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 50px; margin-bottom: 20px;">
+        <a href="/" style="text-decoration: none;">
+            <button
+                style="padding: 10px 20px; font-size: 1em; background: #30363d; color: #fff; border: 1px solid #8b949e; border-radius: 6px; cursor: pointer;">
+                <i class="fas fa-arrow-left"></i> Torna al Menu
+            </button>
+        </a>
+    </div>
     </div>
 
     <script src="{{ url_for('static', filename='script.js') }}?v=3"></script>

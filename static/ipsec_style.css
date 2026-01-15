@@ -1,0 +1,831 @@
+:root {
+    --bg-color: #0f172a;
+    --card-bg: #1e293b;
+    --input-bg: #334155;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --accent-color: #3b82f6;
+    /* Blue for IPsec generic */
+
+    --color-ip: #10b981;
+    /* Green */
+    --color-new-ip: #059669;
+    /* Darker Green */
+    --color-ah: #ef4444;
+    /* Red for Auth */
+    --color-esp: #3b82f6;
+    /* Blue for Encr */
+    --color-payload: #e2e8f0;
+
+    --border-color: #475569;
+    --code-font: 'JetBrains Mono', monospace;
+    --body-font: 'Inter', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: var(--body-font);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.container {
+    width: 100%;
+    max-width: 1000px;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+header {
+    text-align: center;
+}
+
+h1 {
+    color: #60a5fa;
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.home-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    text-decoration: none;
+    color: #94a3b8;
+    font-size: 0.9em;
+    z-index: 100;
+}
+
+.home-btn:hover {
+    color: #fff;
+}
+
+.section {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    border: 1px solid var(--border-color);
+}
+
+h2 {
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+/* Toggles */
+.matrix-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .matrix-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.toggle-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.btn-toggle {
+    display: block;
+    background: var(--input-bg);
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.2s;
+    text-align: center;
+    font-weight: 600;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+input[type="radio"]:checked+.btn-toggle {
+    background: rgba(59, 130, 246, 0.2);
+    border-color: var(--accent-color);
+    color: var(--text-primary);
+}
+
+.scenario-box {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border-left: 4px solid var(--accent-color);
+    font-size: 0.95rem;
+}
+
+/* SA Fields Styling */
+.sa-fields-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.sa-field-card {
+    background: #2a2a2a;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid #444;
+    text-align: center;
+}
+
+.sa-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.sa-field-card h4 {
+    margin: 0.5rem 0;
+    color: #4ec9b0;
+}
+
+/* Protocol Comparison Styling */
+.protocol-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+    .protocol-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.protocol-card {
+    background: #2a2a2a;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #444;
+    display: flex;
+    flex-direction: column;
+}
+
+.ah-card {
+    border-top: 4px solid #4ec9b0;
+    /* Use a distinct color for AH */
+}
+
+.esp-card {
+    border-top: 4px solid #ce9178;
+    /* Use a distinct color for ESP */
+}
+
+.card-header {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1.5rem;
+    text-align: center;
+    border-bottom: 1px solid #444;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #fff;
+}
+
+.card-header .subtitle {
+    display: block;
+    margin-top: 0.5rem;
+    color: #aaa;
+    font-size: 0.9rem;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.card-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    flex-grow: 1;
+    /* Ensure equal height visual feel */
+}
+
+.card-body ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.card-body li {
+    margin-bottom: 10px;
+    padding-left: 20px;
+    position: relative;
+}
+
+.card-body li::before {
+    content: "•";
+    color: #4ec9b0;
+    position: absolute;
+    left: 0;
+}
+
+.feature-box {
+    background: rgba(78, 201, 176, 0.1);
+    border-left: 3px solid #4ec9b0;
+    padding: 1rem;
+    border-radius: 0 4px 4px 0;
+    margin: 1rem 0;
+}
+
+.feature-box h4 {
+    margin: 0 0 0.5rem 0;
+    color: #4ec9b0;
+    font-size: 1rem;
+}
+
+.feature-box p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #ddd;
+}
+
+.alert-warning {
+    background: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
+    padding: 0.75rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    text-align: center;
+    border: 1px solid rgba(255, 193, 7, 0.2);
+}
+
+.alert-success {
+    background: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+    padding: 0.75rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    text-align: center;
+    border: 1px solid rgba(40, 167, 69, 0.2);
+}
+
+/* Static Packet Visualization */
+.structure-vis {
+    margin-top: 2rem;
+}
+
+.vis-column {
+    text-align: center;
+    padding: 1rem;
+    background: #2a2a2a;
+    border-radius: 12px;
+    border: 1px solid #444;
+}
+
+.vis-desc {
+    font-size: 0.9rem;
+    color: #bbb;
+    margin-bottom: 1.5rem;
+    min-height: 3rem;
+}
+
+.static-packet-container {
+    display: flex;
+    justify-content: center;
+    gap: 2px;
+    margin-bottom: 0.5rem;
+    flex-wrap: wrap;
+    /* Allow wrapping on small screens */
+}
+
+/* Reusing .block styles but ensuring specific look */
+.static-packet-container .block {
+    padding: 10px 15px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.85rem;
+    color: #1e1e1e;
+    min-width: fit-content;
+}
+
+.header-ip {
+    background: #ffd700;
+}
+
+/* Gold */
+.header-auth {
+    background: #4ec9b0;
+}
+
+/* Teal (AH) */
+.header-transport {
+    background: #9cdcfe;
+}
+
+/* Blue */
+.payload {
+    background: #ce9178;
+}
+
+/* Orange */
+.header-esp {
+    background: #ce9178;
+}
+
+/* Orange (ESP matches payload tone generally) */
+.trailer-esp {
+    background: #ce9178;
+    opacity: 0.8;
+}
+
+.auth-esp {
+    background: #4ec9b0;
+    opacity: 0.8;
+}
+
+.encrypted {
+    background: repeating-linear-gradient(45deg,
+            #ce9178,
+            #ce9178 10px,
+            #b87b64 10px,
+            #b87b64 20px);
+    color: #fff !important;
+    text-shadow: 1px 1px 2px black;
+}
+
+/* Brackets/Labels */
+.auth-bracket,
+.enc-bracket,
+.auth-bracket-esp {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: #aaa;
+    margin-top: 5px;
+}
+
+.auth-bracket {
+    color: #4ec9b0;
+}
+
+.enc-bracket {
+    color: #ce9178;
+    margin-bottom: 5px;
+}
+
+.auth-bracket-esp {
+    color: #4ec9b0;
+}
+
+/* Detailed RFC Header Styling */
+.ah-detailed-view {
+    /* Main element in column now, no top margin needed */
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+}
+
+.ah-detailed-view h4 {
+    color: #4ec9b0;
+    margin-bottom: 2rem;
+    /* Add some space below title */
+    font-size: 1.2rem;
+    /* Increase size as it's the main title */
+    text-align: center;
+}
+
+.rfc-header-grid {
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid #666;
+    background: #1e1e1e;
+    max-width: 500px;
+    /* Increased from 300px for wider view */
+    width: 95%;
+    /* Responsive width */
+    margin: 0 auto;
+}
+
+.rfc-field {
+    border: 1px solid #444;
+    display: flex;
+    flex-direction: column;
+    /* Stack name and description */
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    /* Increased from 0.75rem */
+    color: #ce9178;
+    background: #252526;
+    min-height: 65px;
+    /* Increased from fixed 45px to min-height 65px */
+    box-sizing: border-box;
+    text-align: center;
+    line-height: 1.3;
+    padding: 8px;
+    /* Added more padding */
+}
+
+.field-desc {
+    font-size: 0.75rem;
+    /* Increased from 0.65rem */
+    color: #888;
+    margin-top: 4px;
+    font-style: italic;
+    font-weight: normal;
+}
+
+.w-8 {
+    width: 25%;
+}
+
+.w-16 {
+    width: 50%;
+}
+
+.w-32 {
+    width: 100%;
+}
+
+.variable-height {
+    height: auto;
+    min-height: 40px;
+    padding: 5px;
+}
+
+/* Visualization Section */
+.visualizer {
+    margin: 1.5rem 0;
+}
+
+.packet-row {
+    margin: 1.5rem 0;
+}
+
+.packet-label {
+    font-weight: bold;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.packet-container {
+    display: flex;
+    flex-wrap: wrap;
+    /* Allow wrapping on small screens */
+    gap: 4px;
+    align-items: stretch;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    border-radius: 8px;
+    min-height: 60px;
+}
+
+.block {
+    padding: 0.8rem 1rem;
+    border-radius: 4px;
+    font-family: var(--code-font);
+    font-size: 0.85rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-weight: bold;
+    color: #1e293b;
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.block .desc {
+    font-size: 0.7rem;
+    font-weight: normal;
+    opacity: 0.8;
+}
+
+/* Colors for specific blocks */
+.header-ip {
+    background-color: var(--color-ip);
+}
+
+.header-ip-new {
+    background-color: var(--color-new-ip);
+    color: white;
+    border: 2px dashed #a7f3d0;
+}
+
+.header-transport {
+    background: #cbd5e1;
+}
+
+.payload {
+    background-color: var(--color-payload);
+    flex-grow: 1;
+}
+
+.header-ah {
+    background-color: var(--color-ah);
+    color: white;
+}
+
+.header-esp-head {
+    background-color: var(--color-esp);
+    color: white;
+}
+
+.header-esp-trail {
+    background-color: #60a5fa;
+    color: white;
+}
+
+.header-esp-auth {
+    background-color: #2563eb;
+    color: white;
+}
+
+/* Encryption/Auth Markers */
+.marker-enc-start,
+.marker-enc-end {
+    display: none;
+    /* Logic handled via borders/overlays usually or just visually distinct blocks */
+}
+
+/* State Classes applied by JS */
+.is-encrypted {
+    background: repeating-linear-gradient(45deg,
+            #1e293b,
+            #1e293b 10px,
+            #334155 10px,
+            #334155 20px);
+    color: #94a3b8;
+    position: relative;
+}
+
+.is-encrypted::after {
+    content: "🔒";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
+}
+
+.arrow-down {
+    text-align: center;
+    color: var(--text-secondary);
+    margin: 1rem 0;
+    font-weight: bold;
+}
+
+.legend {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.dot.auth {
+    background: var(--color-ah);
+}
+
+.dot.enc {
+    background: var(--color-esp);
+}
+
+.dot.clear {
+    background: var(--color-ip);
+}
+
+/* Anti-Replay Animation Styles */
+.window-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    height: 150px;
+    margin: 0 auto;
+    overflow: hidden;
+    /* Hide packets arriving from outside */
+    border: 1px solid #444;
+    background: #111;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shelf-track {
+    display: flex;
+    gap: 10px;
+    position: absolute;
+    left: 50px;
+    /* Start with some offset */
+    transition: transform 0.5s ease-in-out;
+}
+
+.shelf-slot {
+    width: 60px;
+    height: 60px;
+    border: 2px solid #555;
+    background: #252526;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    color: #666;
+    position: relative;
+}
+
+.shelf-slot::after {
+    content: attr(data-seq);
+    position: absolute;
+    bottom: -20px;
+    font-size: 0.7rem;
+    color: #888;
+}
+
+/* The Sliding Window Frame */
+.sliding-window {
+    position: absolute;
+    height: 80px;
+    border: 3px solid #4ec9b0;
+    /* Window color */
+    box-shadow: 0 0 10px rgba(78, 201, 176, 0.3);
+    border-radius: 4px;
+    pointer-events: none;
+    transition: left 0.5s ease-in-out, width 0.5s ease-in-out;
+    z-index: 10;
+}
+
+/* Packet Box Animation */
+.packet-box {
+    width: 50px;
+    height: 50px;
+    background: #007acc;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    position: absolute;
+    top: -100px;
+    /* Start above */
+    left: 0;
+    transition: top 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    /* Bounce effect */
+    z-index: 20;
+    border-radius: 4px;
+}
+
+.packet-box.rejected {
+    background: #f14c4c;
+    /* Red */
+}
+
+.packet-box.accepted {
+    background: #4ec9b0;
+    /* Green/Teal */
+}
+
+.packet-box.duplicate {
+    background: #cca700;
+    /* Yellow/Gold */
+}
+
+/* IKE / Key Management Styles */
+.ike-equation-box {
+    background: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    border: 1px dashed #555;
+    text-align: center;
+}
+
+.ike-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.ike-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #444;
+}
+
+.ike-card h3 {
+    margin-top: 10px;
+    font-size: 1.1rem;
+    color: #fff;
+    border-bottom: 1px solid #555;
+    padding-bottom: 5px;
+}
+
+.isakmp-card {
+    border-top: 3px solid #facc15;
+}
+
+.oakley-card {
+    border-top: 3px solid #3b82f6;
+}
+
+.card-icon {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.role-desc {
+    font-size: 0.85rem;
+    color: #aaa;
+    font-style: italic;
+    margin-bottom: 10px;
+    min-height: 2.5em;
+}
+
+.clean-list {
+    list-style: none;
+    padding: 0;
+    font-size: 0.9rem;
+}
+
+.clean-list li {
+    margin-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 4px;
+}
+
+.ike-phases-vis {
+    background: #111;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.phase-container {
+    width: 80%;
+    text-align: center;
+    padding: 15px;
+    border-radius: 8px;
+    color: #fff;
+}
+
+.phase-1 {
+    background: #4a1d4a;
+    /* Dark magenta */
+    border: 2px solid #d946ef;
+    margin-bottom: 10px;
+}
+
+.phase-2 {
+    background: #1e293b;
+    border: 2px dashed #4ec9b0;
+    width: 60%;
+    /* Funnel effect */
+}
+
+.phase-label {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.phase-desc {
+    font-size: 0.85rem;
+    color: #ddd;
+}
+
+.arrow-down-phase {
+    color: #aaa;
+    font-size: 0.8rem;
+    margin: 10px 0;
+}

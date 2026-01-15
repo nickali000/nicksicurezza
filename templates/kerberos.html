@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kerberos Visualizzato</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='kerberos_style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Specific animations for the DB lookup */
+        @keyframes pulse-db {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 rgba(88, 166, 255, 0);
+            }
+
+            50% {
+                transform: scale(1.1);
+                box-shadow: 0 0 20px rgba(88, 166, 255, 0.5);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 rgba(88, 166, 255, 0);
+            }
+        }
+
+        .db-searching {
+            animation: pulse-db 1s infinite;
+            color: var(--accent-color) !important;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="/" class="home-btn"><i class="fas fa-arrow-left"></i> Menu</a>
+
+    <div class="container">
+        <h1>KERBEROS</h1>
+        <div class="subtitle">L'Analogia del Multisala (Semplificata)</div>
+
+        <!-- SIMPLIFIED LEGEND -->
+        <div class="legend-bar">
+            <div class="legend-item"><span class="key-icon key-blue"><i class="fas fa-key"></i></span> La tua PWD</div>
+            <div class="legend-item"><span class="key-icon key-yellow"><i class="fas fa-key"></i></span> Session Key
+            </div>
+            <div class="legend-item"><span class="encrypted-pkg pkg-red"
+                    style="padding-right:8px; border-radius:4px;">TGT</span> = Pass (TGT)</div>
+        </div>
+
+        <!-- STAGE -->
+        <div class="actors-stage">
+            <!-- CLIENT -->
+            <div class="actor client" id="actor-client">
+                <i class="fas fa-user actor-icon"></i>
+                <h2>Alice</h2>
+                <div class="actor-desc">Spettatore</div>
+                <div class="inventory-box" id="inv-client">
+                    <span class="inventory-label">Cosa ho in tasca:</span>
+                    <span class="key-icon key-blue" title="La mia Password"><i class="fas fa-key"></i></span>
+                </div>
+            </div>
+
+            <!-- KDC -->
+            <div class="actor kdc" id="actor-kdc">
+                <i class="fas fa-shield-dog actor-icon"></i>
+                <h2>K.D.C.</h2>
+                <div class="actor-desc">Lo Staff del Cinema</div>
+
+                <!-- Internal DB Representation -->
+                <!-- Internal DB Representation -->
+                <div id="kdc-db"
+                    style="margin: 10px auto; padding: 8px; border: 1px solid #30363d; background: rgba(0,0,0,0.2); border-radius: 6px; width: 60%; opacity: 0.4; transition: all 0.5s;">
+                    <i class="fas fa-database" style="font-size: 1.5em; margin-bottom: 5px; display: block;"></i>
+                    <span id="db-status" style="font-size: 0.8em;">Database Utenti</span>
+                </div>
+
+                <div class="kdc-internal">
+                    <div class="kdc-component" id="comp-as">
+                        <h3>AS</h3>
+                        <div style="font-size:0.9em; margin-bottom:5px;">CASSA</div>
+                        <i class="fas fa-ticket-alt" style="font-size:1.5em; color: var(--kdc-color)"></i>
+                        <div id="as-action"
+                            style="font-size: 0.8em; margin-top: 5px; color: var(--accent-color); min-height: 20px;">
+                        </div>
+                    </div>
+                    <div class="kdc-component" id="comp-tgs">
+                        <h3>TGS</h3>
+                        <div style="font-size:0.9em; margin-bottom:5px;">BIGLIETTERIA</div>
+                        <i class="fas fa-film" style="font-size:1.5em; color: var(--kdc-color)"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SERVER -->
+            <div class="actor server" id="actor-server">
+                <i class="fas fa-server actor-icon"></i>
+                <h2>Server</h2>
+                <div class="actor-desc">Sala 4: "Mail"</div>
+                <div style="margin-top:15px; color: var(--server-color);">
+                    <i class="fas fa-door-closed" id="server-door" style="font-size:2.5em;"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTROLS -->
+        <div style="text-align: center; margin-bottom: 30px;">
+            <button id="btn-next" onclick="nextStep()"
+                style="padding: 15px 40px; font-size: 1.2em; background: var(--accent-color); color: #000; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(88, 166, 255, 0.3);">
+                <i class="fas fa-play"></i> Inizia
+            </button>
+            <button onclick="resetSim()"
+                style="padding: 15px 20px; font-size: 1.2em; background: #30363d; color: #fff; border: none; border-radius: 8px; cursor: pointer; margin-left: 10px;">
+                Reset
+            </button>
+        </div>
+
+        <!-- FLOWS SIMPLIFIED -->
+        <div class="flow-container">
+            <!-- Phase 1 -->
+            <div class="flow-step" id="step-0" style="display:flex;">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                    <span class="step-title">Alla Cassa (AS)</span>
+                    <div class="step-desc">Alice dice "Sono io". L' AS riceve la richiesta.</div>
+                    <div class="step-visual">Alice <i class="fas fa-arrow-right"></i> AS</div>
+                </div>
+            </div>
+
+            <!-- NEW INTERMEDIATE STEP -->
+            <div class="flow-step" id="step-1">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                    <span class="step-title">AS: Ricerca & Generazione</span>
+                    <div class="step-desc">
+                        1. AS cerca "Alice" nel Database <i class="fas fa-database"></i>...
+                        <strong>TROVATA!</strong><br>
+                        2. Preleva la <span class="key-icon key-blue" style="width:14px;height:14px;"></span> (Chiave
+                        Blu).<br>
+                        3. Genera una nuova <span class="key-icon key-yellow" style="width:14px;height:14px;"></span>
+                        (Chiave Sessione).
+                    </div>
+                    <div class="step-visual"><i class="fas fa-cog fa-spin"></i> Lavoro Interno</div>
+                </div>
+            </div>
+
+            <div class="flow-step" id="step-2">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                    <span class="step-title">Ricevi il Passpartout (TGT)</span>
+                    <div class="step-desc">La Cassa ti invia il <span class="encrypted-pkg pkg-red">Pass
+                            (TGT)</span>.<br>
+                        <small style="color:#aaa; display:block; margin-bottom:5px;">⚠️ Contiene: <span
+                                class="key-icon key-yellow" style="width:10px;height:10px;"></span> + ID_Alice +
+                            Scadenza. (Chiuso con Chiave Rossa <span class="key-icon key-red"
+                                style="width:10px;height:10px;"></span>)</small>
+                        Ti manda anche la <span class="key-icon key-yellow" style="width:14px;height:14px;"></span>, ma
+                        chiusa in una <span class="encrypted-pkg pkg-blue">Scatola Blu</span> (perché sa che hai la
+                        chiave Blu!).
+                    </div>
+                    <div class="step-visual">AS <i class="fas fa-arrow-right"></i> Alice</div>
+                </div>
+            </div>
+
+            <div class="flow-step" id="step-3">
+                <div class="step-num">4</div>
+                <div class="step-content">
+                    <span class="step-title">Login Locale (Apro la scatola)</span>
+                    <div class="step-desc">Alice usa la sua <strong>Password</strong> (Chiave Blu) per aprire la
+                        scatola.<br>
+                        <strong>Successo!</strong> Ora Alice ha la <span class="key-icon key-yellow"
+                            style="width:14px;height:14px;"></span> per usare il Braccialetto.
+                    </div>
+                    <div class="step-visual"><i class="fas fa-unlock"></i> Successo</div>
+                </div>
+            </div>
+
+            <div class="flow-step" id="step-4">
+                <div class="step-num">5</div>
+                <div class="step-content">
+                    <span class="step-title">Alla Biglietteria Interna (TGS)</span>
+                    <div class="step-desc">Alice invia 3 cose:
+                        <ul class="dashed" style="margin-top:5px; margin-bottom:5px; color:#ccc;">
+                            <li><span class="encrypted-pkg pkg-red">Pass (TGT)</span> (Cifrato Rossa)</li>
+                            <li><strong>Richiesta:</strong> "Server Mail"</li>
+                            <li><strong>Authenticator:</strong> {Alice, 10:00} (Cifrato Gialla <span
+                                    class="key-icon key-yellow" style="width:10px;height:10px;"></span>)</li>
+                        </ul>
+                    </div>
+                    <div class="step-visual">Alice <i class="fas fa-arrow-right"></i> TGS</div>
+                </div>
+            </div>
+
+            <div class="flow-step" id="step-5">
+                <div class="step-num">6</div>
+                <div class="step-content">
+                    <span class="step-title">Ricevi il Biglietto (Ticket)</span>
+                    <div class="step-desc">
+                        1. TGS verifica che la <strong>Chiave Gialla</strong> sia ok.<br>
+                        2. Controlla che il <strong>Pass (TGT)</strong> non sia scaduto.<br>
+                        <strong>Tutto OK!</strong> Ti stampa il <span class="encrypted-pkg pkg-green">Biglietto
+                            (ST)</span> per la Sala Mail.
+                    </div>
+                    <div class="step-visual">TGS <i class="fas fa-arrow-right"></i> Alice</div>
+                </div>
+            </div>
+
+            <div class="flow-step" id="step-6">
+                <div class="step-num">7</div>
+                <div class="step-content">
+                    <span class="step-title">Accesso alla Sala (Server)</span>
+                    <div class="step-desc">Alice da il <span class="encrypted-pkg pkg-green">Biglietto (ST)</span> alla
+                        maschera all'ingresso della sala.</div>
+                    <div class="step-visual">Alice <i class="fas fa-arrow-right"></i> Server</div>
+                </div>
+            </div>
+
+            <div class="flow-step" id="step-7">
+                <div class="step-num">8</div>
+                <div class="step-content">
+                    <span class="step-title">Porta Aperta</span>
+                    <div class="step-desc">Il biglietto è valido. Alice entra e legge la mail.</div>
+                    <div class="step-visual"><i class="fas fa-door-open"></i> ENTRI</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="info-cards">
+            <div class="info-card" style="border-left: 5px solid #d29922;">
+                <div class="card-title" style="color:#d29922"><i class="fas fa-lightbulb"></i> Concetto Chiave: Single
+                    Sign-On</div>
+                <p>Notato? Hai usato la <strong>Password</strong> solo allo <strong>Step 4</strong>.</p>
+                <p>Per le successive 8 ore, usi solo il <strong>Braccialetto (TGT)</strong> per farti dare altri
+                    biglietti senza password!</p>
+            </div>
+
+            <div class="info-card" style="border-left: 5px solid #a371f7;">
+                <div class="card-title" style="color:#a371f7"><i class="fas fa-question-circle"></i> Domanda Magica
+                </div>
+                <p><strong>Perché il KDC mi manda il TGT invece di tenerselo lui?</strong></p>
+                <p>La risposta è una sola parola: <strong>STATELESS</strong> (Senza Stato).</p>
+                <p style="font-size:0.9em; color:#8b949e; margin-top:5px;">
+                    Il KDC non vuole "ricordarsi" di te. Ti dà il permesso (TGT) e se ne dimentica subito.
+                    Quando torni, sei TU a dovergli mostrare il permesso. Così il KDC può gestire milioni di utenti
+                    senza esplodere!
+                </p>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 50px; margin-bottom: 20px;">
+            <a href="/" style="text-decoration: none;">
+                <button
+                    style="padding: 10px 20px; font-size: 1em; background: #30363d; color: #fff; border: 1px solid #8b949e; border-radius: 6px; cursor: pointer;">
+                    <i class="fas fa-arrow-left"></i> Torna al Menu
+                </button>
+            </a>
+        </div>
+
+    </div>
+
+    <script>
+        let currentStep = -1;
+        const totalSteps = 8;
+
+        const stepsData = [
+            { // Step 1: Request
+                actors: ['actor-client', 'comp-as'],
+                inv: null
+            },
+            { // Step 2: KDC Internal Work (NEW)
+                actors: ['comp-as'],
+                inv: null,
+                action: () => {
+                    const db = document.getElementById('kdc-db');
+                    // db.style.display = 'block'; // No longer needed
+                    db.style.opacity = '1';
+                    db.style.borderColor = 'var(--accent-color)';
+                    db.style.boxShadow = '0 0 15px rgba(88, 166, 255, 0.3)';
+                    db.style.background = 'rgba(88, 166, 255, 0.1)';
+
+                    db.classList.add('db-searching');
+                    document.getElementById('db-status').innerText = "Cerco Alice...";
+
+                    setTimeout(() => {
+                        db.classList.remove('db-searching');
+                        document.getElementById('db-status').innerHTML = 'Alice Trovata! <i class="fas fa-check" style="color:#2ea043"></i>';
+                        document.getElementById('as-action').innerHTML = `
+                            Prelevo <span class="key-icon key-blue" style="width:12px;height:12px"></span><br>
+                            Genero <span class="key-icon key-yellow" style="width:12px;height:12px"></span>
+                        `;
+                    }, 800);
+                }
+            },
+            { // Step 3: Response
+                actors: ['actor-client', 'comp-as'],
+                inv: `<span class="inventory-label">Cosa ho in tasca:</span>
+                      <span class="key-icon key-blue" title="Password"></span>
+                      <span class="encrypted-pkg pkg-blue" title="Scatola Chiusa"><i class="fas fa-box"></i></span>
+                      <span class="encrypted-pkg pkg-red" title="Pass (TGT)">TGT</span>`
+            },
+            { // Step 4: Local Unlock (Ex Step 2)
+                actors: ['actor-client'],
+                inv: `<span class="inventory-label">Cosa ho in tasca:</span>
+                      <span class="key-icon key-blue" style="opacity:0.5"></span>
+                      <span class="key-icon key-yellow" title="Chiave Sessione"></span>
+                      <span class="encrypted-pkg pkg-red" title="Pass (TGT)">TGT</span>`
+            },
+            { // Step 5: Ask TGS
+                actors: ['actor-client', 'comp-tgs'],
+                inv: null
+            },
+            { // Step 6: Get Ticket
+                actors: ['actor-client', 'comp-tgs'],
+                inv: `<span class="inventory-label">Cosa ho in tasca:</span>
+                      <span class="key-icon key-yellow" title="Chiave Sessione"></span>
+                      <span class="encrypted-pkg pkg-red" title="Pass (TGT)">TGT</span>
+                      <span class="encrypted-pkg pkg-green" title="Biglietto Sala">TICKET</span>`
+            },
+            { // Step 7: Use Ticket
+                actors: ['actor-client', 'actor-server'],
+                inv: null
+            },
+            { // Step 8: Open Door
+                actors: ['actor-server'],
+                inv: null,
+                action: () => {
+                    document.getElementById('server-door').classList.remove('fa-door-closed');
+                    document.getElementById('server-door').classList.add('fa-door-open');
+                    document.getElementById('server-door').style.color = '#3fb950';
+                }
+            }
+        ];
+
+        function nextStep() {
+            if (currentStep < totalSteps - 1) {
+                currentStep++;
+                updateUI();
+            }
+        }
+
+        function resetSim() {
+            currentStep = -1;
+            document.querySelectorAll('.flow-step').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            // Reset content
+            document.getElementById('inv-client').innerHTML = `
+                <span class="inventory-label">Cosa ho in tasca:</span>
+                <span class="key-icon key-blue" title="La mia Password"><i class="fas fa-key"></i></span>
+            `;
+
+            // Reset DB Visuals
+            const db = document.getElementById('kdc-db');
+            // db.style.display = 'none'; // No longer needed
+            db.style.opacity = '0.4';
+            db.style.borderColor = '#30363d';
+            db.style.boxShadow = 'none';
+            db.style.background = 'rgba(0,0,0,0.2)';
+
+            db.classList.remove('db-searching');
+            document.getElementById('db-status').innerText = "Database Utenti";
+            document.getElementById('as-action').innerHTML = "";
+
+            // Reset Door
+            const door = document.getElementById('server-door');
+            door.classList.add('fa-door-closed');
+            door.classList.remove('fa-door-open');
+            door.style.color = '';
+
+            // Reset visuals
+            document.querySelectorAll('.actor').forEach(el => el.classList.remove('active-actor'));
+            document.querySelectorAll('.kdc-component').forEach(el => el.classList.remove('active-comp'));
+
+            document.getElementById('btn-next').innerHTML = '<i class="fas fa-play"></i> Inizia';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateUI() {
+            // Highlight Flow Step
+            document.querySelectorAll('.flow-step').forEach((el, idx) => {
+                if (idx === currentStep) {
+                    el.classList.add('active');
+                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } else {
+                    el.classList.remove('active');
+                }
+            });
+
+            const data = stepsData[currentStep];
+
+            // Reset Highlights
+            document.querySelectorAll('.actor').forEach(el => el.classList.remove('active-actor'));
+            document.querySelectorAll('.kdc-component').forEach(el => el.classList.remove('active-comp'));
+
+            // Apply Highlights
+            if (data.actors) {
+                data.actors.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) {
+                        if (el.classList.contains('kdc-component')) el.classList.add('active-comp');
+                        else el.classList.add('active-actor');
+                    }
+                });
+            }
+
+            // Update Inventory
+            if (data && data.inv) {
+                document.getElementById('inv-client').innerHTML = data.inv;
+            }
+
+            // Custom Action
+            if (data.action) {
+                data.action();
+            }
+
+            // Button Text
+            const btn = document.getElementById('btn-next');
+            if (currentStep === totalSteps - 1) {
+                btn.innerHTML = '<i class="fas fa-check"></i> Finito';
+            } else {
+                btn.innerHTML = 'Avanti <i class="fas fa-arrow-right"></i>';
+            }
+        }
+    </script>
+</body>
+
+</html>

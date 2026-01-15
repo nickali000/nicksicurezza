@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizzazione HMAC</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/static/hmac_style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="home-btn"><i class="fas fa-arrow-left"></i> Menu</a>
+            <h1>HMAC (Hash-based Message Authentication Code)</h1>
+            <p>Autenticazione di messaggi tramite funzione hash e chiave segreta.</p>
+        </header>
+
+        <!-- 1. The Problem -->
+        <section class="section problem">
+            <h2>1. Il Problema: Perché non basta l'Hash semplice?</h2>
+            <div class="theory-box">
+                <p>Se Alice manda a Bob un messaggio <em>M</em> con il suo hash <em>H(M)</em>, un attaccante
+                    (Man-in-the-Middle) può:</p>
+                <ol>
+                    <li>Intercettare il pacchetto.</li>
+                    <li>Cambiare il messaggio in <em>M'</em>.</li>
+                    <li>Calcolare il nuovo hash <em>H(M')</em>.</li>
+                    <li>Inviare a Bob il pacchetto falso.</li>
+                </ol>
+                <p class="highlight-red">Bob controlla l'hash, combacia, e accetta un messaggio falso!</p>
+                <p><strong>Soluzione:</strong> Serve una <strong>Chiave Segreta (K)</strong>. Solo chi ha la chiave deve
+                    poter creare l'impronta valida.</p>
+            </div>
+        </section>
+
+        <!-- 2. The Naive Solution -->
+        <section class="section naive-solution" style="margin-top: 2rem;">
+            <h2>2. La Soluzione Ingenua (e perché è sbagliata)</h2>
+            <p>Idea: <em>"Facciamo l'hash della Chiave + Messaggio"</em> (<code>H(K || M)</code>).</p>
+            <div class="alert-box error">
+                <strong>Domanda da Esame:</strong> Perché è insicuro?<br>
+                <strong>Risposta:</strong> A causa dell'<strong>Attacco di Estensione della Lunghezza</strong> (Length
+                Extension Attack).<br>
+                Con funzioni come MD5 e SHA-1/2, se l'attaccante conosce l'Hash, può calcolare l'hash di un messaggio
+                <em>più lungo</em> senza conoscere la chiave.
+            </div>
+        </section>
+
+        <!-- 3. The Structure -->
+        <section class="section structure" style="margin-top: 2rem;">
+            <h2>3. La Struttura dell'HMAC (RFC 2104)</h2>
+            <p>HMAC usa una struttura a <strong>Doppio Hash (Nested Hash)</strong>.</p>
+
+            <div class="formula-block"
+                style="font-size: 1.2rem; padding: 20px; background: #252526; border-left: 5px solid #4ec9b0; margin: 20px 0;">
+                HMAC(K, m) = H( (K' ⊕ opad) || H( (K' ⊕ ipad) || m ) )
+            </div>
+
+            <div class="components-grid"
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 2rem;">
+                <div class="comp-card"><strong>H</strong><br>Hash (es. SHA-256)</div>
+                <div class="comp-card"><strong>K'</strong><br>Chiave (paddata)</div>
+                <div class="comp-card"><strong>ipad</strong><br>0x36 (Inner Pad)</div>
+                <div class="comp-card"><strong>opad</strong><br>0x5c (Outer Pad)</div>
+            </div>
+        </section>
+
+        <!-- 4. Step-by-Step Flow -->
+        <section class="section flow" style="margin-top: 2rem;">
+            <h2>4. Come funziona (Il Flusso a "Imbuto")</h2>
+
+            <div class="visual-diagram" style="display: flex; flex-direction: column; align-items: center; gap: 20px;">
+                <!-- Inner Hash -->
+                <div class="funnel-step">
+                    <div class="funnel-label">Passo 1: Inner Hash (Giro Interno)</div>
+                    <div class="funnel-box inner">
+                        <div class="funnel-inputs">
+                            <span class="input-item key">K' ⊕ ipad</span>
+                            <span class="input-item msg">Messaggio</span>
+                        </div>
+                        <div class="funnel-shape">⬇️ HASH ⬇️</div>
+                        <div class="funnel-output">Risultato Parziale</div>
+                    </div>
+                </div>
+
+                <!-- Outer Hash -->
+                <div class="funnel-step">
+                    <div class="funnel-label">Passo 2: Outer Hash (Giro Esterno)</div>
+                    <div class="funnel-box outer">
+                        <div class="funnel-inputs">
+                            <span class="input-item key">K' ⊕ opad</span>
+                            <span class="input-item partial">Risultato Parziale</span>
+                        </div>
+                        <div class="funnel-shape">⬇️ HASH ⬇️</div>
+                        <div class="funnel-output final">HMAC Finale</div>
+                    </div>
+                </div>
+            </div>
+
+            <p style="text-align: center; margin-top: 15px; font-style: italic; color: #aaa;">
+                Questa doppia passata rende impossibile l'attacco di estensione della lunghezza.
+            </p>
+        </section>
+
+        <!-- 5. Use Cases -->
+        <section class="section use-cases"
+            style="margin-top: 2rem; background: #1e293b; padding: 20px; border-radius: 8px;">
+            <h2>Dove si usa?</h2>
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin-bottom: 10px;">🔒 <strong>IPsec:</strong> Per garantire che il pacchetto provenga
+                    davvero dal mittente.</li>
+                <li>🌐 <strong>TLS/SSL (HTTPS):</strong> Per verificare l'integrità dei dati scambiati col server.</li>
+            </ul>
+        </section>
+
+        </section>
+
+        <!-- 6. MITM Simulation -->
+        <section class="section mitm-sim" style="margin-top: 2rem; border-top: 1px solid #333; padding-top: 2rem;">
+            <h2>6. Simulazione Attacco Man-in-the-Middle</h2>
+            <p>Osserva cosa succede se un intruso (Mallory) modifica il messaggio mentre viaggia.</p>
+
+            <div class="animation-controls"
+                style="display: flex; gap: 10px; margin-bottom: 2rem; justify-content: center;">
+                <button onclick="runScenario('no-hmac')" style="background: #ef4444;">Scenario 1: Senza HMAC</button>
+                <button onclick="runScenario('hmac')" style="background: #4ec9b0; color: #000;">Scenario 2: Con
+                    HMAC</button>
+            </div>
+
+            <div class="mitm-stage">
+                <!-- Alice -->
+                <div class="actor alice">
+                    <div class="avatar">👩</div>
+                    <div class="name">Alice</div>
+                    <div class="status-box" id="alice-status">Invio "Ciao"</div>
+                </div>
+
+                <!-- Path Alice->Mallory -->
+                <div class="path path-left"></div>
+
+                <!-- Mallory (Intruder) -->
+                <div class="actor mallory">
+                    <div class="avatar">🦹</div>
+                    <div class="name">Mallory</div>
+                    <div class="status-box" id="mallory-status">In attesa...</div>
+                </div>
+
+                <!-- Path Mallory->Bob -->
+                <div class="path path-right"></div>
+
+                <!-- Bob -->
+                <div class="actor bob">
+                    <div class="avatar">👨</div>
+                    <div class="name">Bob</div>
+                    <div class="status-box" id="bob-status">In attesa...</div>
+                </div>
+
+                <!-- Moving Packet -->
+                <div id="packet" class="packet hidden">📦</div>
+            </div>
+
+            <div id="scenario-log"
+                style="margin-top: 20px; text-align: center; font-style: italic; color: #aaa; min-height: 1.5em;"></div>
+        </section>
+
+        <!-- Interactive Section -->
+        <section class="section interactive">
+            <h2>Calcolo Interattivo</h2>
+            <div class="input-area">
+                <div class="form-group">
+                    <label>Chiave Segreta (K)</label>
+                    <input type="text" id="hmac-key" value="secret_key" placeholder="Inserisci chiave">
+                </div>
+                <div class="form-group">
+                    <label>Messaggio (m)</label>
+                    <textarea id="hmac-msg" rows="3"
+                        placeholder="Inserisci messaggio da autenticare">Hello HMAC!</textarea>
+                </div>
+                <button onclick="calculateHMAC()">Calcola HMAC-SHA256</button>
+            </div>
+
+            <div id="results-area" class="hidden">
+                <div class="result-card">
+                    <h3>Risultato (HMAC-SHA256)</h3>
+                    <code id="hmac-output"></code>
+                </div>
+
+                <h3>Log Dettagliato</h3>
+                <div id="hmac-steps" class="steps-container"></div>
+            </div>
+        </section>
+
+        <div style="text-align: center; margin-top: 50px; margin-bottom: 20px;">
+            <a href="/" style="text-decoration: none;">
+                <button
+                    style="padding: 10px 20px; font-size: 1em; background: #30363d; color: #fff; border: 1px solid #8b949e; border-radius: 6px; cursor: pointer;">
+                    <i class="fas fa-arrow-left"></i> Torna al Menu
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <script src="/static/hmac_script.js"></script>
+    <script src="/static/hmac_mitm.js"></script>
+</body>
+
+</html>

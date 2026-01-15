@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSA Visualization Demo</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/static/rsa_style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="home-btn"><i class="fas fa-arrow-left"></i> Menu</a>
+            <h1>Visualizzazione RSA</h1>
+            <p>Rivest–Shamir–Adleman (Crittografia a Chiave Pubblica)</p>
+        </header>
+
+        <section class="section key-generation">
+            <h2>1. Generazione delle Chiavi</h2>
+            <div class="input-group">
+                <label for="p">Numero Primo p</label>
+                <input type="number" id="p" value="61" placeholder="Inserisci un numero primo">
+            </div>
+            <div class="input-group">
+                <label for="q">Numero Primo q</label>
+                <input type="number" id="q" value="53" placeholder="Inserisci un numero primo">
+            </div>
+            <button onclick="generateKeys()">Genera Chiavi</button>
+
+            <div id="key-results" class="results-box hidden">
+                <div class="key-display">
+                    <h3>Chiave Pubblica (e, n)</h3>
+                    <code id="public-key-display"></code>
+                </div>
+                <div class="key-display">
+                    <h3>Chiave Privata (d, n)</h3>
+                    <code id="private-key-display"></code>
+                </div>
+                <div class="key-display">
+                    <h3>Valori Calcolati</h3>
+                    <p>n = <span id="n-val"></span></p>
+                    <p>φ(n) = <span id="phi-val"></span></p>
+                </div>
+
+                <h3>Passaggi Generazione Chiavi</h3>
+                <div id="key-generation-steps" class="steps-container"></div>
+            </div>
+        </section>
+
+        <section class="section encryption">
+            <h2>2. Cifratura</h2>
+            <div class="input-group">
+                <label for="plaintext">Messaggio</label>
+                <input type="text" id="plaintext" value="CIAO" placeholder="Inserisci il messaggio">
+            </div>
+            <button onclick="encryptMessage()">Cifra</button>
+
+            <div id="encryption-results" class="results-box hidden">
+                <h3>Passaggi di Cifratura</h3>
+                <div id="encryption-steps" class="steps-container"></div>
+                <div class="final-output">
+                    <h4>Testo Cifrato (Interi):</h4>
+                    <code id="ciphertext-display"></code>
+                </div>
+            </div>
+        </section>
+
+        </section>
+
+        <!-- 3. Decrytpion -->
+        <section class="section decryption">
+            <h2>3. Decifratura</h2>
+            <p>Decifratura utilizzando la chiave privata generata sopra.</p>
+            <button onclick="decryptMessage()">Decifra Testo Cifrato</button>
+
+            <div id="decryption-results" class="results-box hidden">
+                <h3>Passaggi di Decifratura</h3>
+                <div id="decryption-steps" class="steps-container"></div>
+                <div class="final-output">
+                    <h4>Testo Decifrato:</h4>
+                    <code id="decrypted-text-display"></code>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Reality (New Section) -->
+        <section class="section reality" style="border-left: 5px solid #f59e0b;">
+            <h2>4. La Realtà (Importante per l'Esame)</h2>
+
+            <div class="reality-grid">
+                <!-- Slowness & Hybrid -->
+                <div class="reality-card slowness">
+                    <h3>1. Il Problema della Lentezza</h3>
+                    <p class="alert-text">RSA è circa <strong>1000 volte più lento</strong> di AES!</p>
+                    <p>Non si usa MAI per cifrare file interi (Payload). Si usa la <strong>Costruzione Ibrida (Busta
+                            Digitale)</strong>.</p>
+
+                    <div class="hybrid-diagram">
+                        <div class="step-h">
+                            <span>📄 Video (GB)</span>
+                            <span>⬇️</span>
+                            <span class="badge-aes">Cifrato con AES (Veloce)</span>
+                        </div>
+                        <div class="plus">+</div>
+                        <div class="step-h">
+                            <span>🔑 Chiave AES</span>
+                            <span>⬇️</span>
+                            <span class="badge-rsa">Cifrata con RSA (Sicuro)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Factorization -->
+                <div class="reality-card factorization">
+                    <h3>2. Tutto dipende dalla Fattorizzazione</h3>
+                    <p>La sicurezza si basa sulla difficoltà di calcolare <strong>p</strong> e <strong>q</strong>
+                        partendo da <strong>n</strong>.</p>
+                    <div class="math-box">
+                        <span class="math-big">n = p &times; q</span>
+                    </div>
+                    <p class="small-note">Se l'attaccante fattorizza <em>n</em>, può calcolare φ(n) e trovare la chiave
+                        privata <em>d</em>.</p>
+                    <p style="margin-top: 10px;"><strong>Key Size:</strong> Oggi si usano <strong>2048 bit</strong> o
+                        4096. (1024 è a rischio!)</p>
+                </div>
+
+                <!-- Padding -->
+                <div class="reality-card padding">
+                    <h3>3. Padding (OAEP)</h3>
+                    <p>
+                        RSA "puro" (Textbook) è deterministico: cifrando due volte "CIAO" ottieni lo stesso numero.
+                        <strong>Pericoloso!</strong>
+                    </p>
+                    <p class="highlight-green">
+                        ✅ Soluzione: <strong>Padding OAEP</strong> rende la cifratura probabilistica (aggiunge
+                        casualità).
+                    </p>
+                </div>
+            </div>
+        </section>
+        </section>
+
+        <div style="text-align: center; margin-top: 50px; margin-bottom: 20px;">
+            <a href="/" style="text-decoration: none;">
+                <button
+                    style="padding: 10px 20px; font-size: 1em; background: #30363d; color: #fff; border: 1px solid #8b949e; border-radius: 6px; cursor: pointer;">
+                    <i class="fas fa-arrow-left"></i> Torna al Menu
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <script src="/static/rsa_script.js"></script>
+</body>
+
+</html>

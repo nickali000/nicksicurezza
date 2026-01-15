@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizzazione Diffie-Hellman</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/static/diffie_hellman_style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="home-btn"><i class="fas fa-arrow-left"></i> Menu</a>
+            <h1>Diffie-Hellman Key Exchange</h1>
+            <p>Protocollo per scambiare una chiave segreta su un canale insicuro.</p>
+        </header>
+
+        <section class="section setup">
+            <h2>1. Setup Parametri Pubblici</h2>
+            <div class="setup-desc" style="margin-bottom: 15px;">
+                <p>Parametri noti a tutti (anche all'attaccante):</p>
+                <ul>
+                    <li><strong>p</strong>: Un Numero Primo molto grande.</li>
+                    <li><strong>g</strong>: Una Radice Primitiva modulo p (Generatore).</li>
+                </ul>
+            </div>
+            <p>Per la demo usiamo numeri piccoli.</p>
+            <button onclick="step1Setup()">Genera Parametri (p, g)</button>
+            <div id="step1-results" class="results-box hidden">
+                <div class="step-log" id="step1-log"></div>
+                <div class="params-display">
+                    <span>p: <strong id="p-val"></strong></span>
+                    <span>g: <strong id="g-val"></strong></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Zone 2: The Exchange (Existing) -->
+        <div class="two-columns hidden" id="main-exchange-area">
+            <!-- Alice's Side -->
+            <div class="column alice-col">
+                <h3>Alice</h3>
+                <div class="actor-box">
+                    <p class="status">In attesa...</p>
+                    <div id="alice-private" class="secret-box hidden">
+                        Chiave Privata (a): <span id="val-a"></span>
+                    </div>
+                    <div id="alice-public" class="public-box hidden">
+                        Chiave Pubblica (A): <span id="val-A"></span>
+                        <div class="math-small">A = g<sup>a</sup> mod p</div>
+                    </div>
+                    <div id="alice-secret" class="final-secret hidden">
+                        Segreto (S): <span id="val-S-alice"></span>
+                        <div class="math-small">S = B<sup>a</sup> mod p</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Public Channel / Steps -->
+            <div class="column center-col">
+                <h3>Canale Pubblico</h3>
+                <div id="step2-log" class="step-log"></div>
+                <button id="btn-step2" onclick="step2Keys()">2. Genera & Scambia Chiavi</button>
+                <div id="step3-log" class="step-log"></div>
+                <button id="btn-step3" onclick="step3Secret()" class="hidden">3. Calcola Segreto</button>
+            </div>
+
+            <!-- Bob's Side -->
+            <div class="column bob-col">
+                <h3>Bob</h3>
+                <div class="actor-box">
+                    <p class="status">In attesa...</p>
+                    <div id="bob-private" class="secret-box hidden">
+                        Chiave Privata (b): <span id="val-b"></span>
+                    </div>
+                    <div id="bob-public" class="public-box hidden">
+                        Chiave Pubblica (B): <span id="val-B"></span>
+                        <div class="math-small">B = g<sup>b</sup> mod p</div>
+                    </div>
+                    <div id="bob-secret" class="final-secret hidden">
+                        Segreto (S): <span id="val-S-bob"></span>
+                        <div class="math-small">S = A<sup>b</sup> mod p</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Zone 3: The Math (DLP) -->
+        <section class="section math-zone" style="margin-top: 3rem; border-left: 5px solid #8b5cf6;">
+            <h2>3. La Matematica: Il "Nemico"</h2>
+            <div class="theory-box">
+                <h3>Problema del Logaritmo Discreto (DLP)</h3>
+                <p>La sicurezza si basa su questo principio:</p>
+                <div class="formula-block">
+                    Dato <em>A = g<sup>a</sup> mod p</em>, è FACILE calcolare A.<br>
+                    Ma conoscendo A, g, p... è <strong>COMPUTAZIONALMENTE INTRATTABILE</strong> trovare <em>a</em>.
+                </div>
+                <p>È come mescolare i colori: facile mischiare giallo e blu (segreti) per fare verde (pubblico), ma
+                    impossibile separare il verde per capire esattamente quale giallo è stato usato.</p>
+            </div>
+        </section>
+
+        <!-- Zone 4: The Limit (MitM) -->
+        <section class="section limit-zone" style="margin-top: 3rem; border-left: 5px solid #ef4444;">
+            <h2>4. Il Punto Debole: Man-in-the-Middle</h2>
+            <p class="alert-text">ATTENZIONE: Vulnerabile perché <strong>NON AUTENTICA</strong> le controparti!</p>
+
+            <div class="mitm-diagram">
+                <div class="mitm-actor alice">
+                    <div class="mitm-avatar">👩</div>
+                    <div>Alice</div>
+                    <div class="arrow-right">Manda A</div>
+                </div>
+
+                <div class="mitm-actor eve">
+                    <div class="mitm-avatar">🦹</div>
+                    <div style="color: #ef4444; font-weight: bold;">Eve (Intruso)</div>
+                    <div class="eve-action">
+                        <div>Intercetta A, manda E</div>
+                        <div>Intercetta B, manda E</div>
+                    </div>
+                    <div class="secret-share">Alice &harr; Eve &harr; Bob</div>
+                </div>
+
+                <div class="mitm-actor bob">
+                    <div class="mitm-avatar">👨</div>
+                    <div>Bob</div>
+                    <div class="arrow-left">Manda B</div>
+                </div>
+            </div>
+
+            <p style="margin-top: 15px; text-align: center; color: #ccc;">
+                Risultato: Eve stabilisce due segreti diversi. Legge tutto, ricifra e inoltra.<br>
+                <strong>Soluzione:</strong> Usare Firme Digitali o Certificati per provare l'identità.
+            </p>
+        </section>
+
+        <!-- Zone 5: Solution (Authenticated DH) -->
+        <section class="section auth-zone" style="margin-top: 3rem; border-left: 5px solid #22c55e;">
+            <h2>5. La Soluzione: Diffie-Hellman Autenticato</h2>
+            <p>Per sconfiggere Eve, dobbiamo <strong>AUTENTICARE</strong> i messaggi.</p>
+
+            <div class="auth-diagram">
+                <!-- CA -->
+                <div class="ca-box">
+                    <div class="ca-icon">🏛️</div>
+                    <div class="ca-label">Certification Authority (CA)</div>
+                    <div class="ca-desc">Garantisce l'identità di Alice e Bob tramite Certificati Digitali</div>
+                </div>
+
+                <!-- Protected Exchange -->
+                <div class="auth-exchange">
+                    <!-- Alice -->
+                    <div class="mitm-actor alice">
+                        <div class="mitm-avatar">👩</div>
+                        <div>Alice</div>
+                        <div class="signed-packet-container">
+                            <div class="arrow-right-auth"></div>
+                            <div class="packet-sealed">
+                                <span class="pkt-content">A = g<sup>a</sup></span>
+                                <span class="pkt-seal">🔒 Firma di Alice</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bob -->
+                    <div class="mitm-actor bob">
+                        <div class="mitm-avatar">👨</div>
+                        <div>Bob</div>
+                        <div class="verify-step">
+                            <div>1. Riceve A + Firma</div>
+                            <div>2. Verifica con Chiave Pubblica di Alice</div>
+                            <div class="check-pass">✅ Firma Valida! (È Alice)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box"
+                style="margin-top: 20px; border-left: 4px solid #22c55e; background: rgba(34, 197, 94, 0.1); padding: 15px;">
+                <h4 style="color: #22c55e; margin-bottom: 5px;">Perché Eve fallisce?</h4>
+                <p>Se Eve prova a sostituire <strong>A</strong> con il suo <strong>E</strong>, deve firmarlo.</p>
+                <ul style="margin-top: 5px; margin-left: 20px;">
+                    <li>Se firma con la sua chiave → Bob vede "Firma di Eve" → <strong>RIFIUTA</strong>.</li>
+                    <li>Se non firma → La verifica fallisce → <strong>RIFIUTA</strong>.</li>
+                    <li>Non può firmare a nome di Alice perché <strong>non ha la chiave privata di Alice</strong>.</li>
+                </ul>
+            </div>
+        </section>
+
+        <div style="text-align: center; margin-top: 50px; margin-bottom: 20px;">
+            <a href="/" style="text-decoration: none;">
+                <button
+                    style="padding: 10px 20px; font-size: 1em; background: #30363d; color: #fff; border: 1px solid #8b949e; border-radius: 6px; cursor: pointer;">
+                    <i class="fas fa-arrow-left"></i> Torna al Menu
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <script src="/static/diffie_hellman_script.js"></script>
+</body>
+
+</html>

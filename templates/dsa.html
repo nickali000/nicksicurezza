@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizzazione DSA</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/static/dsa_style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="home-btn"><i class="fas fa-arrow-left"></i> Menu</a>
+            <h1>DSA (Digital Signature Algorithm)</h1>
+            <p>Protocollo standard per la firma digitale.</p>
+        </header>
+
+        <!-- 1. Setup Parameters -->
+        <section class="section setup">
+            <h2>1. Setup Parametri Pubblici</h2>
+            <p>Generazione di p, q e g. (q divisore primo di p-1)</p>
+            <button onclick="setupParameters()">Genera Parametri Globali</button>
+            <div id="setup-results" class="results-box hidden">
+                <div class="key-display">
+                    <h3>Parametri Pubblici</h3>
+                    <code id="params-display"></code>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Key Generation -->
+        <section class="section key-generation">
+            <h2>2. Generazione Chiavi (Alice)</h2>
+            <p>Alice genera la sua coppia di chiavi per firmare.</p>
+            <button onclick="generateKeys()">Genera Chiavi</button>
+            <div id="key-results" class="results-box hidden">
+                <div class="key-display">
+                    <h3>Chiavi</h3>
+                    <code id="keys-display"></code>
+                </div>
+                <h3>Dettagli Generazione</h3>
+                <div id="keygen-steps" class="steps-container"></div>
+            </div>
+        </section>
+
+        <!-- 3. Signing -->
+        <section class="section signing">
+            <h2>3. Firma (Alice)</h2>
+            <div class="input-group">
+                <label for="message-sign">Messaggio da firmare</label>
+                <input type="text" id="message-sign" value="Contratto validato" placeholder="Inserisci messaggio">
+            </div>
+            <button onclick="signMessage()">Genera Firma</button>
+
+            <div id="sign-results" class="results-box hidden">
+                <h3>Firma Generated (r, s)</h3>
+                <code id="signature-display"></code>
+                <h3>Passaggi Firma</h3>
+                <div id="sign-steps" class="steps-container"></div>
+            </div>
+        </section>
+
+        <!-- 4. Verification -->
+        <section class="section verification">
+            <h2>4. Verifica (Bob / Pubblico)</h2>
+            <p>Bob riceve il messaggio e la firma. Verifica se è valida.</p>
+            <div class="input-group">
+                <label for="message-verify">Messaggio ricevuto</label>
+                <input type="text" id="message-verify" placeholder="Inserisci messaggio">
+            </div>
+            <div class="two-columns">
+                <div class="input-group">
+                    <label for="r-verify">r</label>
+                    <input type="number" id="r-verify" placeholder="Valore r">
+                </div>
+                <div class="input-group">
+                    <label for="s-verify">s</label>
+                    <input type="number" id="s-verify" placeholder="Valore s">
+                </div>
+            </div>
+            <button onclick="verifySignature()">Verifica Firma</button>
+
+            <div id="verify-results" class="results-box hidden">
+                <div id="verify-status" class="status-box"></div>
+                <h3>Passaggi Verifica</h3>
+                <div id="verify-steps" class="steps-container"></div>
+            </div>
+        </section>
+
+        <div style="text-align: center; margin-top: 50px; margin-bottom: 20px;">
+            <a href="/" style="text-decoration: none;">
+                <button
+                    style="padding: 10px 20px; font-size: 1em; background: #30363d; color: #fff; border: 1px solid #8b949e; border-radius: 6px; cursor: pointer;">
+                    <i class="fas fa-arrow-left"></i> Torna al Menu
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <script src="/static/dsa_script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizzazione ECC</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="/static/ecc_style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="home-btn"><i class="fas fa-arrow-left"></i> Menu</a>
+            <h1>ECC (Elliptic Curve Cryptography)</h1>
+            <p>Crittografia ad alta efficienza basata su Curve Ellittiche.</p>
+        </header>
+
+        <!-- 0. Geometric Intuition (Real Curve) -->
+        <section class="section geometric">
+            <h2>0. Intuizione Geometrica (Curve Reali)</h2>
+            <div class="theory-box">
+                <p>Visualizzazione su numeri reali (domino continuo). Qui puoi vedere come funzionano geometricamente le
+                    operazioni.</p>
+                <p><strong>Addizione (P+Q):</strong> La retta passante per P e Q interseca la curva in un terzo punto
+                    -R. Il risultato è la riflessione R.</p>
+                <p><strong>Raddoppio (2P):</strong> La retta tangente in P interseca la curva in -R. Il risultato è la
+                    riflessione R.</p>
+            </div>
+
+            <div class="graph-container"
+                style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px; margin-bottom:1rem; height: 600px;">
+                <canvas id="realCurveChart"></canvas>
+            </div>
+
+            <div class="two-columns">
+                <button onclick="visualizeAddition()">Visualizza Addizione (P+Q)</button>
+                <button onclick="visualizeDoubling()">Visualizza Raddoppio (2P)</button>
+            </div>
+            <button onclick="resetRealCurve()"
+                style="background-color: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-secondary); margin-top: 10px;">Resetta
+                Grafico</button>
+        </section>
+
+        <!-- 1. Curve Setup -->
+        <section class="section setup">
+            <h2>1. Definizione Curva Ellittica</h2>
+            <div class="theory-box">
+                <p>Equazione: <strong>y² = x³ + ax + b (mod p)</strong></p>
+                <p>Operazione chiave: <strong>Moltiplicazione Scalare (Q = d * G)</strong>. Facile da calcolare,
+                    difficile da invertire (Logaritmo Discreto su Curve).</p>
+            </div>
+
+            <div class="graph-container"
+                style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px; margin-bottom:1rem;">
+                <canvas id="eccChart"></canvas>
+            </div>
+
+            <button onclick="setupCurve()">Carica Curva (Demo Small Field)</button>
+            <div id="setup-results" class="results-box hidden">
+                <div class="key-display">
+                    <h3>Parametri Curva</h3>
+                    <code id="curve-params-display"></code>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. ECDH Simulation -->
+        <section class="section ecdh">
+            <h2>2. Scambio Chiavi ECDH</h2>
+            <div class="two-columns">
+                <!-- Alice -->
+                <div class="column alice-col">
+                    <h3>Alice</h3>
+                    <button onclick="generateKeysAlice()">Genera Chiavi</button>
+                    <div id="alice-keys" class="keys-box hidden">
+                        <p>Privata (d): <span id="val-d-alice" class="secret"></span></p>
+                        <p>Pubblica (Q): <span id="val-Q-alice" class="public"></span></p>
+                    </div>
+                    <div id="alice-steps" class="steps-container"></div>
+                </div>
+
+                <!-- Bob -->
+                <div class="column bob-col">
+                    <h3>Bob</h3>
+                    <button onclick="generateKeysBob()">Genera Chiavi</button>
+                    <div id="bob-keys" class="keys-box hidden">
+                        <p>Privata (d): <span id="val-d-bob" class="secret"></span></p>
+                        <p>Pubblica (Q): <span id="val-Q-bob" class="public"></span></p>
+                    </div>
+                    <div id="bob-steps" class="steps-container"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Shared Secret -->
+        <section class="section secret-calc">
+            <h2>3. Calcolo Segreto Condiviso</h2>
+            <p>S = d_Alice * Q_Bob = d_Bob * Q_Alice</p>
+            <button onclick="calcSharedSecret()">Calcola Segreto</button>
+
+            <div id="secret-results" class="results-box hidden">
+                <div class="two-columns">
+                    <div>
+                        <h3>Alice Calcola</h3>
+                        <code id="secret-alice-display"></code>
+                    </div>
+                    <div>
+                        <h3>Bob Calcola</h3>
+                        <code id="secret-bob-display"></code>
+                    </div>
+                </div>
+                <div id="match-status" class="status-box"></div>
+                <h3>Dettagli Moltiplicazione Scalare</h3>
+                <div id="secret-steps" class="steps-container"></div>
+            </div>
+        </section>
+
+        <div style="text-align: center; margin-top: 50px; margin-bottom: 20px;">
+            <a href="/" style="text-decoration: none;">
+                <button
+                    style="padding: 10px 20px; font-size: 1em; background: #30363d; color: #fff; border: 1px solid #8b949e; border-radius: 6px; cursor: pointer;">
+                    <i class="fas fa-arrow-left"></i> Torna al Menu
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <script src="/static/ecc_script.js"></script>
+</body>
+
+</html>

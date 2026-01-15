@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizzazione IPsec</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <!-- Optional for icons if needed, using unicode for now -->
+    <link rel="stylesheet" href="/static/ipsec_style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="home-btn"><i class="fas fa-arrow-left"></i> Menu</a>
+            <h1>IPsec (Internet Protocol Security)</h1>
+            <p>Framework per la sicurezza a livello di rete (Layer 3). Protegge i pacchetti IP.</p>
+        </header>
+
+        <!-- Introduction Section -->
+        <section class="section intro">
+            <h2>Cos'è IPsec?</h2>
+            <p><strong>IPsec (Internet Protocol Security)</strong> è una suite di protocolli che opera al
+                <strong>Livello 3 (Network)</strong> del modello OSI. Estende il protocollo IP standard aggiungendo
+                funzionalità di sicurezza fondamentali.
+            </p>
+
+            <h3>Obiettivi Principali:</h3>
+            <ul style="list-style-type: disc; margin-left: 20px; line-height: 1.6;">
+                <li><strong>Autenticità (Authentication):</strong> Permette di verificare l'identità della sorgente del
+                    pacchetto, assicurando che provenga davvero da chi dice di essere.</li>
+                <li><strong>Integrità (Integrity):</strong> Garantisce che i dati non siano stati alterati o manomessi
+                    durante il transito.</li>
+                <li><strong>Confidenzialità (Confidentiality):</strong> Offre segretezza tramite cifratura, rendendo il
+                    contenuto illeggibile a terzi (sniffing).</li>
+                <li><strong>Anti-Replay:</strong> Protegge contro attacchi in cui pacchetti validi vengono intercettati
+                    e reinviati in un secondo momento.</li>
+            </ul>
+        </section>
+
+        <!-- Expanded Concepts Section -->
+        <section class="section concepts">
+            <h3>Applicazioni e Sicurezza</h3>
+            <p>IPsec è fondamentale per la creazione di <strong>VPN (Virtual Private Network)</strong>, permettendo
+                comunicazioni sicure su reti pubbliche come Internet.</p>
+            <p>Le sue proprietà di sicurezza rendono i pacchetti <strong>impossibili da modificare</strong> senza essere
+                rilevati (Integrità) e <strong>impossibili da intercettare</strong> in chiaro (Confidenzialità).</p>
+
+            <h3>Security Association (SA)</h3>
+            <p>Il cuore di IPsec è la <strong>Security Association (SA)</strong>. È un accordo
+                <strong>monodirezionale</strong> (simplex) tra mittente e destinatario che definisce come proteggere il
+                traffico.
+            </p>
+            <p>Per una comunicazione bidirezionale sicura, sono necessarie due SA (una per direzione). Ogni SA è
+                identificata univocamente da una tripla di parametri:</p>
+
+            <div class="sa-fields-grid">
+                <div class="sa-field-card">
+                    <div class="sa-icon">🔑</div>
+                    <h4>1. SPI</h4>
+                    <p><strong>Security Parameter Index</strong>: Un identificatore numerico di 32 bit scelto dal
+                        destinatario per distinguere la SA.</p>
+                </div>
+                <div class="sa-field-card">
+                    <div class="sa-icon">🎯</div>
+                    <h4>2. Indirizzo IP</h4>
+                    <p>L'indirizzo IP della <strong>destinazione</strong> del pacchetto (l'endpoint della SA).</p>
+                </div>
+                <div class="sa-field-card">
+                    <div class="sa-icon">🛡️</div>
+                    <h4>3. Protocol ID</h4>
+                    <p>L'identificativo del protocollo di sicurezza utilizzato: <strong>AH</strong> (51) o
+                        <strong>ESP</strong> (50).
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- IKE / Key Management Section -->
+        <section class="section ike-management" style="margin-top: 3rem; border-left: 5px solid #d946ef;">
+            <h2>Gestione Automatica delle Chiavi: IKE</h2>
+            <p>Come fanno due computer a scambiarsi le chiavi AES e HMAC in modo automatico? <strong>IKE (Internet Key
+                    Exchange).</strong></p>
+
+            <!-- 1. The Equation -->
+            <div class="ike-equation-box">
+                <h3 style="text-align: center; color: #aaa; font-size: 1rem;">L'Equazione Fondamentale</h3>
+                <div class="math-big" style="justify-content: center; display: flex; gap: 15px; align-items: center;">
+                    <span style="color: #d946ef;">IKE</span>
+                    <span>=</span>
+                    <span style="color: #facc15;">ISAKMP</span>
+                    <span>+</span>
+                    <span style="color: #3b82f6;">Oakley</span>
+                </div>
+            </div>
+
+            <!-- 2. Components Grid -->
+            <div class="ike-grid">
+                <!-- ISAKMP -->
+                <div class="ike-card isakmp-card">
+                    <div class="card-icon">🤝</div>
+                    <h3>ISAKMP (Il Diplomatico)</h3>
+                    <p class="role-desc">Internet Security Association and Key Management Protocol</p>
+                    <ul class="clean-list">
+                        <li>🚫 <strong>Non genera chiavi.</strong></li>
+                        <li>📄 Definisce i <strong>formati</strong> dei pacchetti.</li>
+                        <li>🗣️ Negozia le regole ("Usiamo AES o DES?").</li>
+                        <li>È il "contenitore" vuoto.</li>
+                    </ul>
+                </div>
+
+                <!-- Oakley -->
+                <div class="ike-card oakley-card">
+                    <div class="card-icon">🧮</div>
+                    <h3>Oakley (Il Matematico)</h3>
+                    <p class="role-desc">Protocollo di Key Exchange</p>
+                    <ul class="clean-list">
+                        <li>🔑 <strong>Genera le chiavi</strong> usando Diffie-Hellman.</li>
+                        <li>🛡️ Usa i <strong>Cookies</strong> per evitare attacchi DoS (Clogging).</li>
+                        <li>🔢 Definisce i "Gruppi" (es. Modp 1024).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 3. IKE Phases -->
+            <div class="ike-phases-vis">
+                <h3 style="text-align: center; margin-bottom: 20px;">Le Fasi di IKE</h3>
+
+                <div class="phase-container phase-1">
+                    <div class="phase-label">FASE 1: Il Tunnel di Comando</div>
+                    <div class="phase-desc">
+                        Lenta e Pesante.<br>
+                        Usa Diffie-Hellman (Oakley) per autenticare e creare un canale sicuro (<strong>ISAKMP
+                            SA</strong>).
+                    </div>
+                </div>
+
+                <div class="arrow-down-phase">⬇️ Protegge la negoziazione successiva ⬇️</div>
+
+                <div class="phase-container phase-2">
+                    <div class="phase-label">FASE 2: Le Chiavi Veloci</div>
+                    <div class="phase-desc">
+                        Velocissima.<br>
+                        Avviene <em>dentro</em> il tunnel sicuo.<br>
+                        Genera le <strong>IPsec SA</strong> per cifrare i dati utente (AH/ESP).
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Protocol Comparison Section -->
+        <section class="section comparison">
+            <h2 style="text-align: center; margin-bottom: 2rem;">Protocollo di Sicurezza</h2>
+
+            <div class="protocol-grid">
+                <!-- Left: AH -->
+                <div class="protocol-card ah-card">
+                    <div class="card-header">
+                        <h3>AH</h3>
+                        <span class="subtitle">Authentication Header</span>
+                    </div>
+                    <div class="card-body">
+                        <ul>
+                            <li><strong>Autenticazione dell'Origine:</strong> Certezza che il pacchetto provenga dal
+                                mittente dichiarato.</li>
+                            <li><strong>Integrità dei Dati:</strong> Garanzia che il pacchetto non sia stato modificato.
+                            </li>
+                            <li><strong>Anti-Replay:</strong> Impedisce il riutilizzo di pacchetti intercettati.</li>
+                        </ul>
+                        <div class="feature-box">
+                            <h4>ICV (Integrity Check Value)</h4>
+                            <p>Un valore calcolato tramite algoritmo di hashing (es. HMAC) e inserito nell'header. Il
+                                ricevente ricalcola l'ICV: se corrisponde, l'integrità è verificata; altrimenti, il
+                                pacchetto è scartato.</p>
+                        </div>
+                        <div class="alert-warning">
+                            ⚠️ <strong>Nota:</strong> AH <u>NON</u> cifra i dati. Il payload rimane leggibile.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: ESP -->
+                <div class="protocol-card esp-card">
+                    <div class="card-header">
+                        <h3>ESP</h3>
+                        <span class="subtitle">Encapsulating Security Payload</span>
+                    </div>
+                    <div class="card-body">
+                        <ul>
+                            <li><strong>Confidenzialità:</strong> Cifra il payload rendendolo illeggibile a chi non
+                                possiede la chiave.</li>
+                            <li><strong>Autenticazione & Integrità:</strong> Simile ad AH, ma opzionale (anche se
+                                raccomandata).</li>
+                            <li><strong>Anti-Replay:</strong> Supporto integrato tramite numeri di sequenza.</li>
+                        </ul>
+                        <div class="feature-box">
+                            <h4>Incapsulamento</h4>
+                            <p>ESP racchiude il payload originale (e l'header IP in modalità Tunnel) all'interno di un
+                                nuovo header e trailer, cifrando tutto ciò che si trova all'interno.</p>
+                        </div>
+                        <div class="alert-success">
+                            🛡️ <strong>Vantaggio:</strong> Offre privacy totale dei dati grazie alla cifratura.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Packet Structure Visualization Section -->
+        <section class="section structure-vis">
+            <h2 style="text-align: center; margin-bottom: 2rem;">Vistualizzazione Pacchetti (Transport Mode)</h2>
+
+            <div class="protocol-grid">
+                <!-- Left: AH Packet Structure -->
+                <div class="vis-column">
+
+                    <!-- Detailed AH Header View -->
+                    <div class="ah-detailed-view">
+                        <h4>Dettaglio Header AH (RFC 4302)</h4>
+                        <div class="rfc-header-grid">
+                            <!-- Row 1 -->
+                            <div class="rfc-field w-8">Next Header<span class="field-desc">Tipo Payload</span></div>
+                            <div class="rfc-field w-8">Payload Len<span class="field-desc">Lunghezza</span></div>
+                            <div class="rfc-field w-16">Reserved<span class="field-desc">0x00</span></div>
+
+                            <!-- Row 2 -->
+                            <div class="rfc-field w-32">Security Parameters Index (SPI)<span class="field-desc">ID
+                                    Associazione (SA)</span></div>
+
+                            <!-- Row 3 -->
+                            <div class="rfc-field w-32">Sequence Number<span class="field-desc">Counter
+                                    Anti-Replay</span></div>
+
+                            <!-- Row 4 -->
+                            <div class="rfc-field w-32 variable-height">Authentication Data (ICV)<br><span
+                                    class="field-desc">Integrità (Hash)</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: ESP Packet Structure -->
+                <div class="vis-column">
+
+                    <!-- Detailed ESP Header View -->
+                    <div class="ah-detailed-view">
+                        <h4>Dettaglio Header ESP (RFC 4303)</h4>
+                        <div class="rfc-header-grid">
+                            <!-- Row 1 -->
+                            <div class="rfc-field w-32">Security Parameters Index (SPI)<span class="field-desc">ID
+                                    Associazione (SA)</span></div>
+
+                            <!-- Row 2 -->
+                            <div class="rfc-field w-32">Sequence Number<span class="field-desc">Counter
+                                    Anti-Replay</span></div>
+
+                            <!-- Row 3: IV (New) -->
+                            <div class="rfc-field w-32" style="background: #2d2d2d;">Initialization Vector (IV)<span
+                                    class="field-desc">Randomicità Cifratura</span></div>
+
+                            <!-- Row 4: Payload -->
+                            <div class="rfc-field w-32 variable-height" style="background: #3c3c3c; color: #9cdcfe;">
+                                Payload Data<span class="field-desc">Dati Cifrati</span></div>
+
+                            <!-- Row 5: Padding -->
+                            <div class="rfc-field w-32 variable-height" style="background: #333; color: #aaa;">
+                                Padding<span class="field-desc">Allineamento</span></div>
+
+                            <!-- Row 6: Trailer -->
+                            <div class="w-32" style="display: flex;">
+                                <div class="rfc-field" style="width: 50%; opacity: 0; border: none;"></div>
+                                <div class="rfc-field w-16" style="flex-grow: 1;">Pad Length<span class="field-desc">Len
+                                        Pad</span></div>
+                                <div class="rfc-field w-16" style="flex-grow: 1;">Next Header<span
+                                        class="field-desc">Tipo</span></div>
+                            </div>
+
+                            <!-- Row 7 -->
+                            <div class="rfc-field w-32 variable-height">Authentication Data (ICV)<br><span
+                                    class="field-desc">Integrità (Hash)</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Control Section -->
+        <section class="section controls">
+            <h2>Configura Architettura</h2>
+            <div class="matrix-grid">
+                <div class="control-group">
+                    <h3>Protocollo</h3>
+                    <div class="toggle-group protocol-toggles">
+                        <label>
+                            <input type="radio" name="protocol" value="ah" checked onchange="updateView()">
+                            <span class="btn-toggle">AH (Authentication Header)</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="protocol" value="esp" onchange="updateView()">
+                            <span class="btn-toggle">ESP (Encapsulating Security Payload)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <h3>Modalità</h3>
+                    <div class="toggle-group mode-toggles">
+                        <label>
+                            <input type="radio" name="mode" value="transport" checked onchange="updateView()">
+                            <span class="btn-toggle">Transport Mode (Host-to-Host)</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="mode" value="tunnel" onchange="updateView()">
+                            <span class="btn-toggle">Tunnel Mode (VPN / Gateway)</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div id="scenario-desc" class="scenario-box">
+                <!-- Text updated by JS -->
+            </div>
+        </section>
+
+        <!-- Visualization Section -->
+        <section class="section visualizer">
+            <h2>Packet Anatomy (Prima & Dopo)</h2>
+
+            <div class="packet-row">
+                <div class="packet-label">Pacchetto Originale</div>
+                <div class="packet-container" id="packet-original">
+                    <div class="block header-ip">IP Header Originale</div>
+                    <div class="block header-transport">TCP/UDP</div>
+                    <div class="block payload">Dati (Payload)</div>
+                </div>
+            </div>
+
+            <div class="arrow-down">⬇️ Trasformazione IPsec ⬇️</div>
+
+            <div class="packet-row">
+                <div class="packet-label">Pacchetto IPsec</div>
+                <div class="packet-container" id="packet-transformed">
+                    <!-- Dynamic Blocks go here -->
+                </div>
+            </div>
+
+            <div class="legend">
+                <span class="legend-item"><span class="dot auth"></span> Autenticato (Firmato)</span>
+                <span class="legend-item"><span class="dot enc"></span> Cifrato (Illeggibile)</span>
+                <span class="legend-item"><span class="dot clear"></span> In Chiaro</span>
+            </div>
+        </section>
+
+        <!-- Sliding Window Animation Section -->
+        <section class="section anti-replay-vis" style="margin-top: 3rem;">
+            <h2 style="text-align: center;">Anti-Replay Sliding Window</h2>
+            <p style="text-align: center; color: #aaa; margin-bottom: 2rem;">
+                Dimostrazione del meccanismo a finestra scorrevole. I pacchetti fuori finestra (sinistra) sono scartati
+                (troppo vecchi).
+                I duplicati sono scartati. I nuovi validi fanno avanzare la finestra.
+            </p>
+
+            <div class="animation-controls" style="text-align: center; margin-bottom: 2rem;">
+                <button class="btn-toggle" onclick="startSlidingWindowDemo()">Avvia Simulazione</button>
+                <div id="replay-status" style="margin-top: 1rem; height: 1.5em; color: #4ec9b0; font-weight: bold;">
+                </div>
+            </div>
+
+            <div class="window-container">
+                <!-- The static shelf background -->
+                <div class="shelf-track" id="shelf-track">
+                    <!-- Shelves will be generated by JS -->
+                </div>
+
+                <!-- The sliding window overlay -->
+                <div class="sliding-window" id="sliding-window"></div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="section faq"
+            style="margin-top: 3rem; background: #252526; padding: 20px; border-radius: 8px; border-left: 5px solid #4ec9b0;">
+            <h3>❓ Domanda Frequente</h3>
+            <p style="font-weight: bold; color: #fff;">
+                Perché si usa il Sequence Number in IPsec se c’è già nel TCP? Qual è la differenza?
+            </p>
+            <p style="color: #ccc; margin-top: 10px;">
+                Il Sequence Number del TCP serve per l'affidabilità (riordinare i pacchetti e ritrasmettere quelli
+                persi).
+                Il <strong>Sequence Number di IPsec</strong> ha uno scopo di <strong>sicurezza</strong> (Anti-Replay).
+            </p>
+            <p style="color: #ccc; margin-top: 5px;">
+                La differenza fondamentale è che il Sequence Number nell’header IPsec è <strong>protetto</strong>
+                (Autenticato dall'hash in AH/ESP e Cifrato in ESP), rendendo impossibile per un attaccante modificarlo
+                senza invalidare il pacchetto. Il Sequence Number TCP, invece, potrebbe essere manipolato se non
+                protetto.
+            </p>
+        </section>
+        </section>
+
+        <div style="text-align: center; margin-top: 50px; margin-bottom: 20px;">
+            <a href="/" style="text-decoration: none;">
+                <button
+                    style="padding: 10px 20px; font-size: 1em; background: #30363d; color: #fff; border: 1px solid #8b949e; border-radius: 6px; cursor: pointer;">
+                    <i class="fas fa-arrow-left"></i> Torna al Menu
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <script src="/static/ipsec_script.js"></script>
+</body>
+
+</html>

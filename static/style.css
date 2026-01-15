@@ -32,6 +32,22 @@ header {
 }
 
 
+/* Global Navigation Button */
+.home-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: 0.9em;
+    z-index: 100;
+    transition: color 0.2s;
+}
+
+.home-btn:hover {
+    color: var(--text-primary);
+}
+
 .back-link {
     display: inline-block;
     color: var(--text-secondary);

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funzioni Hash - Crypto Visualizer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='hash_style.css') }}">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="home-btn"><i class="fas fa-arrow-left"></i> Menu</a>
+            <h1>Funzioni Hash</h1>
+            <p>Le impronte digitali dei dati. Integrità senza segretezza.</p>
+        </header>
+
+        <!-- 1. Introduction -->
+        <section class="section intro">
+            <h2>1. Che cos'è una Funzione Hash?</h2>
+            <p>
+                Una funzione Hash <strong>H(M)</strong> accetta in input un messaggio <em>M</em> di lunghezza variabile
+                e produce in output un'impronta di lunghezza fissa (chiamata <strong>digest</strong> o fingerprint).
+            </p>
+            <div class="key-points">
+                <div class="point">
+                    <strong>Scopo:</strong> Garantire l'<strong>Integrità</strong>. Se cambia un solo bit, l'hash cambia
+                    completamente ("effetto valanga").
+                </div>
+                <div class="point">
+                    <strong>Chiave:</strong> <span style="color:#ef4444">Nessuna chiave segreta</span> richiesta.
+                    Chiunque può calcolare l'hash.
+                </div>
+            </div>
+
+            <!-- Funnel Visualization Placeholder -->
+            <div class="funnel-container">
+                <h3>Visualizzazione Concettuale: L'Imbuto</h3>
+                <div class="funnel-visual">
+                    <div class="funnel-input">INPUT (Qualsiasi Dimensione)</div>
+                    <div class="funnel-body">
+                        <div class="funnel-glass">H(x)</div>
+                        <div class="funnel-bits">10101...</div>
+                    </div>
+                    <div class="funnel-output">OUTPUT (Fisso, es. 256 bit)</div>
+                    <div class="funnel-label">Solo Integrità, No Segretezza</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Security Requirements -->
+        <section class="section security-props">
+            <h2>2. Requisiti di Sicurezza</h2>
+            <div class="cards-grid">
+                <div class="cipher-card">
+                    <span class="cipher-name">Unidirezionalità (One-Way)</span>
+                    <span class="cipher-desc">Facile calcolare H(x), impossibile risalire a x dato H(x).</span>
+                </div>
+                <div class="cipher-card">
+                    <span class="cipher-name">Collisione Debole</span>
+                    <span class="cipher-desc">Dato x, impossibile trovare y diverso tale che H(x) = H(y). (Non posso
+                        sostituire un file firmato).</span>
+                </div>
+                <div class="cipher-card">
+                    <span class="cipher-name">Collisione Forte</span>
+                    <span class="cipher-desc">Impossibile trovare una qualsiasi coppia (x, y) con lo stesso hash.
+                        (Attaccato dal Birthday Paradox).</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Algorithms -->
+        <section class="section algos">
+            <h2>3. Algoritmi Standard</h2>
+            <table class="algo-table">
+                <tr>
+                    <th>Algoritmo</th>
+                    <th>Digest (bit)</th>
+                    <th>Stato</th>
+                </tr>
+                <tr>
+                    <td>MD5</td>
+                    <td>128</td>
+                    <td class="status-bad">Obsoleto (Collisioni facili)</td>
+                </tr>
+                <tr>
+                    <td>SHA-1</td>
+                    <td>160</td>
+                    <td class="status-warn">Debole (Deprecato)</td>
+                </tr>
+                <tr>
+                    <td>SHA-2 (SHA-256/512)</td>
+                    <td>256 / 512</td>
+                    <td class="status-good">Standard Attuale (Merkle-Damgård)</td>
+                </tr>
+                <tr>
+                    <td>SHA-3 (Keccak)</td>
+                    <td>Variabile</td>
+                    <td class="status-good">Nuovo Standard (Spugna / Sponge)</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- 4. Interactive Avalanche Demo -->
+        <section class="section avalanche-demo"
+            style="background: #1e1e1e; padding: 20px; border-radius: 8px; border: 1px solid #333;">
+            <h2>4. Demo Effetto Valanga</h2>
+            <p>Scrivi qui sotto e osserva come l'Hash (SHA-256) cambia radicalmente anche per una piccola modifica.</p>
+
+            <textarea id="hash-input" placeholder="Scrivi un messaggio..." rows="3"
+                style="width: 100%; margin-top: 10px; background: #252526; color: #fff; border: 1px solid #444; padding: 10px; font-family: 'JetBrains Mono';"></textarea>
+
+            <div class="hash-output-box" style="margin-top: 15px;">
+                <label>SHA-256 Digest:</label>
+                <div id="hash-output"
+                    style="font-family: 'JetBrains Mono'; color: #4ec9b0; word-break: break-all; margin-top: 5px;">...
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Birthday Paradox -->
+        <section class="section birthday-paradox">
+            <h2>5. Paradosso del Compleanno</h2>
+            <p>Attacco alla resistenza alle collisioni (Forte).</p>
+            <div class="info-box">
+                <p><strong>La Regola:</strong> Se un hash ha <em>n</em> bit, bastano solo
+                    <strong>2<sup>n/2</sup></strong> tentativi per trovare una collisione con probabilità > 50%, non
+                    2<sup>n</sup>.
+                </p>
+                <p>Esempio: Hash a 64 bit → Bastano 2<sup>32</sup> tentativi (4 miliardi), fattibile oggi.</p>
+                <p>Ecco perché usiamo hash da 256 bit o più.</p>
+            </div>
+        </section>
+
+        <div style="text-align: center; margin-top: 50px; margin-bottom: 20px;">
+            <a href="/" style="text-decoration: none;">
+                <button
+                    style="padding: 10px 20px; font-size: 1em; background: #30363d; color: #fff; border: 1px solid #8b949e; border-radius: 6px; cursor: pointer;">
+                    <i class="fas fa-arrow-left"></i> Torna al Menu
+                </button>
+            </a>
+        </div>
+
+
+    </div>
+    <script src="{{ url_for('static', filename='hash_script.js') }}"></script>
+</body>
+
+</html>

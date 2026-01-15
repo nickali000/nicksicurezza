@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizzazione PRNG (LCG)</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="/static/prng_style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="home-btn"><i class="fas fa-arrow-left"></i> Menu</a>
+            <h1>PRNG: Linear Congruential Generator</h1>
+            <p>Generatore di numeri pseudo-casuali deterministico.</p>
+        </header>
+
+        <!-- Concept Section -->
+        <section class="section concept">
+            <h2>Formula LCG</h2>
+            <div class="theory-box">
+                <p>Formula ricorsiva:</p>
+                <div class="formula-block">
+                    X<sub>n+1</sub> = (a · X<sub>n</sub> + c) mod m
+                </div>
+                <p>Dove:</p>
+                <ul>
+                    <li><strong>m</strong>: Modulo (limite superiore esclusivo)</li>
+                    <li><strong>a</strong>: Moltiplicatore</li>
+                    <li><strong>c</strong>: Incremento</li>
+                    <li><strong>X<sub>0</sub></strong>: Seme Iniziale (Seed)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Interactive Section -->
+        <section class="section interactive">
+            <h2>Simulazione</h2>
+            <div class="controls-grid">
+                <div class="form-group">
+                    <label>Modulo (m)</label>
+                    <input type="number" id="val-m" value="31">
+                    <span class="hint">Suggerimento: usa un numero primo per periodi lunghi.</span>
+                </div>
+                <div class="form-group">
+                    <label>Moltiplicatore (a)</label>
+                    <input type="number" id="val-a" value="3">
+                </div>
+                <div class="form-group">
+                    <label>Incremento (c)</label>
+                    <input type="number" id="val-c" value="7">
+                </div>
+                <div class="form-group">
+                    <label>Seme (X₀)</label>
+                    <input type="number" id="val-seed" value="1">
+                </div>
+                <div class="form-group">
+                    <label>Lunghezza Sequenza (N)</label>
+                    <input type="number" id="val-n" value="50">
+                </div>
+            </div>
+
+            <button onclick="generateSequence()">Genera Sequenza</button>
+            <div class="presets">
+                <span>Preset: </span>
+                <button class="preset-btn" onclick="setPreset(16, 5, 1, 0)">Periodo Corto (m=16)</button>
+                <button class="preset-btn" onclick="setPreset(31, 3, 0, 1)">Moltiplicativo (c=0)</button>
+                <button class="preset-btn" onclick="setPreset(256, 137, 123, 13)">Buono parametri (m=256)</button>
+            </div>
+
+            <div id="results-area" class="hidden">
+                <div class="graph-container">
+                    <canvas id="prngChart"></canvas>
+                </div>
+
+                <h3>Log Sequenza</h3>
+                <div id="prng-steps" class="steps-container"></div>
+            </div>
+        </section>
+
+        <div style="text-align: center; margin-top: 50px; margin-bottom: 20px;">
+            <a href="/" style="text-decoration: none;">
+                <button
+                    style="padding: 10px 20px; font-size: 1em; background: #30363d; color: #fff; border: 1px solid #8b949e; border-radius: 6px; cursor: pointer;">
+                    <i class="fas fa-arrow-left"></i> Torna al Menu
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <script src="/static/prng_script.js"></script>
+</body>
+
+</html>
