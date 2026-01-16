@@ -83,6 +83,7 @@ let windowStart = 6; // Window starts at 6 [6, 7, 8, 9]
 const windowSize = 4;
 let receivedPackets = new Set();
 let animationRunning = false;
+let isPaused = false;
 
 // User Scenario:
 // 1. Packet 5: Old (Left of 6) -> Reject
@@ -142,9 +143,40 @@ function updateWindowPosition() {
     win.style.width = `${(windowSize * slotWidth) - 10 + 10}px`;
 }
 
+// === Pause/Resume Logic ===
+function togglePause() {
+    isPaused = !isPaused;
+    const btn = document.getElementById('btn-pause-sim');
+    if (isPaused) {
+        btn.innerHTML = '▶ Riprendi';
+        btn.style.background = '#48bb78'; // Green for resume
+    } else {
+        btn.innerHTML = '⏸ Pausa';
+        btn.style.background = '#e3b341'; // Yellow for pause
+    }
+}
+
+async function wait(ms) {
+    // Loop while paused
+    while (isPaused) {
+        await new Promise(r => setTimeout(r, 100));
+    }
+    // Then wait the actual time
+    await new Promise(r => setTimeout(r, ms));
+}
+
 async function startSlidingWindowDemo() {
     if (animationRunning) return;
     animationRunning = true;
+    isPaused = false; // Reset pause state
+
+    // UI Update
+    document.getElementById('btn-start-sim').disabled = true;
+    const pauseBtn = document.getElementById('btn-pause-sim');
+    pauseBtn.style.display = 'inline-block';
+    pauseBtn.innerHTML = '⏸ Pausa';
+    pauseBtn.style.background = '#e3b341';
+
     initSlidingWindow();
 
     const status = document.getElementById('replay-status');
@@ -152,11 +184,15 @@ async function startSlidingWindowDemo() {
 
     for (let pkt of packetsSequence) {
         await processPacket(pkt);
-        await new Promise(r => setTimeout(r, 1000));
+        await wait(1000);
     }
 
     status.innerText = "Simulazione Completata.";
     animationRunning = false;
+
+    // Reset UI
+    document.getElementById('btn-start-sim').disabled = false;
+    pauseBtn.style.display = 'none';
 }
 
 async function processPacket(pkt) {
@@ -175,9 +211,9 @@ async function processPacket(pkt) {
 
     box.style.left = `${slotLeft}px`;
 
-    await new Promise(r => setTimeout(r, 50));
+    await wait(50);
     box.style.top = '5px';
-    await new Promise(r => setTimeout(r, 600));
+    await wait(600);
 
     const windowEnd = windowStart + windowSize - 1;
 
@@ -206,20 +242,20 @@ async function processPacket(pkt) {
 
         if (pkt.type === 'new-shift-2') {
             status.innerText += ` -> Completamento sequenza, Avanza di 2`;
-            await new Promise(r => setTimeout(r, 500));
+            await wait(500);
             windowStart += 2;
             updateWindowPosition();
         } else if (seq > windowEnd) {
             // Standard behavior if not custom type
             const shiftAmount = seq - windowEnd;
             status.innerText += ` -> Finestra Scorrevole Avanza di ${shiftAmount}`;
-            await new Promise(r => setTimeout(r, 500));
+            await wait(500);
             windowStart += shiftAmount;
             updateWindowPosition();
         }
     }
 
-    await new Promise(r => setTimeout(r, 1000));
+    await wait(1000);
     box.style.opacity = '0';
-    setTimeout(() => box.remove(), 500);
+    setTimeout(() => box.remove(), 500); // UI cleanup doesn't need to wait for pause
 }
