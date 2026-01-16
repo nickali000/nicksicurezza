@@ -43,6 +43,38 @@
             </div>
         </section>
 
+        <!-- NEW THEORY SECTION (Kasiski) -->
+        <section class="section theory-section"
+            style="margin-top: 4rem; border-top: 1px solid #30363d; padding-top: 2rem;">
+            <div class="card"
+                style="background: #161b22; border: 1px solid #30363d; color: #cbd5e1; padding: 25px; border-radius: 8px;">
+                <h2 style="color: #f85149; border-bottom: 1px solid #30363d; padding-bottom: 10px;">🕵️‍♂️
+                    Crittoanalisi: Come rompere Vigenère?</h2>
+                <p>Per secoli Vigenère fu considerato "il cifrario indecifrabile" (<em>le chiffre indéchiffrable</em>).
+                    Ma nel 1863, Friederich Kasiski pubblicò un metodo per romperlo.</p>
+
+                <h3 style="color: #58a6ff; margin-top: 20px;">1. Il Metodo Kasiski (Trovare la lunghezza della chiave)
+                </h3>
+                <p>Se una sequenza di lettere nel testo in chiaro si ripete a una distanza che è un <strong>multiplo
+                        della lunghezza della chiave</strong>, allora produrrà lo stesso testo cifrato visuale.</p>
+                <div
+                    style="background: #0d1117; padding: 15px; border-left: 4px solid #a371f7; font-family: 'JetBrains Mono'; margin: 15px 0;">
+                    Plain: THE BOY HAS THE BAG<br>
+                    Key: ABC ABC ABC ABC ABC<br>
+                    Cipher: <strong>TIG</strong> CQA HCT <strong>TIG</strong> CBH
+                </div>
+                <p>Notiamo che "TIG" si ripete. La distanza tra i due "TIG" è di 9 caratteri.<br>
+                    La lunghezza della chiave deve essere un divisore di 9 (quindi 3 o 9). In questo caso è 3 (ABC).</p>
+
+                <h3 style="color: #58a6ff; margin-top: 20px;">2. Analisi delle Frequenze (Trovare la chiave)</h3>
+                <p>Una volta scoperta la lunghezza della chiave (diciamo <em>L</em>), il testo viene diviso in
+                    <em>L</em> colonne.</p>
+                <p>Ogni colonna è stata cifrata con una singola lettera (Cifrario di Cesare). Basta applicare la normale
+                    analisi delle frequenze (es. cercare la lettera 'E', la più comune) su ogni colonna per recuperare
+                    la chiave completa.</p>
+            </div>
+        </section>
+
         <div style="text-align: center; margin-top: 50px; margin-bottom: 20px;">
             <a href="/" style="text-decoration: none;">
                 <button

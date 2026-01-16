@@ -147,6 +147,10 @@ def aes():
 def des():
     return render_template('des.html')
 
+@app.route('/modes')
+def modes():
+    return render_template('modes.html')
+
 @app.route('/encrypt', methods=['POST'])
 def encrypt():
     data = request.json
@@ -176,6 +180,11 @@ def encrypt_des():
         return jsonify(result)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+@app.route('/feistel')
+def feistel():
+    return render_template('feistel.html')
 
 
 @app.route('/row_transposition')

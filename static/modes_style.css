@@ -1,0 +1,248 @@
+/* Basic page styling adjustments */
+.expanded-container {
+    max-width: 1200px !important;
+}
+
+.mode-section {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    padding: 2rem;
+    margin-bottom: 3rem;
+}
+
+.mode-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.mode-header h2 {
+    margin: 0;
+    color: #58a6ff;
+    font-size: 1.8rem;
+}
+
+.subtitle {
+    color: #8b949e;
+    font-style: italic;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+}
+
+.tag {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.tag.warning {
+    background: #d29922;
+    color: #000;
+}
+
+.tag.neutral {
+    background: #30363d;
+    color: #c9d1d9;
+}
+
+.tag.special {
+    background: #a371f7;
+    color: #fff;
+}
+
+.tag.success {
+    background: #238636;
+    color: #fff;
+}
+
+/* Content Layout */
+.mode-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+@media (max-width: 900px) {
+    .mode-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+.theory-col,
+.visual-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.card {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+.card h3 {
+    margin-top: 0;
+    color: #c9d1d9;
+    border-bottom: 1px solid #21262d;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.card p,
+.card li {
+    line-height: 1.6;
+    color: #8b949e;
+}
+
+.note {
+    font-size: 0.9em;
+    color: #a371f7 !important;
+}
+
+.pros-cons {
+    list-style: none;
+    padding: 0;
+}
+
+.pros-cons li {
+    margin-bottom: 0.8rem;
+}
+
+.sub-item {
+    margin-left: 1.5rem;
+}
+
+/* Status colors in text */
+.yes {
+    color: #3fb950;
+    font-weight: bold;
+}
+
+.no {
+    color: #f85149;
+    font-weight: bold;
+}
+
+/* Cheat Sheet Table */
+.table-container {
+    overflow-x: auto;
+}
+
+.cheat-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #c9d1d9;
+    background: #161b22;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.cheat-table th,
+.cheat-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #30363d;
+}
+
+.cheat-table th {
+    background: #21262d;
+    color: #58a6ff;
+    font-weight: 600;
+}
+
+.cheat-table tr:last-child td {
+    border-bottom: none;
+}
+
+.highlight-row {
+    background: rgba(35, 134, 54, 0.15);
+}
+
+.yes2 {
+    color: #3fb950;
+    font-weight: bold;
+}
+
+/* TOC */
+.toc {
+    background: #161b22;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+}
+
+.toc ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.toc a {
+    color: #58a6ff;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.toc a:hover {
+    background: #58a6ff;
+    color: #0d1117;
+}
+
+/* ==================
+   Image Layout 
+   ================== */
+.diagram-container {
+    background: #ffffff;
+    /* White bg for image visibility */
+    padding: 1.5rem;
+    border-radius: 8px;
+    color: #000;
+    display: flex;
+    justify-content: center;
+    overflow-x: auto;
+}
+
+/* Column layout for image pairs */
+.column-layout {
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+}
+
+.img-wrapper {
+    width: 100%;
+    text-align: center;
+}
+
+.img-wrapper h4 {
+    margin: 0 0 10px 0;
+    color: #333;
+    font-size: 1.1rem;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 5px;
+    display: inline-block;
+}
+
+.mode-img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

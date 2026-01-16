@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modalità Operative - Block Ciphers</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='modes_style.css') }}">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body>
+    <div class="container expanded-container">
+        <header>
+            <a href="/" class="home-btn"><i class="fas fa-arrow-left"></i> Menu</a>
+            <h1>Modalità Operative</h1>
+            <p>Guida tecnica definitiva ai Block Cipher Modes of Operation.</p>
+        </header>
+
+        <nav class="toc">
+            <ul>
+                <li><a href="#ecb">ECB</a></li>
+                <li><a href="#cbc">CBC</a></li>
+                <li><a href="#cfb">CFB</a></li>
+                <li><a href="#ofb">OFB</a></li>
+                <li><a href="#ctr">CTR</a></li>
+                <li><a href="#cheatsheet">Cheat Sheet</a></li>
+            </ul>
+        </nav>
+
+        <!-- 1. ECB -->
+        <section id="ecb" class="mode-section">
+            <div class="mode-header">
+                <h2>1. ECB (Electronic Code Book)</h2>
+                <span class="tag warning">Ingenuo</span>
+            </div>
+            <p class="subtitle"><em>Il metodo ingenuo. Blocchi indipendenti.</em></p>
+
+            <div class="mode-content">
+                <div class="theory-col">
+                    <div class="card">
+                        <h3><i class="fas fa-square-root-alt"></i> Formule</h3>
+                        <p><strong>Cifratura:</strong> \( C_i = E_K(P_i) \)</p>
+                        <p><strong>Decifratura:</strong> \( P_i = D_K(C_i) \)</p>
+                    </div>
+
+                    <div class="card">
+                        <h3><i class="fas fa-tachometer-alt"></i> Prestazioni</h3>
+                        <ul class="pros-cons">
+                            <li class="pro"><i class="fas fa-bolt"></i> <strong>Parallelizzabile:</strong> <span
+                                    class="yes">SÌ</span> (Sia Cifratura che Decifratura). Ogni blocco è isolato.</li>
+                            <li class="con"><i class="fas fa-stopwatch"></i> <strong>Pre-computabile:</strong> <span
+                                    class="no">NO</span>.</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h3><i class="fas fa-briefcase"></i> Dove si usa</h3>
+                        <ul>
+                            <li>Mai per dati lunghi (preserva pattern visivi).</li>
+                            <li>Si usa solo per cifrare <strong>singole chiavi</strong> (Key Wrapping) o dati casuali
+                                molto brevi.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="visual-col">
+                    <h3>Schema Logico</h3>
+                    <div class="diagram-container column-layout">
+                        <div class="img-wrapper">
+                            <h4>Cifratura</h4>
+                            <img src="{{ url_for('static', filename='images/modes/ecb_encryption.png') }}"
+                                alt="ECB Encryption" class="mode-img">
+                        </div>
+                        <div class="img-wrapper">
+                            <h4>Decifratura</h4>
+                            <img src="{{ url_for('static', filename='images/modes/ecb_decryption.png') }}"
+                                alt="ECB Decryption" class="mode-img">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. CBC -->
+        <section id="cbc" class="mode-section">
+            <div class="mode-header">
+                <h2>2. CBC (Cipher Block Chaining)</h2>
+                <span class="tag neutral">Standard Storico</span>
+            </div>
+            <p class="subtitle"><em>Lo standard storico. Catena seriale.</em></p>
+
+            <div class="mode-content">
+                <div class="theory-col">
+                    <div class="card">
+                        <h3><i class="fas fa-square-root-alt"></i> Formule</h3>
+                        <p><strong>Cifratura:</strong> \( C_i = E_K(P_i \oplus C_{i-1}) \)</p>
+                        <p class="note">*(Nota: \( C_0 = IV \))*</p>
+                        <p><strong>Decifratura:</strong> \( P_i = D_K(C_i) \oplus C_{i-1} \)</p>
+                    </div>
+
+                    <div class="card">
+                        <h3><i class="fas fa-tachometer-alt"></i> Prestazioni</h3>
+                        <ul class="pros-cons">
+                            <li><strong>Parallelizzabile:</strong></li>
+                            <li class="con sub-item"><strong>Cifratura:</strong> <span class="no">NO</span> (Devi
+                                aspettare il blocco prima).</li>
+                            <li class="pro sub-item"><strong>Decifratura:</strong> <span class="yes">SÌ</span> (Hai già
+                                tutti i blocchi cifrati \(C_{i-1}\), quindi puoi decifrarli tutti insieme).</li>
+                            <li class="con"><i class="fas fa-stopwatch"></i> <strong>Pre-computabile:</strong> <span
+                                    class="no">NO</span>.</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h3><i class="fas fa-briefcase"></i> Dove si usa</h3>
+                        <ul>
+                            <li>Database cifrati.</li>
+                            <li>Protocolli vecchi (TLS 1.0, SSL).</li>
+                            <li>Autenticazione (CBC-MAC).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="visual-col">
+                    <h3>Schema Logico</h3>
+                    <div class="diagram-container column-layout">
+                        <div class="img-wrapper">
+                            <h4>Cifratura</h4>
+                            <img src="{{ url_for('static', filename='images/modes/cbc_encryption.png') }}"
+                                alt="CBC Encryption" class="mode-img">
+                        </div>
+                        <div class="img-wrapper">
+                            <h4>Decifratura</h4>
+                            <img src="{{ url_for('static', filename='images/modes/cbc_decryption.png') }}"
+                                alt="CBC Decryption" class="mode-img">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. CFB -->
+        <section id="cfb" class="mode-section">
+            <div class="mode-header">
+                <h2>3. CFB (Cipher Feedback)</h2>
+                <span class="tag neutral">Stream Simulata</span>
+            </div>
+            <p class="subtitle"><em>Simula un flusso (Stream) usando il Cifrato precedente.</em></p>
+
+            <div class="mode-content">
+                <div class="theory-col">
+                    <div class="card">
+                        <h3><i class="fas fa-square-root-alt"></i> Formule</h3>
+                        <p><strong>Cifratura:</strong> \( C_i = E_K(C_{i-1}) \oplus P_i \)</p>
+                        <p><strong>Decifratura:</strong> \( P_i = E_K(C_{i-1}) \oplus C_i \)</p>
+                        <p class="note">*(Nota: Usa la funzione di Cifratura \(E_K\) anche per decifrare!)*</p>
+                    </div>
+
+                    <div class="card">
+                        <h3><i class="fas fa-tachometer-alt"></i> Prestazioni</h3>
+                        <ul class="pros-cons">
+                            <li><strong>Parallelizzabile:</strong></li>
+                            <li class="con sub-item"><strong>Cifratura:</strong> <span class="no">NO</span>.</li>
+                            <li class="pro sub-item"><strong>Decifratura:</strong> <span class="yes">SÌ</span> (Come
+                                CBC, conosci già gli input \(C_{i-1}\)).</li>
+                            <li class="con"><i class="fas fa-stopwatch"></i> <strong>Pre-computabile:</strong> <span
+                                    class="no">NO</span>.</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h3><i class="fas fa-briefcase"></i> Dove si usa</h3>
+                        <ul>
+                            <li>Vecchi standard che richiedevano sincronizzazione.</li>
+                            <li>Raramente usato oggi.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="visual-col">
+                    <h3>Schema Logico</h3>
+                    <div class="diagram-container column-layout">
+                        <div class="img-wrapper">
+                            <h4>Cifratura</h4>
+                            <img src="{{ url_for('static', filename='images/modes/cfb_encryption.png') }}"
+                                alt="CFB Encryption" class="mode-img">
+                        </div>
+                        <div class="img-wrapper">
+                            <h4>Decifratura</h4>
+                            <img src="{{ url_for('static', filename='images/modes/cfb_decryption.png') }}"
+                                alt="CFB Decryption" class="mode-img">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. OFB -->
+        <section id="ofb" class="mode-section">
+            <div class="mode-header">
+                <h2>4. OFB (Output Feedback)</h2>
+                <span class="tag special">Flusso Puro</span>
+            </div>
+            <p class="subtitle"><em>Il generatore di flusso puro. Il rumore è indipendente dal messaggio.</em></p>
+
+            <div class="mode-content">
+                <div class="theory-col">
+                    <div class="card">
+                        <h3><i class="fas fa-square-root-alt"></i> Formule</h3>
+                        <p><strong>Generazione Flusso:</strong> \( Z_i = E_K(Z_{i-1}) \) *(Dove \(Z_0 = IV\))*</p>
+                        <p><strong>Cifratura:</strong> \( C_i = P_i \oplus Z_i \)</p>
+                        <p><strong>Decifratura:</strong> \( P_i = C_i \oplus Z_i \)</p>
+                    </div>
+
+                    <div class="card">
+                        <h3><i class="fas fa-tachometer-alt"></i> Prestazioni</h3>
+                        <ul class="pros-cons">
+                            <li class="con"><i class="fas fa-bolt"></i> <strong>Parallelizzabile:</strong> <span
+                                    class="no">NO</span> (Né cifratura né decifratura, perché la generazione di \(Z_i\)
+                                è seriale).</li>
+                            <li class="pro"><i class="fas fa-stopwatch"></i> <strong>Pre-computabile:</strong> <span
+                                    class="yes">SÌ!</span> Puoi generare tutto il flusso \(Z\) prima ancora che arrivi
+                                il messaggio.</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h3><i class="fas fa-briefcase"></i> Dove si usa</h3>
+                        <ul>
+                            <li><strong>Canali rumorosi</strong> (Satelliti, Radio militare).</li>
+                            <li>Se un bit si corrompe durante la trasmissione, rovina solo quel bit, non tutto il resto
+                                del messaggio (Error propagation limitata).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="visual-col">
+                    <h3>Schema Logico</h3>
+                    <div class="diagram-container column-layout">
+                        <div class="img-wrapper">
+                            <h4>Cifratura</h4>
+                            <img src="{{ url_for('static', filename='images/modes/ofb_encryption.png') }}"
+                                alt="OFB Encryption" class="mode-img">
+                        </div>
+                        <div class="img-wrapper">
+                            <h4>Decifratura</h4>
+                            <img src="{{ url_for('static', filename='images/modes/ofb_decryption.png') }}"
+                                alt="OFB Decryption" class="mode-img">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. CTR -->
+        <section id="ctr" class="mode-section">
+            <div class="mode-header">
+                <h2>5. CTR (Counter Mode)</h2>
+                <span class="tag success">Il Standard Moderno</span>
+            </div>
+            <p class="subtitle"><em>Il re moderno. Parallelo e veloce.</em></p>
+
+            <div class="mode-content">
+                <div class="theory-col">
+                    <div class="card">
+                        <h3><i class="fas fa-square-root-alt"></i> Formule</h3>
+                        <p><strong>Generazione Chiave:</strong> \( K_i = E_K(Nonce || Counter_i) \)</p>
+                        <p><strong>Cifratura:</strong> \( C_i = P_i \oplus K_i \)</p>
+                        <p><strong>Decifratura:</strong> \( P_i = C_i \oplus K_i \)</p>
+                    </div>
+
+                    <div class="card">
+                        <h3><i class="fas fa-tachometer-alt"></i> Prestazioni</h3>
+                        <ul class="pros-cons">
+                            <li class="pro"><i class="fas fa-bolt"></i> <strong>Parallelizzabile:</strong> <span
+                                    class="yes">SÌ (TOTALE)</span>. Sia cifratura che decifratura. Ogni blocco dipende
+                                solo dal contatore.</li>
+                            <li class="pro"><i class="fas fa-stopwatch"></i> <strong>Pre-computabile:</strong> <span
+                                    class="yes">SÌ!</span> Puoi calcolare i blocchi \(K_i\) in anticipo.</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h3><i class="fas fa-briefcase"></i> Dove si usa</h3>
+                        <ul>
+                            <li><strong>Ovunque oggi.</strong></li>
+                            <li>IPsec (moderno).</li>
+                            <li>WPA2 (AES-CCMP).</li>
+                            <li>TLS 1.3 (GCM è basato su CTR).</li>
+                            <li>Processori Multi-Core.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="visual-col">
+                    <h3>Schema Logico</h3>
+                    <div class="diagram-container column-layout">
+                        <!-- CTR Diagram -->
+                        <div class="img-wrapper">
+                            <h4>Cifratura</h4>
+                            <img src="{{ url_for('static', filename='images/modes/ctr_encryption.png') }}"
+                                alt="CTR Encryption" class="mode-img">
+                        </div>
+                        <div class="img-wrapper">
+                            <h4>Decifratura</h4>
+                            <img src="{{ url_for('static', filename='images/modes/ctr_decryption.png') }}"
+                                alt="CTR Decryption" class="mode-img">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cheat Sheet -->
+        <section id="cheatsheet" class="mode-section">
+            <div class="mode-header">
+                <h2><i class="fas fa-list-alt"></i> Tabella "Cheat Sheet"</h2>
+                <p>Oro colato per l'esame.</p>
+            </div>
+
+            <div class="table-container">
+                <table class="cheat-table">
+                    <thead>
+                        <tr>
+                            <th>Modo</th>
+                            <th>Cifratura Parallela?</th>
+                            <th>Decifratura Parallela?</th>
+                            <th>Pre-Computabile?</th>
+                            <th>Accesso Casuale?</th>
+                            <th>Uso Principale</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>ECB</strong></td>
+                            <td class="yes">✅ SÌ</td>
+                            <td class="yes">✅ SÌ</td>
+                            <td class="no">❌ NO</td>
+                            <td class="yes">✅ SÌ</td>
+                            <td>Chiavi, Dati random</td>
+                        </tr>
+                        <tr>
+                            <td><strong>CBC</strong></td>
+                            <td class="no">❌ NO</td>
+                            <td class="yes">✅ SÌ</td>
+                            <td class="no">❌ NO</td>
+                            <td class="no">❌ NO</td>
+                            <td>File, Database (Legacy)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>CFB</strong></td>
+                            <td class="no">❌ NO</td>
+                            <td class="yes">✅ SÌ</td>
+                            <td class="no">❌ NO</td>
+                            <td class="no">❌ NO</td>
+                            <td>Streaming (Legacy)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>OFB</strong></td>
+                            <td class="no">❌ NO</td>
+                            <td class="no">❌ NO</td>
+                            <td class="yes">✅ SÌ</td>
+                            <td class="no">❌ NO</td>
+                            <td>Satelliti (No Error Prop)</td>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td><strong>CTR</strong></td>
+                            <td class="yes2">✅ SÌ</td>
+                            <td class="yes2">✅ SÌ</td>
+                            <td class="yes2">✅ SÌ</td>
+                            <td class="yes2">✅ SÌ</td>
+                            <td><strong>Web, WiFi, IPsec (Moderno)</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </div>
+
+    <div style="text-align: center; margin-top: 50px; margin-bottom: 20px;">
+        <a href="/" style="text-decoration: none;">
+            <button
+                style="padding: 10px 20px; font-size: 1em; background: #30363d; color: #fff; border: 1px solid #8b949e; border-radius: 6px; cursor: pointer;">
+                <i class="fas fa-arrow-left"></i> Torna al Menu
+            </button>
+        </a>
+    </div>
+
+</body>
+
+</html>

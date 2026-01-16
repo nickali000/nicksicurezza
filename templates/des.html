@@ -9,6 +9,8 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="/static/des_style.css?v=5">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 
 <body>
@@ -18,6 +20,146 @@
             <h1>DES Visualization</h1>
             <p>Data Encryption Standard (64-bit Block Cipher)</p>
         </header>
+
+        <!-- NEW THEORY SECTION START -->
+        <section class="section theory-section" style="margin-top: 3rem; color: #c9d1d9;">
+            <div class="card"
+                style="background: #161b22; border: 1px solid #30363d; padding: 20px; border-radius: 8px; margin-bottom: 2rem;">
+                <h2 style="color: #f85149; margin-top: 0;">⚠️ Perché DES non è più sicuro?</h2>
+                <div class="grid-col-2" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <h3 style="color: #c9d1d9;">1. Brute Force (Spazio Chiavi)</h3>
+                        <p>La chiave è di soli <strong>56 bit</strong> (64 bit totali - 8 bit di parità).</p>
+
+                        <div
+                            style="background: #21262d; border-radius: 8px; padding: 15px; margin: 10px 0; text-align: center; border: 1px solid #30363d;">
+                            <div style="color: #8b949e; font-size: 0.9em; margin-bottom: 5px;">Spazio Totale delle
+                                Chiavi</div>
+                            <div style="font-size: 1.4em; color: #f85149; font-weight: bold;">
+                                \( 2^{56} \approx 7.2 \times 10^{16} \)
+                            </div>
+                            <div style="color: #8b949e; font-size: 0.8em; margin-top: 5px;">(72 Biliardi di
+                                combinazioni)</div>
+                        </div>
+
+                        <p>Negli anni '70 era sicuro. Oggi, con hardware specializzato (ASIC/FPGA) o cloud computing, si
+                            può rompere in <strong>meno di 24 ore</strong>.</p>
+                    </div>
+                    <div>
+                        <h3 style="color: #c9d1d9;">2. Crittoanalisi</h3>
+                        <p>Esistono attacchi teorici più efficienti del Brute Force:</p>
+                        <ul>
+                            <li><strong>Differential Cryptanalysis</strong>: Sfrutta le differenze (XOR) tra coppie di
+                                plaintext.</li>
+                            <li><strong>Linear Cryptanalysis</strong>: Cerca approssimazioni lineari del cifrario.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card"
+                style="background: #161b22; border: 1px solid #30363d; padding: 20px; border-radius: 8px; margin-bottom: 2rem; border-left: 5px solid #d29922;">
+                <h2 style="color: #d29922; margin-top: 0;">🛑 Il Fallimento del 2-DES</h2>
+                <p>Se 56 bit sono pochi, perché non applicare DES due volte con due chiavi diverse per avere 112 bit?
+                </p>
+
+                <div
+                    style="display: flex; align-items: center; justify-content: center; gap: 10px; background: #0d1117; padding: 15px; border-radius: 6px; margin: 15px 0; border: 1px solid #30363d;">
+                    <div style="text-align: center;">
+                        <span style="display: block; font-size: 0.8em; color: #8b949e;">Chiave 1</span>
+                        <span style="color: #58a6ff; font-weight: bold; font-family: 'JetBrains Mono';">\( K_1 \)</span>
+                    </div>
+                    <span style="color: #8b949e;">&</span>
+                    <div style="text-align: center;">
+                        <span style="display: block; font-size: 0.8em; color: #8b949e;">Chiave 2</span>
+                        <span style="color: #a371f7; font-weight: bold; font-family: 'JetBrains Mono';">\( K_2 \)</span>
+                    </div>
+                </div>
+
+                <div
+                    style="background: #21262d; padding: 15px; border-radius: 6px; margin: 10px 0; font-family: 'JetBrains Mono'; text-align: center; border: 1px dashed #d29922;">
+                    \( C = E_{K_2}(E_{K_1}(P)) \)
+                </div>
+                <h3 style="color: #c9d1d9;">L'Attacco Meet-in-the-Middle</h3>
+                <p>Il 2-DES soffre di un attacco che riduce la sicurezza effettiva a soli <strong>57 bit</strong> circa,
+                    non 112.</p>
+                <ol style="margin-left: 20px; line-height: 1.6;">
+                    <li>L'attaccante conosce una coppia (P, C).</li>
+                    <li>Cifra P con <em>tutte</em> le possibili chiavi <span style="color: #58a6ff;">\(K_1\)</span> e
+                        salva i risultati in una tabella: <br>
+                        <span style="color: #58a6ff;">\( X = E_{K_1}(P) \)</span>
+                    </li>
+                    <li>Decifra C con <em>tutte</em> le possibili chiavi <span style="color: #a371f7;">\(K_2\)</span>:
+                        <br>
+                        <span style="color: #a371f7;">\( Y = D_{K_2}(C) \)</span>
+                    </li>
+                    <li>Se trova un match (<span style="color: #3fb950;">\( X == Y \)</span>), ha trovato la coppia
+                        <span style="color: #d29922;">\( (K_1, K_2) \)</span>.
+                    </li>
+                </ol>
+                <p><strong>Conclusione:</strong> Richiede molta memoria ( \( 2^{56} \) blocchi), ma rompe il 2-DES nello
+                    stesso tempo del DES singolo (o quasi). Per questo si è passati direttamente al
+                    <strong>3-DES</strong>.
+                </p>
+            </div>
+
+            <div class="card"
+                style="background: #161b22; border: 1px solid #30363d; padding: 20px; border-radius: 8px;">
+                <h2 style="color: #3fb950; margin-top: 0;">⚔️ Confronto: DES vs AES</h2>
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                        <thead>
+                            <tr style="background: #21262d; color: #58a6ff;">
+                                <th style="padding: 10px; border-bottom: 2px solid #30363d;">Caratteristica</th>
+                                <th style="padding: 10px; border-bottom: 2px solid #30363d;">DES (Data Encryption Std)
+                                </th>
+                                <th style="padding: 10px; border-bottom: 2px solid #30363d;">AES (Advanced Encryption
+                                    Std)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: 10px; border-bottom: 1px solid #30363d; font-weight: bold;">Anno &
+                                    Origine</td>
+                                <td style="padding: 10px; border-bottom: 1px solid #30363d;">1977 (IBM/NSA)</td>
+                                <td style="padding: 10px; border-bottom: 1px solid #30363d;">2001 (Rijndael - Belgio)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; border-bottom: 1px solid #30363d; font-weight: bold;">
+                                    Lunghezza Chiave</td>
+                                <td style="padding: 10px; border-bottom: 1px solid #30363d; color: #f85149;">56 bit
+                                    (Debole)</td>
+                                <td style="padding: 10px; border-bottom: 1px solid #30363d; color: #3fb950;">128, 192,
+                                    256 bit</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; border-bottom: 1px solid #30363d; font-weight: bold;">
+                                    Dimensione Blocco</td>
+                                <td style="padding: 10px; border-bottom: 1px solid #30363d;">64 bit</td>
+                                <td style="padding: 10px; border-bottom: 1px solid #30363d;">128 bit</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; border-bottom: 1px solid #30363d; font-weight: bold;">
+                                    Struttura</td>
+                                <td style="padding: 10px; border-bottom: 1px solid #30363d;">Rete di Feistel (16 Round)
+                                </td>
+                                <td style="padding: 10px; border-bottom: 1px solid #30363d;">Rete SPN
+                                    (Sostituzione-Permutazione)</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; border-bottom: 1px solid #30363d; font-weight: bold;">
+                                    Sicurezza</td>
+                                <td style="padding: 10px; border-bottom: 1px solid #30363d;">Rotto (Brute Force)</td>
+                                <td style="padding: 10px; border-bottom: 1px solid #30363d;">Sicuro (Quantum-resistant a
+                                    256 bit)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        <!-- NEW THEORY SECTION END -->
 
         <div class="input-section">
             <div class="input-group">
@@ -30,6 +172,8 @@
             </div>
             <button onclick="runDesEncryption()">Encrypt & Visualize</button>
         </div>
+
+
 
         <div id="results" class="results-section hidden">
             <div class="summary">
