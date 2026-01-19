@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduzione alla Sicurezza</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='intro_style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="home-btn"><i class="fas fa-arrow-left"></i> Menu</a>
+            <h1>Capitolo 0: Introduzione e Fondamenti</h1>
+            <p>"La sicurezza non è un prodotto, ma un processo."</p>
+        </header>
+
+        <!-- 1. Che cos'è la Sicurezza? -->
+        <section class="section">
+            <h2>1. Che cos'è la Sicurezza? (NIST & The Big 5)</h2>
+            <div class="intro-box">
+                <p>Secondo il <strong>NIST</strong> (National Institute of Standards and Technology), la sicurezza
+                    informatica garantisce 5 obiettivi fondamentali:</p>
+                <div class="pentagon-grid">
+                    <div class="pentagon-item">
+                        <div class="icon"><i class="fas fa-user-secret"></i></div>
+                        <h3>1. Confidenzialità</h3>
+                        <p><strong>Definizione:</strong> Solo chi è autorizzato può leggere.</p>
+                        <p><strong>Strumento:</strong> Crittografia (AES, RSA).</p>
+                        <p><strong>Attacco:</strong> Sniffing/Snooping (Intercettazione).</p>
+                    </div>
+                    <div class="pentagon-item">
+                        <div class="icon"><i class="fas fa-file-signature"></i></div>
+                        <h3>2. Integrità</h3>
+                        <p><strong>Definizione:</strong> I dati non devono essere modificati.</p>
+                        <p><strong>Strumento:</strong> Hash (SHA-256), HMAC.</p>
+                        <p><strong>Attacco:</strong> Tampering (Modifica).</p>
+                    </div>
+                    <div class="pentagon-item">
+                        <div class="icon"><i class="fas fa-server"></i></div>
+                        <h3>3. Disponibilità</h3>
+                        <p><strong>Definizione:</strong> Il sistema deve funzionare quando serve.</p>
+                        <p><strong>Strumento:</strong> Ridondanza, Firewall.</p>
+                        <p><strong>Attacco:</strong> DoS (Denial of Service).</p>
+                    </div>
+                    <div class="pentagon-item">
+                        <div class="icon"><i class="fas fa-id-card"></i></div>
+                        <h3>4. Autenticazione</h3>
+                        <p><strong>Definizione:</strong> Certezza dell'identità (Sei Alice?).</p>
+                        <p><strong>Strumento:</strong> Password, Kerberos.</p>
+                        <p><strong>Attacco:</strong> Spoofing (Mascheramento).</p>
+                    </div>
+                    <div class="pentagon-item">
+                        <div class="icon"><i class="fas fa-gavel"></i></div>
+                        <h3>5. Non Ripudio</h3>
+                        <p><strong>Definizione:</strong> L'autore non può negare l'azione.</p>
+                        <p><strong>Strumento:</strong> Firma Digitale.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Il Peccato Originale -->
+        <section class="section">
+            <h2>2. Il Peccato Originale (Anni '60)</h2>
+            <div class="story-box">
+                <p class="quote">"Internet (ARPANET) è nata negli anni '60 con approccio <strong>Best Effort</strong>
+                    per garantire la connettività, NON la sicurezza."</p>
+                <p><strong>Il Problema:</strong> Protocolli come IP, TCP, HTTP sono nati "in chiaro" e "fidati".</p>
+                <p><strong>La Conseguenza:</strong> La sicurezza è una "pezza" aggiunta dopo (a cipolla): TLS su TCP,
+                    IPsec su IP.</p>
+            </div>
+        </section>
+
+        <!-- 3. I Due Tipi di Sicurezza -->
+        <section class="section">
+            <h2>3. I Due Tipi di Sicurezza (Teoria)</h2>
+            <div class="comparison-grid">
+                <div class="comp-col unconditional">
+                    <h3>A. Sicurezza Incondizionata (Perfetta)</h3>
+                    <p>Impossibile da rompere, anche con tempo infinito.</p>
+                    <ul>
+                        <li><strong>Unico esempio:</strong> One Time Pad (OTP).</li>
+                        <li><strong>Difetto:</strong> Impraticabile (Chiave lunga come il messaggio).</li>
+                    </ul>
+                </div>
+                <div class="comp-col computational">
+                    <h3>B. Sicurezza Computazionale (Reale)</h3>
+                    <p>Sicuro se il costo/tempo per rompere supera il valore/durata del dato.</p>
+                    <ul>
+                        <li><strong>Esempio:</strong> AES, RSA.</li>
+                        <li>Basato su problemi matematici difficili (Fattorizzazione, ecc.).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Il Principio Economico -->
+        <section class="section">
+            <h2>4. Il Principio Economico (La Bilancia)</h2>
+            <div class="balance-box">
+                <i class="fas fa-balance-scale scale-icon"></i>
+                <p><strong>Regola d'oro:</strong> "La difesa deve essere commisurata a ciò che proteggiamo."</p>
+                <p>Non spendo 1 milione di euro per proteggere un file da 10 euro.</p>
+                <div class="asymmetry-alert">
+                    <strong>Asimmetria:</strong> Il Difensore deve chiudere TUTTE le porte. L'Attaccante deve trovarne
+                    SOLO UNA aperta.
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Gli Attori -->
+        <section class="section">
+            <h2>5. Gli Attori</h2>
+            <div class="actors-grid">
+                <div class="actor white-hat">
+                    <div class="actor-icon">😇</div>
+                    <h3>Hacker (White Hat)</h3>
+                    <p>L'esperto/esploratore. Cerca vulnerabilità per studio o per segnalarle (Ethical Hacking).</p>
+                </div>
+                <div class="actor black-hat">
+                    <div class="actor-icon">😈</div>
+                    <h3>Cracker (Black Hat)</h3>
+                    <p>Il criminale. Usa le competenze per distruggere, rubare o guadagnare.</p>
+                </div>
+                <div class="actor defender">
+                    <div class="actor-icon">🛡️</div>
+                    <h3>Difensore (CISO/Utente)</h3>
+                    <p>Progetta le policy. L'utente finale è spesso l'anello debole (Phishing, password "123").</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Tassonomia -->
+        <section class="section taxonomy-section">
+            <h2>6. Tassonomia della Crittografia</h2>
+            <div class="tree">
+                <ul>
+                    <li>
+                        <span class="root-node">Crittografia</span>
+                        <ul>
+                            <li>
+                                <span class="branch-node">1. Per Operazioni</span>
+                                <ul>
+                                    <li><strong>Sostituzione:</strong> Cambio lettera (Cesare, AES S-Box)</li>
+                                    <li><strong>Trasposizione:</strong> Cambio ordine (Rail Fence)</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <span class="branch-node">2. Per Chiavi</span>
+                                <ul>
+                                    <li><strong>Simmetrica:</strong> Stessa chiave (AES, DES). Veloce.</li>
+                                    <li><strong>Asimmetrica:</strong> Chiave Pubblica/Privata (RSA). Lenta.</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <span class="branch-node">3. Per Dati</span>
+                                <ul>
+                                    <li><strong>A Blocchi:</strong> 64/128 bit alla volta (AES).</li>
+                                    <li><strong>A Flusso:</strong> 1 bit alla volta (RC4, OTP).</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <div style="text-align: center; margin-top: 50px; margin-bottom: 20px;">
+            <a href="/" style="text-decoration: none;">
+                <button
+                    style="padding: 10px 20px; font-size: 1em; background: #30363d; color: #fff; border: 1px solid #8b949e; border-radius: 6px; cursor: pointer;">
+                    <i class="fas fa-arrow-left"></i> Torna al Menu
+                </button>
+            </a>
+        </div>
+    </div>
+</body>
+
+</html>

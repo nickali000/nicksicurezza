@@ -1,0 +1,296 @@
+:root {
+    --bg-color: #0f172a;
+    --card-bg: #1e293b;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --accent: #3b82f6;
+    --accent-hover: #2563eb;
+    --border: #334155;
+    --success: #4ade80;
+    --danger: #f43f5e;
+    --warning: #f59e0b;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 2rem;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.home-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    text-decoration: none;
+    color: var(--text-secondary);
+    transition: color 0.2s;
+}
+
+.home-btn:hover {
+    color: var(--text-primary);
+}
+
+header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+h1 {
+    color: var(--accent);
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+h2 {
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.section {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    margin-bottom: 2rem;
+}
+
+/* 1. Pentagon / Grid */
+.pentagon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.pentagon-item {
+    background: rgba(15, 23, 42, 0.5);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.pentagon-item:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent);
+}
+
+.pentagon-item .icon {
+    font-size: 2rem;
+    color: var(--accent);
+    margin-bottom: 1rem;
+}
+
+.pentagon-item h3 {
+    margin-top: 0;
+    font-size: 1.2rem;
+}
+
+/* 2. Story Box */
+.story-box {
+    border-left: 4px solid var(--warning);
+    padding-left: 1.5rem;
+    background: rgba(245, 158, 11, 0.05);
+    padding: 1.5rem;
+    border-radius: 0 8px 8px 0;
+}
+
+.quote {
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+/* 3. Comparison */
+.comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+@media (max-width: 768px) {
+    .comparison-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.comp-col {
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+}
+
+.unconditional {
+    background: rgba(244, 63, 94, 0.1);
+    border-color: var(--danger);
+}
+
+.unconditional h3 {
+    color: var(--danger);
+}
+
+.computational {
+    background: rgba(59, 130, 246, 0.1);
+    border-color: var(--accent);
+}
+
+.computational h3 {
+    color: var(--accent);
+}
+
+/* 4. Economics */
+.balance-box {
+    text-align: center;
+    padding: 2rem;
+}
+
+.scale-icon {
+    font-size: 3rem;
+    color: var(--warning);
+    margin-bottom: 1rem;
+}
+
+.asymmetry-alert {
+    margin-top: 1.5rem;
+    background: #3a1515;
+    color: #f87171;
+    padding: 1rem;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+/* 5. Actors */
+.actors-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .actors-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.actor {
+    padding: 1.5rem;
+    background: var(--bg-color);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+}
+
+.actor-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.black-hat {
+    border-color: var(--danger);
+}
+
+.white-hat {
+    border-color: var(--success);
+}
+
+/* 6. Taxonomy Tree */
+.tree ul {
+    padding-top: 20px;
+    position: relative;
+    transition: all 0.5s;
+}
+
+.tree li {
+    float: left;
+    text-align: center;
+    list-style-type: none;
+    position: relative;
+    padding: 20px 5px 0 5px;
+    transition: all 0.5s;
+}
+
+/* Connectors */
+.tree li::before,
+.tree li::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 50%;
+    border-top: 1px solid var(--border);
+    width: 50%;
+    height: 20px;
+}
+
+.tree li::after {
+    right: auto;
+    left: 50%;
+    border-left: 1px solid var(--border);
+}
+
+.tree li:only-child::after,
+.tree li:only-child::before {
+    display: none;
+}
+
+.tree li:only-child {
+    padding-top: 0;
+}
+
+.tree li:first-child::before,
+.tree li:last-child::after {
+    border: 0 none;
+}
+
+.tree li:last-child::before {
+    border-right: 1px solid var(--border);
+    border-radius: 0 5px 0 0;
+}
+
+.tree li:first-child::after {
+    border-radius: 5px 0 0 0;
+}
+
+.tree ul ul::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    border-left: 1px solid var(--border);
+    width: 0;
+    height: 20px;
+}
+
+.tree li span {
+    border: 1px solid var(--border);
+    padding: 10px 15px;
+    text-decoration: none;
+    color: var(--text-primary);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    display: inline-block;
+    border-radius: 5px;
+    background: var(--bg-color);
+    transition: all 0.5s;
+}
+
+.tree li span:hover {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+}
+
+.root-node {
+    font-weight: bold;
+    border-color: var(--accent) !important;
+}

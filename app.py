@@ -29,6 +29,10 @@ def index():
 
 # ... existing routes ...
 
+@app.route('/intro')
+def intro():
+    return render_template('intro.html')
+
 @app.route('/ipsec')
 def ipsec_route():
     return render_template('ipsec.html')

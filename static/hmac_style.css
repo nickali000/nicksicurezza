@@ -181,7 +181,7 @@ h2 {
 .packet {
     position: absolute;
     font-size: 2rem;
-    transition: left 1s linear, top 0.5s ease;
+    transition: top 0.5s ease;
     z-index: 3;
     background: #252526;
     padding: 10px;

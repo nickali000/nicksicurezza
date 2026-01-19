@@ -710,3 +710,106 @@ body.animations-paused .equation-part {
 .info-modal-close:hover {
     color: white;
 }
+
+/* AES Advanced Concepts Styles */
+.concept-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.concept-box {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: transform 0.2s;
+}
+
+.concept-box:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent);
+}
+
+.concept-title {
+    color: var(--accent);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.state-grid-visual {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    width: 120px;
+    margin: 1rem auto;
+    background: var(--bg-color);
+    padding: 4px;
+    border-radius: 4px;
+}
+
+.state-cell-visual {
+    width: 24px;
+    height: 24px;
+    background: var(--matrix-cell);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+}
+
+.spn-alert {
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid #f59e0b;
+    color: #fbbf24;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+.math-note {
+    background: rgba(59, 130, 246, 0.1);
+    border-left: 4px solid var(--accent);
+    padding: 1rem;
+    margin: 1rem 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+}
+
+.variants-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+.variants-table th,
+.variants-table td {
+    padding: 0.5rem;
+    border: 1px solid var(--border);
+    text-align: left;
+}
+
+.variants-table th {
+    background: var(--bg-color);
+    color: var(--accent);
+}
+
+.key-expansion-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 1rem 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+}
+
+.key-round {
+    background: var(--border);
+    padding: 4px 8px;
+    border-radius: 4px;
+}

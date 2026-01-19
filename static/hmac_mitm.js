@@ -1,3 +1,6 @@
+let currentAnimationInterval = null;
+let activeTimeouts = [];
+
 function runScenario(type) {
     const packet = document.getElementById('packet');
     const log = document.getElementById('scenario-log');
@@ -13,18 +16,40 @@ function runScenario(type) {
 }
 
 function resetSimulation() {
+    // 1. Clear any running animation interval
+    if (currentAnimationInterval) {
+        clearInterval(currentAnimationInterval);
+        currentAnimationInterval = null;
+    }
+
+    // 2. Clear any pending timeouts from previous runs
+    activeTimeouts.forEach(id => clearTimeout(id));
+    activeTimeouts = [];
+
     const actors = ['alice', 'mallory', 'bob'];
     actors.forEach(a => {
-        document.getElementById(`${a}-status`).innerText = "In attesa...";
-        document.getElementById(`${a}-status`).style.borderColor = "#555";
-        document.getElementById(`${a}-status`).style.color = "#fff";
+        const el = document.getElementById(`${a}-status`);
+        if (el) {
+            el.innerText = "In attesa...";
+            el.style.borderColor = "#555";
+            el.style.color = "#fff";
+        }
     });
 
     const packet = document.getElementById('packet');
-    packet.classList.add('hidden');
-    packet.classList.remove('tampered', 'valid');
-    packet.style.left = '100px'; // Alice pos
-    packet.style.top = '120px'; // Approx center vertically
+    if (packet) {
+        packet.classList.add('hidden');
+        packet.classList.remove('tampered', 'valid');
+        packet.style.left = '100px'; // Alice pos
+        packet.style.top = '120px'; // Approx center vertically
+    }
+}
+
+// Helper to track timeouts so we can clear them on reset
+function scheduleTask(callback, delay) {
+    const id = setTimeout(callback, delay);
+    activeTimeouts.push(id);
+    return id;
 }
 
 function startNoHMAC(packet, log) {
@@ -33,24 +58,25 @@ function startNoHMAC(packet, log) {
     // 1. Alice sends
     updateStatus('alice', 'Invio "Ciao" + Hash("Ciao")');
     packet.classList.remove('hidden');
+
     movePacket(packet, 10, 50, () => {
         // 2. Mallory intercepts
         updateStatus('mallory', 'Intercettato "Ciao"');
         log.innerText = "Mallory intercetta il pacchetto...";
 
-        setTimeout(() => {
+        scheduleTask(() => {
             // 3. Mallory modifies
             updateStatus('mallory', 'Modifico in "Soldi"', '#ef4444');
             packet.classList.add('tampered'); // Red packet
             log.innerText = "Mallory cambia il messaggio e ricalcola l'Hash (facile senza chiave!).";
 
-            setTimeout(() => {
+            scheduleTask(() => {
                 // 4. Mallory forwards
                 movePacket(packet, 50, 90, () => {
                     // 5. Bob receives
                     updateStatus('bob', 'Ricevo "Soldi" + Hash("Soldi")');
 
-                    setTimeout(() => {
+                    scheduleTask(() => {
                         // 6. Bob checks
                         updateStatus('bob', 'Hash Calcolato == Hash Ricevuto. OK!', '#ef4444');
                         log.innerHTML = "<span style='color: #ef4444; font-weight: bold;'>ATTACCO RIUSCITO! Bob ha accettato il messaggio falso.</span>";
@@ -74,13 +100,13 @@ function startHMAC(packet, log) {
         updateStatus('mallory', 'Intercettato "Ciao"');
         log.innerText = "Mallory intercetta il pacchetto...";
 
-        setTimeout(() => {
+        scheduleTask(() => {
             // 3. Mallory modifies
             updateStatus('mallory', 'Modifico in "Soldi"', '#ef4444');
             packet.classList.add('tampered');
             log.innerText = "Mallory cambia il messaggio MA non ha la chiave K per ricalcolare l'HMAC.";
 
-            setTimeout(() => {
+            scheduleTask(() => {
                 // 4. Mallory forwards (with FAKE HMAC)
                 updateStatus('mallory', 'Invio con HMAC Falso');
 
@@ -88,7 +114,7 @@ function startHMAC(packet, log) {
                     // 5. Bob receives
                     updateStatus('bob', 'Ricevo "Soldi" + HMAC Falso');
 
-                    setTimeout(() => {
+                    scheduleTask(() => {
                         // 6. Bob checks
                         updateStatus('bob', 'HMAC(K, "Soldi") != HMAC Falso. RIFIUTATO!', '#4ec9b0');
                         log.innerHTML = "<span style='color: #4ec9b0; font-weight: bold;'>ATTACCO FALLITO! Bob si accorge della manomissione.</span>";
@@ -103,11 +129,15 @@ function movePacket(el, startPercent, endPercent, callback) {
     let current = startPercent;
     el.style.left = startPercent + '%';
 
-    const interval = setInterval(() => {
+    // Clear any existing interval (double safety, though resetSimulation calls it too)
+    if (currentAnimationInterval) clearInterval(currentAnimationInterval);
+
+    currentAnimationInterval = setInterval(() => {
         current += 1;
         el.style.left = current + '%';
         if (current >= endPercent) {
-            clearInterval(interval);
+            clearInterval(currentAnimationInterval);
+            currentAnimationInterval = null;
             if (callback) callback();
         }
     }, 20); // Speed
@@ -115,9 +145,12 @@ function movePacket(el, startPercent, endPercent, callback) {
 
 function updateStatus(actor, text, color = null) {
     const el = document.getElementById(`${actor}-status`);
-    el.innerText = text;
-    if (color) {
-        el.style.borderColor = color;
-        el.style.color = color;
+    if (el) {
+        el.innerText = text;
+        if (color) {
+            el.style.borderColor = color;
+            el.style.color = color;
+        }
     }
 }
+

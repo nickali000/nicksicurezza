@@ -17,8 +17,110 @@
         <header>
             <a href="/" class="home-btn"><i class="fas fa-arrow-left"></i> Menu</a>
             <h1>AES-128 Visualizer</h1>
-            <p>Inserisci testo e chiave per vedere ogni passaggio dell'algoritmo AES.</p>
+            <p>Advanced Encryption Standard: Sicurezza "Militare" attraverso Matematica & Struttura</p>
         </header>
+
+        <!-- Advanced Concepts Section (University Grade) -->
+        <div class="concept-section">
+            <!-- 1. The State Matrix -->
+            <div class="concept-box">
+                <div class="concept-title"><i class="fas fa-th"></i> The State Matrix</div>
+                <p>AES non lavora su una striscia di bit, ma su una <strong>Matrice 4x4</strong> di Byte.</p>
+                <div class="state-grid-visual">
+                    <div class="state-cell-visual" style="border-color: var(--accent);">0</div>
+                    <div class="state-cell-visual">4</div>
+                    <div class="state-cell-visual">8</div>
+                    <div class="state-cell-visual">12</div>
+                    <div class="state-cell-visual" style="border-color: var(--accent);">1</div>
+                    <div class="state-cell-visual">5</div>
+                    <div class="state-cell-visual">9</div>
+                    <div class="state-cell-visual">13</div>
+                    <div class="state-cell-visual" style="border-color: var(--accent);">2</div>
+                    <div class="state-cell-visual">6</div>
+                    <div class="state-cell-visual">10</div>
+                    <div class="state-cell-visual">14</div>
+                    <div class="state-cell-visual" style="border-color: var(--accent);">3</div>
+                    <div class="state-cell-visual">7</div>
+                    <div class="state-cell-visual">11</div>
+                    <div class="state-cell-visual">15</div>
+                </div>
+                <p style="font-size: 0.85rem; color: var(--text-secondary);">I 128 bit (16 byte) riempiono la matrice
+                    <em>per colonna</em>. ShiftRows lavora sulle righe, MixColumns sulle colonne.</p>
+            </div>
+
+            <!-- 2. Galois Fields -->
+            <div class="concept-box">
+                <div class="concept-title"><i class="fas fa-calculator"></i> Matematica: Galois Fields</div>
+                <p>Le operazioni in AES avvengono nel campo finito <strong>GF(2<sup>8</sup>)</strong>.</p>
+                <div class="math-note">
+                    a(x) • b(x) mod P(x)<br>
+                    dove P(x) = x<sup>8</sup> + x<sup>4</sup> + x<sup>3</sup> + x + 1
+                </div>
+                <p style="font-size: 0.9rem;">Questo evita l'overflow (risultati > 255) e garantisce che ogni operazione
+                    (come MixColumns) sia perfettamente invertibile.</p>
+            </div>
+
+            <!-- 3. Key Expansion -->
+            <div class="concept-box">
+                <div class="concept-title"><i class="fas fa-key"></i> Key Expansion</div>
+                <p>La chiave originale (128 bit) viene espansa in <strong>11 Round Keys</strong>.</p>
+                <div class="key-expansion-visual">
+                    <span class="key-round">K<sub>0</sub></span> <i class="fas fa-arrow-right"
+                        style="font-size: 0.8rem; color: var(--text-secondary);"></i>
+                    <span class="key-round">g(K)</span> <i class="fas fa-arrow-right"
+                        style="font-size: 0.8rem; color: var(--text-secondary);"></i>
+                    <span class="key-round">K<sub>1</sub>...K<sub>10</sub></span>
+                </div>
+                <ul style="font-size: 0.85rem; padding-left: 1.2rem; color: var(--text-secondary);">
+                    <li><strong>RotWord:</strong> Rotazione byte</li>
+                    <li><strong>SubWord:</strong> S-Box sulla chiave</li>
+                    <li><strong>Rcon:</strong> Aggiunta costante (Round Constant)</li>
+                </ul>
+            </div>
+
+            <!-- 4. AES Variants Table -->
+            <div class="concept-box">
+                <div class="concept-title"><i class="fas fa-table"></i> Varianti AES</div>
+                <table class="variants-table">
+                    <thead>
+                        <tr>
+                            <th>Ver</th>
+                            <th>Key Len</th>
+                            <th>Rounds</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>AES-128</td>
+                            <td>128 bit</td>
+                            <td>10</td>
+                        </tr>
+                        <tr>
+                            <td>AES-192</td>
+                            <td>192 bit</td>
+                            <td>12</td>
+                        </tr>
+                        <tr>
+                            <td>AES-256</td>
+                            <td>256 bit</td>
+                            <td>14</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 5. SPN Alert -->
+            <div class="concept-box" style="grid-column: 1 / -1;">
+                <div class="concept-title"><i class="fas fa-exclamation-triangle"></i> Architettura</div>
+                <div class="spn-alert">
+                    <strong>ATTENZIONE:</strong> AES <strong>NON</strong> usa la Rete di Feistel (come il DES).<br>
+                    AES è una rete <strong>SPN (Substitution-Permutation Network)</strong>.<br>
+                    Durante la decifratura, non basta invertire l'ordine delle chiavi, ma servono le operazioni inverse
+                    (InvSubBytes, InvShiftRows, etc.).
+                </div>
+            </div>
+        </div>
+
 
         <div class="input-section">
             <div class="input-group">
