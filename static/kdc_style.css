@@ -1,0 +1,300 @@
+:root {
+    --bg-color: #0d1117;
+    --text-primary: #c9d1d9;
+    --text-secondary: #8b949e;
+    --accent: #58a6ff;
+    --border: #30363d;
+    --card-bg: #161b22;
+    --alice-color: #7ee787;
+    --bob-color: #ff7b72;
+    --kdc-color: #a371f7;
+    --key-color: #f2cc60;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.home-btn {
+    text-decoration: none;
+    color: var(--text-secondary);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    transition: color 0.2s;
+}
+
+.home-btn:hover {
+    color: var(--text-primary);
+}
+
+h1 {
+    text-align: center;
+    color: var(--accent);
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    text-align: center;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+    font-style: italic;
+}
+
+/* Actors Stage */
+.stage {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 40px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+}
+
+.actor {
+    text-align: center;
+    width: 25%;
+    position: relative;
+    padding: 15px;
+    border-radius: 8px;
+    transition: background 0.3s;
+}
+
+.actor i {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.actor.alice i {
+    color: var(--alice-color);
+}
+
+.actor.bob i {
+    color: var(--bob-color);
+}
+
+.actor.kdc i {
+    color: var(--kdc-color);
+}
+
+.actor-name {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.keys-inventory {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    background: rgba(0, 0, 0, 0.3);
+    padding: 8px;
+    border-radius: 6px;
+    margin-top: 10px;
+    text-align: left;
+}
+
+/* Specific Keys */
+.key-badge {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 2px;
+    border: 1px solid transparent;
+}
+
+.key-ka {
+    color: var(--alice-color);
+    border-color: var(--alice-color);
+}
+
+.key-kb {
+    color: var(--bob-color);
+    border-color: var(--bob-color);
+}
+
+.key-ks {
+    color: var(--key-color);
+    border-color: var(--key-color);
+    font-weight: bold;
+}
+
+/* Message Flow Controls */
+.controls {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.btn {
+    padding: 12px 24px;
+    border-radius: 6px;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background: var(--accent);
+    color: #0d1117;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    margin-left: 10px;
+}
+
+.btn-secondary:hover {
+    border-color: var(--text-secondary);
+}
+
+/* Steps Visualization */
+.step-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.step-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    opacity: 0.4;
+    filter: grayscale(0.8);
+    transition: all 0.5s ease;
+    border-left: 4px solid transparent;
+}
+
+.step-card.active {
+    opacity: 1;
+    filter: grayscale(0);
+    border-color: var(--accent);
+    border-left-color: var(--accent);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transform: scale(1.02);
+}
+
+.step-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+}
+
+.step-number {
+    font-weight: bold;
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.step-action {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Visual Representation of Packets */
+.packet-visual {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.item {
+    padding: 6px 10px;
+    border-radius: 4px;
+    background: #21262d;
+    border: 1px solid var(--border);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.nonce {
+    color: #d29922;
+    border-color: #d29922;
+}
+
+.id-a {
+    color: var(--alice-color);
+    border-color: var(--alice-color);
+}
+
+.id-b {
+    color: var(--bob-color);
+    border-color: var(--bob-color);
+}
+
+/* Encrypted Boxes */
+.enc-box {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px dashed;
+    position: relative;
+    margin: 5px;
+}
+
+.enc-ka {
+    border-color: var(--alice-color);
+    color: var(--alice-color);
+}
+
+.enc-kb {
+    border-color: var(--bob-color);
+    color: var(--bob-color);
+}
+
+.enc-ks {
+    border-color: var(--key-color);
+    color: var(--key-color);
+}
+
+.lock-icon {
+    font-size: 0.8em;
+    margin-right: 4px;
+}
+
+.explanation-box {
+    margin-top: 15px;
+    font-size: 0.9rem;
+    color: #8b949e;
+    line-height: 1.5;
+}
+
+.highlight-term {
+    color: #e6edf3;
+    font-weight: 600;
+}

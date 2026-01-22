@@ -111,6 +111,10 @@ def x509():
 def kerberos_route():
     return render_template('kerberos.html')
 
+@app.route('/kdc')
+def kdc_route():
+    return render_template('kdc.html')
+
 @app.route('/pgp')
 def pgp():
     return render_template('pgp.html')
@@ -563,6 +567,10 @@ def dsa_verify_route():
 @app.route('/ecc')
 def ecc():
     return render_template('ecc.html')
+
+@app.route('/comparison')
+def comparison():
+    return render_template('comparison.html')
 
 @app.route('/ecc_setup', methods=['POST'])
 def ecc_setup():

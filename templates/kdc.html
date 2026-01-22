@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KDC Key Distribution Scenario</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='kdc_style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <a href="/" class="home-btn"><i class="fas fa-arrow-left"></i> Menu</a>
+
+        <h1>Scenario Distribuzione Chiavi KDC</h1>
+        <div class="subtitle">Protocollo a 5 Passi con Nonce</div>
+
+        <!-- STAGE -->
+        <div class="stage">
+            <div class="actor alice">
+                <i class="fas fa-user-circle"></i>
+                <div class="actor-name">Alice (A)</div>
+                <div class="keys-inventory">
+                    <div>🔑 <span class="key-badge key-ka">Ka</span> (Master)</div>
+                    <div id="inv-alice-ks" style="display:none; margin-top:5px;">🔑 <span
+                            class="key-badge key-ks">Ks</span> (Session)</div>
+                </div>
+            </div>
+
+            <div class="actor kdc">
+                <i class="fas fa-server"></i>
+                <div class="actor-name">KDC (Trusted)</div>
+                <div class="keys-inventory">
+                    <div>🔑 <span class="key-badge key-ka">Ka</span></div>
+                    <div>🔑 <span class="key-badge key-kb">Kb</span></div>
+                </div>
+            </div>
+
+            <div class="actor bob">
+                <i class="fas fa-user-circle"></i>
+                <div class="actor-name">Bob (B)</div>
+                <div class="keys-inventory">
+                    <div>🔑 <span class="key-badge key-kb">Kb</span> (Master)</div>
+                    <div id="inv-bob-ks" style="display:none; margin-top:5px;">🔑 <span
+                            class="key-badge key-ks">Ks</span> (Session)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTROLS -->
+        <div class="controls">
+            <button class="btn btn-primary" id="btn-next" onclick="nextStep()">
+                <i class="fas fa-play"></i> Inizia (Step 1)
+            </button>
+            <button class="btn btn-secondary" onclick="resetSim()">
+                <i class="fas fa-undo"></i> Reset
+            </button>
+        </div>
+
+        <!-- STEPS CONTAINER -->
+        <div class="step-container">
+
+            <!-- STEP 1 -->
+            <div class="step-card" id="step-1">
+                <div class="step-header">
+                    <span class="step-number">STEP 1: Richiesta</span>
+                    <span class="step-action">Alice <i class="fas fa-long-arrow-alt-right"></i> KDC</span>
+                </div>
+                <div class="packet-visual">
+                    <span class="item id-a">ID_A</span> ||
+                    <span class="item id-b">ID_B</span> ||
+                    <span class="item nonce">N1</span>
+                </div>
+                <div class="explanation-box">
+                    <p>Alice chiede di parlare con Bob. Invia i due ID e un <span class="highlight-term">Nonce
+                            (N1)</span>.</p>
+                    <p><em>Perché N1?</em> Per garantire che la risposta sia fresca e prevenire attacchi di replay
+                        (evita che un attaccante riutilizzi una vecchia risposta).</p>
+                </div>
+            </div>
+
+            <!-- STEP 2 -->
+            <div class="step-card" id="step-2">
+                <div class="step-header">
+                    <span class="step-number">STEP 2: Rilascio Ticket</span>
+                    <span class="step-action">KDC <i class="fas fa-long-arrow-alt-right"></i> Alice</span>
+                </div>
+                <div class="packet-visual">
+                    <!-- Part for Alice -->
+                    <div class="enc-box enc-ka">
+                        <i class="fas fa-lock lock-icon"></i> E(Ka, [
+                        <span class="key-badge key-ks">Ks</span> ||
+                        <span class="item id-a">ID_A</span> ||
+                        <span class="item id-b">ID_B</span> ||
+                        <span class="item nonce">N1</span>
+                        ])
+                    </div>
+                    ||
+                    <!-- Part for Bob (Ticket) -->
+                    <div class="enc-box enc-kb">
+                        <i class="fas fa-lock lock-icon"></i> E(Kb, [
+                        <span class="key-badge key-ks">Ks</span> ||
+                        <span class="item id-a">ID_A</span>
+                        ])
+                    </div>
+                </div>
+                <div class="explanation-box">
+                    <p>Il KDC genera la chiave di sessione <span class="highlight-term">Ks</span>.</p>
+                    <p>Invia due messaggi cifrati a Alice:
+                        1. Uno per Alice (cifrato con Ka) contenente Ks e la conferma del Nonce N1.
+                        2. Uno <span class="highlight-term">per Bob</span> (cifrato con Kb) che Alice non può leggere
+                        ("Scatola Chiusa").
+                    </p>
+                </div>
+            </div>
+
+            <!-- STEP 3 -->
+            <div class="step-card" id="step-3">
+                <div class="step-header">
+                    <span class="step-number">STEP 3: Forward a Bob</span>
+                    <span class="step-action">Alice <i class="fas fa-long-arrow-alt-right"></i> Bob</span>
+                </div>
+                <div class="packet-visual">
+                    <div class="enc-box enc-kb">
+                        <i class="fas fa-lock lock-icon"></i> E(Kb, [
+                        <span class="key-badge key-ks">Ks</span> ||
+                        <span class="item id-a">ID_A</span>
+                        ])
+                    </div>
+                </div>
+                <div class="explanation-box">
+                    <p>Alice ha decifrato la sua parte (ottenendo Ks) e ora <strong>inoltra</strong> la parte cifrata
+                        per Bob.</p>
+                    <p>Bob decifra con Kb e ottiene la chiave di sessione <span class="key-badge key-ks">Ks</span> e sa
+                        che è per parlare con Alice (ID_A).</p>
+                    <p style="color: #7ee787;">🎉 Ora entrambi hanno Ks senza che Bob abbia mai parlato col KDC!</p>
+                </div>
+            </div>
+
+            <!-- STEP 4 -->
+            <div class="step-card" id="step-4">
+                <div class="step-header">
+                    <span class="step-number">STEP 4: Challenge (Autenticazione)</span>
+                    <span class="step-action">Bob <i class="fas fa-long-arrow-alt-right"></i> Alice</span>
+                </div>
+                <div class="packet-visual">
+                    <div class="enc-box enc-ks">
+                        <i class="fas fa-lock lock-icon"></i> E(Ks, [
+                        <span class="item nonce">N2</span>
+                        ])
+                    </div>
+                </div>
+                <div class="explanation-box">
+                    <p>Bob vuole essere sicuro che dall'altra parte ci sia davvero Alice (Auth). Invia un nuovo nonce
+                        <span class="highlight-term">N2</span> cifrato con la chiave di sessione Ks.
+                    </p>
+                </div>
+            </div>
+
+            <!-- STEP 5 -->
+            <div class="step-card" id="step-5">
+                <div class="step-header">
+                    <span class="step-number">STEP 5: Response</span>
+                    <span class="step-action">Alice <i class="fas fa-long-arrow-alt-right"></i> Bob</span>
+                </div>
+                <div class="packet-visual">
+                    <div class="enc-box enc-ks">
+                        <i class="fas fa-lock lock-icon"></i> E(Ks, [
+                        <span class="highlight-term">f(N2)</span>
+                        ])
+                    </div>
+                </div>
+                <div class="explanation-box">
+                    <p>Alice decifra N2, applica una funzione (es. N2 + 1) e lo rimanda cifrato.</p>
+                    <p>Bob verifica f(N2). Se corrisponde, <strong>Alice è autenticata</strong> (solo lei ha Ks per
+                        decifrare N2 e rispondergli).</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- PROBLEMS & CONSIDERATIONS (New Section) -->
+        <div style="margin-top: 50px; border-top: 1px solid var(--border); padding-top: 30px;">
+            <h2 style="text-align:center; margin-bottom: 30px; color: #ff7b72;">Problemi di Distribuzione della Chiave
+            </h2>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+
+                <!-- 1. Hierarchy -->
+                <div class="step-card active" style="border-left-color: #d29922; filter: grayscale(0); opacity: 1;">
+                    <div class="step-header">
+                        <span class="step-number" style="color: #d29922;">1. Gerarchia dei KDC</span>
+                        <i class="fas fa-sitemap" style="color: #d29922;"></i>
+                    </div>
+                    <div class="explanation-box">
+                        <p><strong>Il Problema:</strong> Un KDC centralizzato unico globale è un collo di bottiglia e un
+                            singolo punto di fallimento.</p>
+                        <p><strong>Soluzione:</strong> Approccio Distribuito (Gerarchico).</p>
+                        <ul style="margin-left: 20px; list-style-type: disc; color: #8b949e;">
+                            <li>Simile agli ISP: KDC Locali per reti piccole, KDC Regionali per aree vaste.</li>
+                            <li>Un guasto locale non blocca l'intera rete globale.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 2. Trust -->
+                <div class="step-card active" style="border-left-color: #a371f7; filter: grayscale(0); opacity: 1;">
+                    <div class="step-header">
+                        <span class="step-number" style="color: #a371f7;">2. KDC "Trusted"</span>
+                        <i class="fas fa-shield-alt" style="color: #a371f7;"></i>
+                    </div>
+                    <div class="explanation-box">
+                        <p>Non basta che il software del KDC sia affidabile (reliable).</p>
+                        <p><strong>"Trust"</strong> significa che l'intero contesto è sicuro:</p>
+                        <ul style="margin-left: 20px; list-style-type: disc; color: #8b949e;">
+                            <li>Sicurezza fisica dei server.</li>
+                            <li>Integrità degli amministratori.</li>
+                            <li>Se il KDC è compromesso, <strong>tutte</strong> le comunicazioni sono compromesse.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 3. Key Lifetime -->
+                <div class="step-card active" style="border-left-color: #3fb950; filter: grayscale(0); opacity: 1;">
+                    <div class="step-header">
+                        <span class="step-number" style="color: #3fb950;">3. Durata Chiave di Sessione</span>
+                        <i class="fas fa-hourglass-half" style="color: #3fb950;"></i>
+                    </div>
+                    <div class="explanation-box">
+                        <p><strong>Trade-off:</strong></p>
+                        <ul style="margin-left: 20px; list-style-type: disc; color: #8b949e;">
+                            <li><span style="color:#3fb950">Cambio Frequente:</span> Più sicurezza (se compromessa,
+                                l'attaccante legge poco).</li>
+                            <li><span style="color:#ff7b72">Troppi Cambi:</span> Sovraccarico del KDC e latenza di rete.
+                            </li>
+                        </ul>
+                        <p style="margin-top:10px; font-size:0.85em;"><em>Strategia:</em> Connection-oriented (1 chiave
+                            per sessione) vs Connection-less (cambio a intervalli fissi).</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- DECENTRALIZED SCENARIO (New Section) -->
+        <div style="margin-top: 80px; border-top: 2px dashed var(--border); padding-top: 50px;">
+            <h1>Controllo della Chiave Decentralizzato</h1>
+            <div class="subtitle">Nessun KDC, Comunicazione Diretta</div>
+
+            <!-- Theory Block -->
+            <div
+                style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 8px; margin-bottom: 30px; border-left: 4px solid var(--accent);">
+                <p><strong>Il Limite del Centralizzato:</strong> Il KDC deve essere "Super-Fidato". Se fallisce lui,
+                    fallisce tutto.</p>
+                <p><strong>L'Alternativa:</strong> Ogni host si gestisce da solo. Ideale per piccole reti locali.</p>
+                <div
+                    style="margin-top: 15px; font-family: 'JetBrains Mono', monospace; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 4px; display: inline-block;">
+                    Formulona: Chiavi necessarie = <span style="color: #ff7b72;">n(n-1) / 2</span>
+                </div>
+                <p style="font-size: 0.9em; color: var(--text-secondary); margin-top: 5px;">Es. 100 host = 4.950 chiavi
+                    da gestire!</p>
+            </div>
+
+            <!-- STAGE DECENTRALIZED -->
+            <div class="stage" id="stage-dec">
+                <div class="actor alice" style="width: 40%;">
+                    <i class="fas fa-user-circle"></i>
+                    <div class="actor-name">Alice (A)</div>
+                    <div class="keys-inventory">
+                        <div>🔑 <span class="key-badge key-ka" style="border-color:#fff; color:#fff;">K_ab</span>
+                            (Master condivisa)</div>
+                        <div id="inv-alice-ks-dec" style="display:none; margin-top:5px;">🔑 <span
+                                class="key-badge key-ks">Ks</span> (Session)</div>
+                    </div>
+                </div>
+
+                <div style="width: 20%; display: flex; align-items: center; justify-content: center; opacity: 0.2;">
+                    <i class="fas fa-exchange-alt" style="font-size: 3em;"></i>
+                </div>
+
+                <div class="actor bob" style="width: 40%;">
+                    <i class="fas fa-user-circle"></i>
+                    <div class="actor-name">Bob (B)</div>
+                    <div class="keys-inventory">
+                        <div>🔑 <span class="key-badge key-kb" style="border-color:#fff; color:#fff;">K_ab</span>
+                            (Master condivisa)</div>
+                        <div id="inv-bob-ks-dec" style="display:none; margin-top:5px;">🔑 <span
+                                class="key-badge key-ks">Ks</span> (Session)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTROLS DEC -->
+            <div class="controls">
+                <button class="btn btn-primary" id="btn-next-dec" onclick="nextStepDec()">
+                    <i class="fas fa-play"></i> Inizia (Step 1)
+                </button>
+                <button class="btn btn-secondary" onclick="resetSimDec()">
+                    <i class="fas fa-undo"></i> Reset
+                </button>
+            </div>
+
+            <!-- STEPS CONTAINER DEC -->
+            <div class="step-container">
+
+                <!-- STEP 1 -->
+                <div class="step-card" id="step-dec-1">
+                    <div class="step-header">
+                        <span class="step-number">STEP 1: Richiesta Chiave</span>
+                        <span class="step-action">Alice <i class="fas fa-long-arrow-alt-right"></i> Bob</span>
+                    </div>
+                    <div class="packet-visual">
+                        <span class="item id-a">ID_A</span> ||
+                        <span class="item nonce">N1</span>
+                    </div>
+                    <div class="explanation-box">
+                        <p>Alice chiede a Bob una chiave di sessione. Invia il suo ID e un Nonce N1.</p>
+                    </div>
+                </div>
+
+                <!-- STEP 2 -->
+                <div class="step-card" id="step-dec-2">
+                    <div class="step-header">
+                        <span class="step-number">STEP 2: Rilascio Ks</span>
+                        <span class="step-action">Bob <i class="fas fa-long-arrow-alt-right"></i> Alice</span>
+                    </div>
+                    <div class="packet-visual">
+                        <div class="enc-box" style="border-color: #fff; color: #fff;">
+                            <i class="fas fa-lock lock-icon"></i> E(K_ab, [
+                            <span class="key-badge key-ks">Ks</span> ||
+                            <span class="item id-b">ID_B</span> ||
+                            <span class="highlight-term">f(N1)</span> ||
+                            <span class="item nonce">N2</span>
+                            ])
+                        </div>
+                    </div>
+                    <div class="explanation-box">
+                        <p>Bob genera <span class="key-badge key-ks">Ks</span>.</p>
+                        <p>Invia un messaggio cifrato con la chiave master condivisa <strong>K_ab</strong>.</p>
+                        <p>Include <strong>f(N1)</strong> (es. N1+1) per dimostrare che sta rispondendo proprio ad
+                            Alice.</p>
+                    </div>
+                </div>
+
+                <!-- STEP 3 -->
+                <div class="step-card" id="step-dec-3">
+                    <div class="step-header">
+                        <span class="step-number">STEP 3: Conferma</span>
+                        <span class="step-action">Alice <i class="fas fa-long-arrow-alt-right"></i> Bob</span>
+                    </div>
+                    <div class="packet-visual">
+                        <div class="enc-box enc-ks">
+                            <i class="fas fa-lock lock-icon"></i> E(Ks, [
+                            <span class="highlight-term">f(N2)</span>
+                            ])
+                        </div>
+                    </div>
+                    <div class="explanation-box">
+                        <p>Alice decifra, ottiene <span class="key-badge key-ks">Ks</span>.</p>
+                        <p>Risponde con <strong>f(N2)</strong> cifrato con la NUOVA chiave di sessione Ks per confermare
+                            che tutto funziona.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- PROBLEMS DEC -->
+            <div style="margin-top: 30px;">
+                <h3 style="color: #ff7b72;">Problemi e Considerazioni</h3>
+                <div class="step-card active" style="border-left-color: #ff7b72; filter: grayscale(0); opacity: 1;">
+                    <div class="explanation-box">
+                        <p><strong>1. Vulnerabilità Master Key:</strong> Se un attaccante scopre K_ab (Master), può
+                            decifrare la Ks nel messaggio 2.</p>
+                        <p><strong>Note Positive:</strong></p>
+                        <ul style="margin-left: 20px; list-style-type: disc; color: #8b949e;">
+                            <li>Messaggi brevi = Analisi crittografica difficile.</li>
+                            <li>Durata limitata della Ks = Finestra di attacco ridotta.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div style="height:50px;"></div>
+
+        <!-- ASYMMETRIC SCENARIO (Merkle) -->
+        <div style="margin-top: 80px; border-top: 2px dashed var(--border); padding-top: 50px;">
+            <h1>Distribuzione con Crittografia Asimmetrica</h1>
+            <div class="subtitle">Schema di Merkle & Vulnerabilità MITM</div>
+
+            <!-- Theory Block -->
+            <div
+                style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 8px; margin-bottom: 30px; border-left: 4px solid #58a6ff;">
+                <p><strong>L'idea:</strong> Usare la crittografia asimmetrica (lenta) SOLO per scambiare la chiave
+                    segreta <em>Ks</em>, poi usare quella (veloce) per i dati.</p>
+                <div style="display: flex; gap: 20px; margin-top: 15px;">
+                    <div style="flex: 1;">
+                        <strong>Protocollo Semplice:</strong>
+                        <ol
+                            style="margin-top: 5px; padding-left: 20px; font-size: 0.9em; color: var(--text-secondary);">
+                            <li>Alice invia la sua Chiave Pubblica (PU_a) a Bob.</li>
+                            <li>Bob cifra la Chiave di Sessione (Ks) con PU_a.</li>
+                            <li>Alice decifra con PR_a e ottiene Ks.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODE SELECTION -->
+            <div style="text-align: center; margin-bottom: 20px;">
+                <span style="margin-right: 10px; font-weight: bold;">Seleziona Modalità:</span>
+                <button class="btn" id="btn-mode-normal" onclick="setMode('normal')"
+                    style="background: #238636; color: white;">
+                    <i class="fas fa-check-circle"></i> Normale
+                </button>
+                <button class="btn" id="btn-mode-mitm" onclick="setMode('mitm')"
+                    style="background: #da3633; color: white; opacity: 0.6;">
+                    <i class="fas fa-user-secret"></i> Attacco MITM
+                </button>
+            </div>
+
+            <!-- STAGE MERKLE -->
+            <div class="stage" id="stage-merkle">
+                <div class="actor alice" style="width: 30%;">
+                    <i class="fas fa-user-circle"></i>
+                    <div class="actor-name">Alice</div>
+                    <div class="keys-inventory">
+                        <div>🔑 <span class="key-badge" style="border-color:#7ee787; color:#7ee787;">PU_a / PR_a</span>
+                        </div>
+                        <div id="inv-alice-ks-merkle" style="display:none; margin-top:5px;">🔑 <span
+                                class="key-badge key-ks">Ks</span></div>
+                    </div>
+                </div>
+
+                <!-- DARTH (Hidden by default) -->
+                <div class="actor darth" id="actor-darth"
+                    style="width: 30%; display: none; border-color: #da3633; background: rgba(218, 54, 51, 0.1);">
+                    <i class="fas fa-user-secret" style="color: #da3633;"></i>
+                    <div class="actor-name" style="color: #da3633;">Darth (MITM)</div>
+                    <div class="keys-inventory">
+                        <div>🔑 <span class="key-badge" style="border-color:#da3633; color:#da3633;">PU_d / PR_d</span>
+                        </div>
+                        <div id="inv-darth-ks-merkle"
+                            style="display:none; margin-top:5px; background: #da3633; color: white;">⚠️ HA LA CHIAVE Ks!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="actor bob" style="width: 30%;">
+                    <i class="fas fa-user-circle"></i>
+                    <div class="actor-name">Bob</div>
+                    <div class="keys-inventory">
+                        <div>🔑 <span class="key-badge key-ks">Ks</span> (Generata)</div>
+                        <div id="inv-bob-pua-merkle" style="display:none; margin-top:5px;">Ricevuta: <span
+                                class="key-badge">PU_?</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTROLS MERKLE -->
+            <div class="controls">
+                <button class="btn btn-primary" id="btn-next-merkle" onclick="nextStepMerkle()">
+                    <i class="fas fa-play"></i> Inizia
+                </button>
+                <button class="btn btn-secondary" onclick="resetSimMerkle()">
+                    <i class="fas fa-undo"></i> Reset
+                </button>
+            </div>
+
+            <!-- STEPS CONTAINER MERKLE -->
+            <div class="step-container" id="steps-merkle">
+                <!-- Dynamic Steps will be injected here via JS -->
+            </div>
+
+            <!-- VULNERABILITY ALERT -->
+            <div id="mitm-alert"
+                style="display:none; margin-top: 20px; border: 1px solid #da3633; background: rgba(218, 54, 51, 0.1); padding: 15px; border-radius: 8px;">
+                <h3 style="color: #da3633; margin-top: 0;"><i class="fas fa-exclamation-triangle"></i> Man-in-the-Middle
+                    (MITM)</h3>
+                <p>Poiché le chiavi pubbliche non sono autenticate (non c'è certificato!), Bob non può sapere se la
+                    chiave ricevuta è davvero di Alice o di Darth.</p>
+                <p>Darth intercetta, si finge Alice con Bob, e Bob con Alice. Risultato: <strong>Darth decifra
+                        tutto!</strong></p>
+            </div>
+
+        </div>
+
+        <div style="height:50px;"></div>
+
+        <!-- AUTHENTICATED ASYMMETRIC SCENARIO (New Section) -->
+        <div style="margin-top: 80px; border-top: 2px dashed var(--border); padding-top: 50px;">
+            <h1>Distribuzione con Segretezza e Autenticazione</h1>
+            <div class="subtitle">Protocollo a 4 Passi (Anti-MITM)</div>
+
+            <div
+                style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 8px; margin-bottom: 30px; border-left: 4px solid #3fb950;">
+                <p><strong>L'Evoluzione:</strong> Per evitare il MITM, usiamo l'autenticazione reciproca (Nonces) e la
+                    firma digitale.</p>
+                <p><strong>Step 4 Critico:</strong> La chiave viene firmata (con PR_a) E cifrata (con PU_b). <br>
+                    <em>Formula:</em> <span
+                        style="font-family: monospace; background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px;">E(PU_b,
+                        E(PR_a, Ks))</span>
+                </p>
+            </div>
+
+            <!-- STAGE AUTH -->
+            <div class="stage" id="stage-auth">
+                <div class="actor alice" style="width: 40%;">
+                    <i class="fas fa-user-circle"></i>
+                    <div class="actor-name">Alice</div>
+                    <div class="keys-inventory">
+                        <div>🔑 <span class="key-badge">PR_a</span> (Firma)</div>
+                        <div>🔑 <span class="key-badge">PU_b</span> (Cifra)</div>
+                        <div id="inv-alice-auth" style="display:none; margin-top:5px;">✅ Autenticata con Bob</div>
+                    </div>
+                </div>
+
+                <div class="actor bob" style="width: 40%;">
+                    <i class="fas fa-user-circle"></i>
+                    <div class="actor-name">Bob</div>
+                    <div class="keys-inventory">
+                        <div>🔑 <span class="key-badge">PR_b</span> (Decifra)</div>
+                        <div>🔑 <span class="key-badge">PU_a</span> (Verifica)</div>
+                        <div id="inv-bob-auth" style="display:none; margin-top:5px;">✅ Autenticato con Alice</div>
+                        <div id="inv-bob-ks-auth" style="display:none; margin-top:5px;">🔑 <span
+                                class="key-badge key-ks">Ks</span> (Ricevuta!)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTROLS AUTH -->
+            <div class="controls">
+                <button class="btn btn-primary" id="btn-next-auth" onclick="nextStepAuth()">
+                    <i class="fas fa-play"></i> Inizia
+                </button>
+                <button class="btn btn-secondary" onclick="resetSimAuth()">
+                    <i class="fas fa-undo"></i> Reset
+                </button>
+            </div>
+
+            <!-- STEPS CONTAINER AUTH -->
+            <div class="step-container" id="steps-container-auth">
+                <!-- Dynamic Steps -->
+            </div>
+        </div>
+
+        <!-- HYBRID SCHEME (Text Only) -->
+        <div style="margin-top: 80px; border-top: 2px dashed var(--border); padding-top: 50px;">
+            <h1>Schema Ibrido</h1>
+            <div class="subtitle">KDC + Chiave Pubblica</div>
+
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 30px;">
+                <div class="step-card active" style="border-left-color: #a371f7;">
+                    <div class="step-header">
+                        <span class="step-number" style="color: #a371f7;">Perché?</span>
+                    </div>
+                    <div class="explanation-box">
+                        <p>Il KDC distribuisce chiavi di sessione (veloci) cifrate con una Master Key.</p>
+                        <p>Ma come distribuiamo le Master Key? <strong>Con la Crittografia a Chiave Pubblica!</strong>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="step-card active" style="border-left-color: #e3b341;">
+                    <div class="step-header">
+                        <span class="step-number" style="color: #e3b341;">Vantaggi</span>
+                    </div>
+                    <div class="explanation-box">
+                        <ul style="margin-left: 20px; list-style-type: disc;">
+                            <li><strong>Prestazioni:</strong> Usiamo la "pesante" asimmetrica solo ogni tanto (per le
+                                Master Key), non per ogni sessione.</li>
+                            <li><strong>Compatibilità:</strong> Si sovrappone facilmente ai sistemi KDC esistenti.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="height:100px;"></div>
+    </div>
+
+    <script>
+        let currentStep = 0;
+        const totalSteps = 5;
+
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                currentStep++;
+
+                // Update Step Visuals
+                document.getElementById(`step-${currentStep}`).classList.add('active');
+                document.getElementById(`step-${currentStep}`).scrollIntoView({ behavior: "smooth", block: "center" });
+
+                // Update Button
+                const btn = document.getElementById('btn-next');
+                if (currentStep < totalSteps) {
+                    btn.innerHTML = `<i class="fas fa-arrow-down"></i> Avanti (Step ${currentStep + 1})`;
+                } else {
+                    btn.innerHTML = `<i class="fas fa-check"></i> Completato`;
+                    btn.disabled = true;
+                    btn.style.opacity = 0.7;
+                }
+
+                // Logic Updates (Inventory)
+                if (currentStep === 2) { // KDC sends Ks to Alice
+                    document.getElementById('inv-alice-ks').style.display = 'block';
+                }
+                if (currentStep === 3) { // Alice forwards to Bob
+                    document.getElementById('inv-bob-ks').style.display = 'block';
+                }
+            }
+        }
+
+        function resetSim() {
+            currentStep = 0;
+            for (let i = 1; i <= totalSteps; i++) {
+                document.getElementById(`step-${i}`).classList.remove('active');
+            }
+
+            document.getElementById('inv-alice-ks').style.display = 'none';
+            document.getElementById('inv-bob-ks').style.display = 'none';
+
+            const btn = document.getElementById('btn-next');
+            btn.innerHTML = `<i class="fas fa-play"></i> Inizia (Step 1)`;
+            btn.disabled = false;
+            btn.style.opacity = 1;
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // --- DECENTRALIZED SCENARIO LOGIC ---
+        let currentStepDec = 0;
+        const totalStepsDec = 3;
+
+        function nextStepDec() {
+            if (currentStepDec < totalStepsDec) {
+                currentStepDec++;
+
+                // Update Step Visuals
+                document.getElementById(`step-dec-${currentStepDec}`).classList.add('active');
+                document.getElementById(`step-dec-${currentStepDec}`).scrollIntoView({ behavior: "smooth", block: "center" });
+
+                // Update Button
+                const btn = document.getElementById('btn-next-dec');
+                if (currentStepDec < totalStepsDec) {
+                    btn.innerHTML = `<i class="fas fa-arrow-down"></i> Avanti (Step ${currentStepDec + 1})`;
+                } else {
+                    btn.innerHTML = `<i class="fas fa-check"></i> Completato`;
+                    btn.disabled = true;
+                    btn.style.opacity = 0.7;
+                }
+
+                // Inventory Updates
+                if (currentStepDec === 2) {
+                    document.getElementById('inv-bob-ks-dec').style.display = 'block'; // Bob generates it first
+                }
+                if (currentStepDec === 3) {
+                    document.getElementById('inv-alice-ks-dec').style.display = 'block'; // Alice receives it
+                }
+            }
+        }
+
+        function resetSimDec() {
+            currentStepDec = 0;
+            for (let i = 1; i <= totalStepsDec; i++) {
+                document.getElementById(`step-dec-${i}`).classList.remove('active');
+            }
+
+            document.getElementById('inv-alice-ks-dec').style.display = 'none';
+            document.getElementById('inv-bob-ks-dec').style.display = 'none';
+
+            const btn = document.getElementById('btn-next-dec');
+            btn.innerHTML = `<i class="fas fa-play"></i> Inizia (Step 1)`;
+            btn.disabled = false;
+            btn.style.opacity = 1;
+        }
+
+        // --- MERKLE / MITM SCENARIO LOGIC ---
+        let currentStepMerkle = 0;
+        let merkleMode = 'normal'; // 'normal' or 'mitm'
+
+        const stepsNormal = [
+            {
+                title: "Alice invia Public Key",
+                action: "Alice -> Bob",
+                content: `<span class="item id-a">ID_A</span> || <span class="key-badge" style="color:#7ee787; border-color:#7ee787;">PU_a</span>`,
+                desc: "Alice invia la sua chiave pubblica a Bob in chiaro."
+            },
+            {
+                title: "Bob invia Session Key",
+                action: "Bob -> Alice",
+                content: `<div class="enc-box" style="border-color:#7ee787; color:#7ee787;"><i class="fas fa-lock"></i> E(PU_a, [<span class="key-badge key-ks">Ks</span>])</div>`,
+                desc: "Bob genera Ks, la cifra con la chiave pubblica di Alice (PU_a) e la invia."
+            },
+            {
+                title: "Alice Decifra",
+                action: "Alice (Interno)",
+                content: `D(PR_a, ...) = <span class="key-badge key-ks">Ks</span>`,
+                desc: "Alice usa la sua chiave privata per recuperare Ks. Canale Sicuro stabilito! 🎉"
+            }
+        ];
+
+        const stepsMitm = [
+            {
+                title: "Alice invia (Intercettato!)",
+                action: "Alice -> Darth",
+                content: `<span class="item id-a">ID_A</span> || <span class="key-badge" style="color:#7ee787; border-color:#7ee787;">PU_a</span>`,
+                desc: "Darth intercetta il messaggio di Alice destinato a Bob. Bob non riceve nulla ancora."
+            },
+            {
+                title: "Darth sostituisce Key",
+                action: "Darth -> Bob",
+                content: `<span class="item id-a">ID_A</span> || <span class="key-badge" style="color:#da3633; border-color:#da3633;">PU_darth</span>`,
+                desc: "Darth invia a Bob la SUA chiave pubblica, fingendosi Alice."
+            },
+            {
+                title: "Bob cifra per 'Alice'",
+                action: "Bob -> Darth",
+                content: `<div class="enc-box" style="border-color:#da3633; color:#da3633;"><i class="fas fa-lock"></i> E(PU_darth, [<span class="key-badge key-ks">Ks</span>])</div>`,
+                desc: "Bob crede che la chiave sia di Alice. Cifra Ks con la chiave di Darth!"
+            },
+            {
+                title: "Darth Decifra e Re-invia",
+                action: "Darth -> Alice",
+                content: `<div class="enc-box" style="border-color:#7ee787; color:#7ee787;"><i class="fas fa-lock"></i> E(PU_a, [<span class="key-badge key-ks">Ks</span>])</div>`,
+                desc: "Darth decifra Ks (ha la PR_darth). Ora <strong>conosce Ks</strong>! Poi la ricifra con PU_a e la manda ad Alice per non destare sospetti."
+            }
+        ];
+
+        function setMode(mode) {
+            merkleMode = mode;
+            resetSimMerkle();
+
+            // UI Updates
+            if (mode === 'mitm') {
+                document.getElementById('actor-darth').style.display = 'block';
+                document.getElementById('btn-mode-mitm').style.opacity = '1';
+                document.getElementById('btn-mode-normal').style.opacity = '0.6';
+                document.getElementById('mitm-alert').style.display = 'block';
+            } else {
+                document.getElementById('actor-darth').style.display = 'none';
+                document.getElementById('btn-mode-mitm').style.opacity = '0.6';
+                document.getElementById('btn-mode-normal').style.opacity = '1';
+                document.getElementById('mitm-alert').style.display = 'none';
+            }
+        }
+
+        function nextStepMerkle() {
+            const steps = merkleMode === 'normal' ? stepsNormal : stepsMitm;
+
+            if (currentStepMerkle < steps.length) {
+                const stepData = steps[currentStepMerkle];
+                currentStepMerkle++;
+
+                // Create Step HTML dynamically
+                const stepHtml = `
+                <div class="step-card active" style="margin-bottom: 15px;">
+                    <div class="step-header">
+                        <span class="step-number">Step ${currentStepMerkle}</span>
+                        <span class="step-action">${stepData.action}</span>
+                    </div>
+                    <div class="packet-visual">
+                        ${stepData.content}
+                    </div>
+                    <div class="explanation-box">
+                        ${stepData.desc}
+                    </div>
+                </div>
+                `;
+
+                const container = document.getElementById('steps-merkle');
+                container.insertAdjacentHTML('beforeend', stepHtml);
+                container.lastElementChild.scrollIntoView({ behavior: "smooth", block: "center" });
+
+                // Handling Inventory Logic Visualization
+                if (merkleMode === 'mitm') {
+                    if (currentStepMerkle === 3) document.getElementById('inv-darth-ks-merkle').style.display = 'block';
+                    if (currentStepMerkle === 4) document.getElementById('inv-alice-ks-merkle').style.display = 'block';
+                } else {
+                    if (currentStepMerkle === 3) document.getElementById('inv-alice-ks-merkle').style.display = 'block';
+                }
+
+                // Update Button
+                const btn = document.getElementById('btn-next-merkle');
+                if (currentStepMerkle < steps.length) {
+                    btn.innerHTML = `<i class="fas fa-arrow-down"></i> Avanti`;
+                } else {
+                    btn.innerHTML = `<i class="fas fa-check"></i> Completato`;
+                    btn.disabled = true;
+                }
+            }
+        }
+
+        function resetSimMerkle() {
+            currentStepMerkle = 0;
+            document.getElementById('steps-merkle').innerHTML = '';
+            document.getElementById('btn-next-merkle').innerHTML = `<i class="fas fa-play"></i> Inizia`;
+            document.getElementById('btn-next-merkle').disabled = false;
+
+            document.getElementById('inv-alice-ks-merkle').style.display = 'none';
+            document.getElementById('inv-darth-ks-merkle').style.display = 'none';
+            document.getElementById('inv-bob-pua-merkle').style.display = 'none';
+        }
+
+        // --- AUTHENTICATED ASYMMETRIC LOGIC ---
+        let currentStepAuth = 0;
+        const totalStepsAuth = 4;
+
+        function nextStepAuth() {
+            if (currentStepAuth < totalStepsAuth) {
+                currentStepAuth++;
+
+                let stepData = {};
+
+                if (currentStepAuth === 1) {
+                    stepData = {
+                        title: "Alice inizia (Challenge)",
+                        action: "Alice -> Bob",
+                        content: `<div class="enc-box" style="border-color:#ff7b72; color:#ff7b72;"><i class="fas fa-lock"></i> E(PU_b, [<span class="item nonce">N1</span> || <span class="item id-a">ID_A</span>])</div>`,
+                        desc: "Alice sfida Bob inviando un Nonce N1 e la sua identità, cifrati con la Public Key di Bob (solo lui può leggere)."
+                    };
+                } else if (currentStepAuth === 2) {
+                    stepData = {
+                        title: "Bob Risponde & Sfida",
+                        action: "Bob -> Alice",
+                        content: `<div class="enc-box" style="border-color:#7ee787; color:#7ee787;"><i class="fas fa-lock"></i> E(PU_a, [<span class="item nonce">N1</span> || <span class="item nonce">N2</span>])</div>`,
+                        desc: "Bob dimostra di essere Bob (ha letto N1) e sfida Alice con N2. Cifra con Public Key di Alice."
+                    };
+                } else if (currentStepAuth === 3) {
+                    stepData = {
+                        title: "Alice Conferma",
+                        action: "Alice -> Bob",
+                        content: `<div class="enc-box" style="border-color:#ff7b72; color:#ff7b72;"><i class="fas fa-lock"></i> E(PU_b, [<span class="item nonce">N2</span>])</div>`,
+                        desc: "Alice rimanda N2 cifrato. Ora si sono autenticati a vicenda! 🤝"
+                    };
+                } else if (currentStepAuth === 4) {
+                    stepData = {
+                        title: "Trasmissione Chiave Sicura",
+                        action: "Alice -> Bob",
+                        content: `
+                        <div class="enc-box" style="border-color:#ff7b72; color:#ff7b72; padding: 10px;">
+                            <i class="fas fa-lock"></i> E(PU_b, [ 
+                                <div class="enc-box" style="border-color:#7ee787; color:#7ee787; margin: 5px;">
+                                    <i class="fas fa-pen-nib"></i> E(PR_a, <span class="key-badge key-ks">Ks</span>)
+                                </div>
+                            ])
+                        </div>`,
+                        desc: "Alice cifra la chiave Ks con la SUA Privata (Firma) e poi col la Pubblica di Bob (Segretezza). <br>Solo Bob può leggere (PU_b) e Bob sa che viene da Alice (firma PR_a)."
+                    };
+                }
+
+                // Append Step
+                const stepHtml = `
+                <div class="step-card active" style="margin-bottom: 15px;">
+                    <div class="step-header">
+                        <span class="step-number">Step ${currentStepAuth}</span>
+                        <span class="step-action">${stepData.action}</span>
+                    </div>
+                    <div class="packet-visual">
+                        ${stepData.content}
+                    </div>
+                    <div class="explanation-box">
+                        ${stepData.desc}
+                    </div>
+                </div>
+                `;
+
+                const container = document.getElementById('steps-container-auth');
+                container.insertAdjacentHTML('beforeend', stepHtml);
+                container.lastElementChild.scrollIntoView({ behavior: "smooth", block: "center" });
+
+                // Update Button
+                const btn = document.getElementById('btn-next-auth');
+                if (currentStepAuth < totalStepsAuth) {
+                    btn.innerHTML = `<i class="fas fa-arrow-down"></i> Avanti`;
+                } else {
+                    btn.innerHTML = `<i class="fas fa-check"></i> Completato`;
+                    btn.disabled = true;
+                }
+
+                // Inventory Updates
+                if (currentStepAuth === 2) document.getElementById('inv-alice-auth').style.display = 'block';
+                if (currentStepAuth === 3) document.getElementById('inv-bob-auth').style.display = 'block';
+                if (currentStepAuth === 4) document.getElementById('inv-bob-ks-auth').style.display = 'block';
+            }
+        }
+
+        function resetSimAuth() {
+            currentStepAuth = 0;
+            document.getElementById('steps-container-auth').innerHTML = '';
+            document.getElementById('btn-next-auth').innerHTML = `<i class="fas fa-play"></i> Inizia`;
+            document.getElementById('btn-next-auth').disabled = false;
+
+            document.getElementById('inv-alice-auth').style.display = 'none';
+            document.getElementById('inv-bob-auth').style.display = 'none';
+            document.getElementById('inv-bob-ks-auth').style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>

@@ -198,3 +198,137 @@ h3 {
     height: 1px;
     background: #555;
 }
+
+/* NEW STYLES */
+.hybrid-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.hybrid-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid transparent;
+}
+
+.sym {
+    border-color: var(--warning);
+    color: var(--warning);
+}
+
+.asym {
+    border-color: var(--pgp-zip);
+    color: var(--pgp-zip);
+}
+
+.hybrid-card i {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.hybrid-card h3 {
+    color: inherit;
+    margin-top: 0;
+    font-size: 1.1rem;
+}
+
+.hybrid-card p {
+    color: #ccc;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.btn-control {
+    background: #21262d;
+    border: 1px solid #30363d;
+    color: #c9d1d9;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: all 0.2s;
+}
+
+.btn-control:hover {
+    background: #30363d;
+    border-color: #8b949e;
+}
+
+.highlight-btn {
+    background: var(--success-color);
+    color: #fff;
+    border-color: var(--success-color);
+}
+
+.highlight-btn:hover {
+    background: #2ea043;
+}
+
+/* Packet Structure */
+.pgp-packet-vis {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    background: #0d1117;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #30363d;
+}
+
+.packet-part {
+    padding: 20px;
+    border-radius: 6px;
+    text-align: center;
+    position: relative;
+    min-width: 120px;
+}
+
+.key-part {
+    background: rgba(210, 153, 34, 0.2);
+    border: 2px solid var(--accent-color);
+    color: var(--accent-color);
+    flex: 1;
+}
+
+.data-part {
+    background: rgba(56, 139, 253, 0.2);
+    border: 2px solid var(--pgp-zip);
+    color: var(--pgp-zip);
+    flex: 2;
+}
+
+.part-label {
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    background: #0d1117;
+    padding: 0 5px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.inner-data {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 10px 0;
+    color: #fff;
+}
+
+.part-desc {
+    font-size: 0.8rem;
+    color: #8b949e;
+    margin-top: 5px;
+}
+
+.story-box {
+    background: rgba(59, 130, 246, 0.1);
+    border-left: 4px solid var(--pgp-zip);
+    padding: 20px;
+    border-radius: 0 8px 8px 0;
+    font-size: 1.05rem;
+}

@@ -21,6 +21,50 @@
             <p>La "Carta d'Identità Digitale" (Standard X.509 v3)</p>
         </header>
 
+        <!-- 0. Purpose Section (New) -->
+        <section class="section purpose">
+            <h2>0. A Cosa Serve? (Il Problema)</h2>
+            <div class="story-box">
+                <p><strong>Il Problema MITM:</strong> Quando ti connetti a <em>google.com</em>, chi ti garantisce che
+                    stai "parlando" con il vero server di Google e non con un hacker nel mezzo?</p>
+                <p><strong>La Soluzione:</strong> Serve una <strong>Terza Parte Fidata</strong> (CA) che garantisce:
+                    "Questa Chiave Pubblica appartiene davvero a Google".</p>
+                <div style="margin-top: 10px; font-weight: bold; color: var(--accent-color);">
+                    <i class="fas fa-key"></i> X.509 = Associazione GARANTITA tra Identità e Chiave
+                </div>
+            </div>
+        </section>
+
+        <!-- 0.5 Lifecycle Section (New) -->
+        <section class="section lifecycle">
+            <h2>0.5 Il Ciclo di Vita (Come si ottiene?)</h2>
+            <div class="process-flow">
+                <div class="process-step">
+                    <div class="step-icon">1️⃣</div>
+                    <h3>Generazione Coppia</h3>
+                    <p>L'utente crea Chiave Privata (segreta) e Pubblica.</p>
+                </div>
+                <div class="arrow">⬇️</div>
+                <div class="process-step">
+                    <div class="step-icon">2️⃣</div>
+                    <h3>CSR (Richiesta)</h3>
+                    <p>Invia la Pubblica + Dati alla CA (Certificate Signing Request).</p>
+                </div>
+                <div class="arrow">⬇️</div>
+                <div class="process-step">
+                    <div class="step-icon">3️⃣</div>
+                    <h3>Verifica CA</h3>
+                    <p>La CA controlla chi sei (es. verifica dominio o documenti).</p>
+                </div>
+                <div class="arrow">⬇️</div>
+                <div class="process-step highlight-step">
+                    <div class="step-icon">4️⃣</div>
+                    <h3>Firma (Emissione)</h3>
+                    <p>La CA crea il certificato e appone la sua <strong>Firma Digitale</strong>.</p>
+                </div>
+            </div>
+        </section>
+
         <!-- 1. Anatomy Section -->
         <section class="section anatomy">
             <h2>1. Struttura del Certificato</h2>
@@ -158,6 +202,46 @@
                     <p><strong>Online Certificate Status Protocol</strong></p>
                     <p>Interrogazione diretta alla CA in tempo reale.</p>
                 </div>
+            </div>
+        </section>
+
+        <!-- 4. Logic Section (New) -->
+        <section class="section logic">
+            <h2>4. Come Funziona la Validazione? (Il Browser)</h2>
+            <p style="margin-bottom: 20px;">Quando visiti un sito HTTPS, il tuo browser fa questi controlli automatici:
+            </p>
+            <div class="validation-steps">
+                <div class="v-step">
+                    <div class="v-num">1</div>
+                    <div class="v-content">
+                        <strong>Lettura Issuer:</strong> "Chi ha firmato questo?" <br> -> <em>DigiCert Global Root
+                            CA</em>.
+                    </div>
+                </div>
+                <div class="v-step">
+                    <div class="v-num">2</div>
+                    <div class="v-content">
+                        <strong>Recupero Chiave CA:</strong> Il browser cerca nel suo archivio (Trust Store) la Chiave
+                        Pubblica di DigiCert.
+                    </div>
+                </div>
+                <div class="v-step">
+                    <div class="v-num">3</div>
+                    <div class="v-content">
+                        <strong>Verifica Firma:</strong> Usa la chiave della CA per decifrare l'hash del certificato e
+                        controllare che corrisponda.
+                    </div>
+                </div>
+                <div class="v-step">
+                    <div class="v-num">4</div>
+                    <div class="v-content">
+                        <strong>Controlli Extra:</strong> Date (non scaduto?), Revoca (CRL/OCSP), Dominio (è per questo
+                        sito?).
+                    </div>
+                </div>
+            </div>
+            <div class="success-box">
+                <i class="fas fa-check-circle"></i> Se tutto OK: il lucchetto diventa verde/chiuso. 🔒
             </div>
         </section>
         </section>

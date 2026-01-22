@@ -16,6 +16,40 @@
         <h1>PGP (Pretty Good Privacy)</h1>
         <div class="subtitle">Sicurezza Email Ibrida & Decentralizzata</div>
 
+        <!-- -1. Purpose (New) -->
+        <section class="section purpose">
+            <h2 style="text-align:center;">-1. A Cosa Serve? (Postcard vs Busta)</h2>
+            <div class="story-box" style="margin-bottom: 30px;">
+                <p><strong>Il Problema:</strong> L'email standard è come una <strong>Cartolina</strong>. Chiunque la
+                    maneggi (server, router) può leggere il testo.</p>
+                <p><strong>La Soluzione:</strong> PGP mette la cartolina in una <strong>Busta Blindata</strong>.</p>
+                <ul style="margin-top:10px; color:#ccc;">
+                    <li>🔒 <strong>Confidenzialità:</strong> Solo il destinatario la apre.</li>
+                    <li>✍️ <strong>Autenticità:</strong> Sei sicuro di chi l'ha inviata.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 0. Hybrid Encryption (New) -->
+        <section class="section hybrid">
+            <h2 style="text-align:center;">0. Il Segreto: Cifratura Ibrida</h2>
+            <div class="story-box" style="margin-bottom: 30px;">
+                <p>PGP unisce il meglio di due mondi per velocità e sicurezza:</p>
+                <div class="hybrid-grid">
+                    <div class="hybrid-card sym">
+                        <i class="fas fa-bolt"></i>
+                        <h3>Simmetrica (Veloce)</h3>
+                        <p>Usa una chiave casuale (Session Key) per cifrare il <strong>Messaggio</strong>.</p>
+                    </div>
+                    <div class="hybrid-card asym">
+                        <i class="fas fa-key"></i>
+                        <h3>Asimmetrica (Sicura)</h3>
+                        <p>Usa la Chiave Pubblica del destinatario per cifrare <strong>SOLO</strong> la Session Key.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- SECTION 1: TOOLBOX -->
         <h2 style="text-align:center;">1. La Scatola degli Attrezzi (5 Servizi)</h2>
         <p style="text-align:center; color:#8b949e; margin-bottom: 20px;">
@@ -67,8 +101,30 @@
 
             <div class="flow-controls">
                 <button onclick="prevStep()" class="btn-control"><i class="fas fa-backward"></i> Indietro</button>
-                <button onclick="nextStep()" class="btn-control"><i class="fas fa-forward"></i> Avanti</button>
+                <button onclick="nextStep()" class="btn-control highlight-btn"><i class="fas fa-forward"></i>
+                    Avanti</button>
                 <button onclick="resetFlow()" class="btn-control"><i class="fas fa-undo"></i> Reset</button>
+            </div>
+        </div>
+
+        <!-- SECTION 2.5: Message Structure (New) -->
+        <h2 style="text-align:center; margin-top:60px;">2.5 Anatomia del Pacchetto PGP</h2>
+        <p style="text-align:center; color:#8b949e; margin-bottom: 20px;">Cosa viaggia davvero in rete?</p>
+        <div class="pgp-packet-vis">
+            <!-- Part A: Encrypted Key -->
+            <div class="packet-part key-part">
+                <div class="part-label">Header (RSA)</div>
+                <i class="fas fa-key"></i> Session Key
+                <div class="part-desc">Cifrata con PubKey(Bob)</div>
+            </div>
+            <!-- Part B: Encrypted Data -->
+            <div class="packet-part data-part">
+                <div class="part-label">Body (AES)</div>
+                <div class="inner-data">
+                    <span><i class="fas fa-file-alt"></i> Messaggio</span>
+                    <span><i class="fas fa-signature"></i> Firma</span>
+                </div>
+                <div class="part-desc">Cifrati con Session Key</div>
             </div>
         </div>
 

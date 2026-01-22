@@ -10,21 +10,48 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;700&display=swap"
         rel="stylesheet">
     <style>
+        .macro-section {
+            margin-top: 6rem;
+            margin-bottom: 2rem;
+            padding-left: 1rem;
+            border-left: 4px solid var(--accent);
+        }
+
+        .macro-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .macro-desc {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
         .category-section {
             margin-bottom: 4rem;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
         }
 
         .category-title {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             color: var(--accent);
-            border-bottom: 2px solid var(--border);
+            border-bottom: 1px solid var(--border);
             padding-bottom: 0.5rem;
             margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 1.5rem;
         }
 
@@ -39,6 +66,8 @@
             display: flex;
             flex-direction: column;
             align-items: flex-start;
+            position: relative;
+            overflow: hidden;
         }
 
         .cipher-card:hover {
@@ -55,56 +84,69 @@
         }
 
         .cipher-desc {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--text-secondary);
+            line-height: 1.4;
+            margin-bottom: 1rem;
         }
 
         .tag {
             font-size: 0.7rem;
-            padding: 2px 6px;
+            padding: 4px 8px;
             border-radius: 4px;
             background: #333;
-            color: #aaa;
+            color: #ddd;
+            font-weight: 600;
             margin-top: auto;
-            /* Push to bottom */
-            margin-top: 1rem;
+            letter-spacing: 0.5px;
         }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <header>
-            <h1>NickSicurezza</h1>
-            <p>Esplora algoritmi di cifratura classici e moderni.</p>
+        <header
+            style="text-align: center; margin-bottom: 50px; padding: 50px 0; background: radial-gradient(circle at center, rgba(88, 166, 255, 0.1) 0%, transparent 70%);">
+            <h1
+                style="font-size: 3.5rem; margin-bottom: 10px; background: linear-gradient(45deg, #fff, #888); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                NickSicurezza</h1>
+            <p style="font-size: 1.2rem; color: var(--text-secondary);">Percorso interattivo di Crittografia e Sicurezza
+                Informatica</p>
         </header>
+
+        <!-- ========================================== -->
+        <!-- 1. LE FONDAMENTA                           -->
+        <!-- ========================================== -->
+        <div class="macro-section">
+            <div class="macro-title">1. Le Fondamenta</div>
+            <div class="macro-desc">Si parte dai concetti teorici e dalla storia della crittografia.</div>
+        </div>
 
         <!-- Capitolo 0: Introduzione -->
         <section class="category-section">
-            <h2 class="category-title" style="color: #f59e0b; border-color: #f59e0b;">Capitolo 0: Introduzione</h2>
+            <h2 class="category-title"><span style="opacity:0.5;">Capitolo 0:</span>&nbsp;Introduzione</h2>
             <div class="cards-grid">
-                <a href="/intro" class="cipher-card"
-                    style="border-color: #f59e0b; background: rgba(245, 158, 11, 0.05);">
-                    <span class="cipher-name" style="color: #f59e0b;">Introduzione & Fondamenti</span>
-                    <span class="cipher-desc">Storia, NIST, CIA Triad, Tassonomia e Contesto. Inizia qui.</span>
-                    <span class="tag" style="background: #f59e0b; color: #000;">Fondamentale</span>
+                <a href="/intro" class="cipher-card" style="border-left: 3px solid #f59e0b;">
+                    <span class="cipher-name">Introduzione & Fondamenti</span>
+                    <span class="cipher-desc">Storia, NIST, CIA Triad, Tassonomia e Contesto.</span>
+                    <span class="tag" style="background: rgba(245, 158, 11, 0.2); color: #f59e0b;">START HERE</span>
                 </a>
             </div>
         </section>
 
-        <!-- Tecniche di Sostituzione -->
+        <!-- Capitolo 1: Sostituzione -->
         <section class="category-section">
-            <h2 class="category-title">Tecniche di Sostituzione</h2>
+            <h2 class="category-title"><span style="opacity:0.5;">Capitolo 1:</span>&nbsp;Tecniche di Sostituzione</h2>
             <div class="cards-grid">
                 <a href="/caesar" class="cipher-card">
                     <span class="cipher-name">Cifrario di Cesare</span>
                     <span class="cipher-desc">Sostituzione semplice tramite shift (scorrimento).</span>
-                    <span class="tag">Classico</span>
+                    <span class="tag">Shift Cipher</span>
                 </a>
                 <a href="/monoalphabetic" class="cipher-card">
                     <span class="cipher-name">Cifrario Monoalfabetico</span>
                     <span class="cipher-desc">Sostituzione con alfabeto misto basato su keyword.</span>
-                    <span class="tag">Classico</span>
+                    <span class="tag">Substitution</span>
                 </a>
                 <a href="/playfair" class="cipher-card">
                     <span class="cipher-name">Playfair</span>
@@ -114,7 +156,7 @@
                 <a href="/hill" class="cipher-card">
                     <span class="cipher-name">Hill</span>
                     <span class="cipher-desc">Cifratura algebrica tramite moltiplicazione matriciale.</span>
-                    <span class="tag">Algebrico</span>
+                    <span class="tag">Algebra Lineare</span>
                 </a>
                 <a href="/vigenere" class="cipher-card">
                     <span class="cipher-name">Vigenère</span>
@@ -129,19 +171,19 @@
                 <a href="/otp" class="cipher-card">
                     <span class="cipher-name">One Time Pad</span>
                     <span class="cipher-desc">Versione incondizionatamente sicura di Vernam.</span>
-                    <span class="tag">Sicurezza Perfetta</span>
+                    <span class="tag" style="color:#7ee787;">Sicurezza Perfetta</span>
                 </a>
             </div>
         </section>
 
-        <!-- Tecniche di Trasposizione -->
+        <!-- Capitolo 2: Trasposizione -->
         <section class="category-section">
-            <h2 class="category-title">Tecniche di Trasposizione</h2>
+            <h2 class="category-title"><span style="opacity:0.5;">Capitolo 2:</span>&nbsp;Tecniche di Trasposizione</h2>
             <div class="cards-grid">
                 <a href="/rail_fence" class="cipher-card">
                     <span class="cipher-name">Rail Fence</span>
                     <span class="cipher-desc">Scrittura a zigzag e lettura per righe.</span>
-                    <span class="tag">Trasposizione</span>
+                    <span class="tag">Geometrica</span>
                 </a>
                 <a href="/row_transposition" class="cipher-card">
                     <span class="cipher-name">Row Transposition</span>
@@ -151,149 +193,221 @@
             </div>
         </section>
 
-        <!-- Tecniche Simmetriche Moderne -->
+
+        <!-- ========================================== -->
+        <!-- 2. I MATTONI MODERNI (ALGORITMI)           -->
+        <!-- ========================================== -->
+        <div class="macro-section">
+            <div class="macro-title">2. I Mattoni Moderni (Algoritmi)</div>
+            <div class="macro-desc">Confidenzialità (Cifratura) e Integrità (Hashing).</div>
+        </div>
+
+        <!-- Capitolo 3: Simmetrica Moderna -->
         <section class="category-section">
-            <h2 class="category-title">Cifratura Simmetrica (Moderna)</h2>
+            <h2 class="category-title"><span style="opacity:0.5;">Capitolo 3:</span>&nbsp;Cifratura Simmetrica (Moderna)
+            </h2>
             <div class="cards-grid">
+                <a href="/feistel" class="cipher-card" style="border-left: 3px solid #a371f7;">
+                    <span class="cipher-name">Rete di Feistel</span>
+                    <span class="cipher-desc">Struttura architetturale alla base del DES.</span>
+                    <span class="tag" style="background: rgba(163, 113, 247, 0.2); color: #a371f7;">Architettura</span>
+                </a>
                 <a href="/des" class="cipher-card">
                     <span class="cipher-name">DES</span>
-                    <span class="cipher-desc">Data Encryption Standard (Feistel Network).</span>
-                    <span class="tag">Blocchi (64-bit)</span>
-                </a>
-                <!-- NEW: FEISTEL -->
-                <a href="/feistel" class="cipher-card">
-                    <span class="cipher-name">Rete di Feistel</span>
-                    <span class="cipher-desc">L'architettura alla base del DES.</span>
-                    <span class="tag"
-                        style="background: center; color: #a371f7; border: 1px solid #a371f7;">Architettura</span>
+                    <span class="cipher-desc">Data Encryption Standard. Il classico a 64 bit.</span>
+                    <span class="tag">Block Cipher</span>
                 </a>
                 <a href="/aes" class="cipher-card">
                     <span class="cipher-name">AES</span>
-                    <span class="cipher-desc">Advanced Encryption Standard (Rijndael).</span>
-                    <span class="tag">Blocchi (128-bit)</span>
+                    <span class="cipher-desc">Advanced Encryption Standard. Lo standard attuale.</span>
+                    <span class="tag">Block Cipher</span>
                 </a>
-                <!-- NEW: Modalità Operative -->
-                <a href="/modes" class="cipher-card">
+                <a href="/modes" class="cipher-card" style="grid-column: span 2;">
                     <span class="cipher-name">Modalità Operative</span>
-                    <span class="cipher-desc">ECB, CBC, CFB, OFB, CTR. La guida completa.</span>
-                    <span class="tag">Blocchi</span>
+                    <span class="cipher-desc">ECB, CBC, CFB, OFB, CTR. Come applicare i cifrari a blocchi ai dati
+                        reali.</span>
+                    <span class="tag" style="background: #333;">Essenziale</span>
                 </a>
             </div>
         </section>
 
-        <!-- Tecniche Asimmetriche -->
+        <!-- Capitolo 4: Asimmetrica -->
         <section class="category-section">
-            <h2 class="category-title">Cifratura Asimmetrica & Scambio Chiavi</h2>
+            <h2 class="category-title"><span style="opacity:0.5;">Capitolo 4:</span>&nbsp;Cifratura Asimmetrica &
+                Scambio Chiavi</h2>
             <div class="cards-grid">
-                <a href="/rsa" class="cipher-card">
-                    <span class="cipher-name">RSA</span>
-                    <span class="cipher-desc">Rivest–Shamir–Adleman (Asimmetrico).</span>
-                    <span class="tag">Pubblico/Privato</span>
-                </a>
                 <a href="/diffie_hellman" class="cipher-card">
                     <span class="cipher-name">Diffie-Hellman</span>
-                    <span class="cipher-desc">Scambio sicuro di chiavi su canale insicuro.</span>
-                    <span class="tag">Scambio Chiavi</span>
+                    <span class="cipher-desc">Il primo metodo per scambiare chiavi su canale insicuro.</span>
+                    <span class="tag">Key Exchange</span>
+                </a>
+                <a href="/rsa" class="cipher-card">
+                    <span class="cipher-name">RSA</span>
+                    <span class="cipher-desc">Cifratura e Firma basata sulla fattorizzazione.</span>
+                    <span class="tag">Factoring</span>
                 </a>
                 <a href="/elgamal" class="cipher-card">
                     <span class="cipher-name">ElGamal</span>
-                    <span class="cipher-desc">Cifratura basata sul logaritmo discreto.</span>
-                    <span class="tag">Asimmetrico</span>
+                    <span class="cipher-desc">Basato sulla complessità del Logaritmo Discreto.</span>
+                    <span class="tag">Discrete Log</span>
                 </a>
                 <a href="/dsa" class="cipher-card">
                     <span class="cipher-name">DSA</span>
-                    <span class="cipher-desc">Digital Signature Algorithm (Firma Digitale).</span>
+                    <span class="cipher-desc">Digital Signature Algorithm (Standard NIST).</span>
                     <span class="tag">Firma Digitale</span>
                 </a>
                 <a href="/ecc" class="cipher-card">
                     <span class="cipher-name">ECC</span>
-                    <span class="cipher-desc">Crittografia a Curve Ellittiche (Alta efficienza).</span>
-                    <span class="tag">Asimmetrico</span>
+                    <span class="cipher-desc">Curve Ellittiche. Alta sicurezza con chiavi piccole.</span>
+                    <span class="tag">Next Gen</span>
                 </a>
-                <a href="/x509" class="cipher-card">
-                    <span class="cipher-name">Certificato X.509</span>
-                    <span class="cipher-desc">La Carta d'Identità Digitale (PKI).</span>
-                    <span class="tag">Chain of Trust</span>
+                <a href="/comparison" class="cipher-card"
+                    style="border-left: 3px solid #f59e0b; background: rgba(245, 158, 11, 0.05);">
+                    <span class="cipher-name">Confronto</span>
+                    <span class="cipher-desc">RSA vs DH vs DSA vs ECC.</span>
+                    <span class="tag" style="background: rgba(245, 158, 11, 0.2); color: #f59e0b;">Comparazione</span>
                 </a>
             </div>
         </section>
 
+        <!-- Capitolo 5: Hashing -->
         <section class="category-section">
-            <h2 class="category-title">Hashing & Autenticazione</h2>
+            <h2 class="category-title"><span style="opacity:0.5;">Capitolo 5:</span>&nbsp;Hashing & Autenticazione</h2>
             <div class="cards-grid">
                 <a href="/hash" class="cipher-card">
                     <span class="cipher-name">Funzioni Hash</span>
-                    <span class="cipher-desc">Principi, Integrità (MD5, SHA).</span>
-                    <span class="tag">Integrità</span>
+                    <span class="cipher-desc">Introduzione ai digest e alle proprietà di sicurezza.</span>
+                    <span class="tag">Fondamenti</span>
+                </a>
+                <a href="/md5" class="cipher-card" style="opacity: 0.8;">
+                    <span class="cipher-name">MD5</span>
+                    <span class="cipher-desc">Veloce ma vulnerabile alle collisioni. (Legacy)</span>
+                    <span class="tag" style="color: #ff7b72;">Deprecato</span>
                 </a>
                 <a href="/sha512" class="cipher-card">
                     <span class="cipher-name">SHA-512</span>
-                    <span class="cipher-desc">Approfondimento specifico Step-by-Step.</span>
-                    <span class="tag">Esame</span>
-                </a>
-                <a href="/md5" class="cipher-card">
-                    <span class="cipher-name">MD5</span>
-                    <span class="cipher-desc">128 bit, obsoleto ma veloce.</span>
-                    <span class="tag" style="background: #ef4444;">Obsoleto</span>
+                    <span class="cipher-desc">Lo standard moderno robusto (Famiglia SHA-2).</span>
+                    <span class="tag" style="color: #7ee787;">Sicuro</span>
                 </a>
                 <a href="/hmac" class="cipher-card">
                     <span class="cipher-name">HMAC</span>
-                    <span class="cipher-desc">Hash-based Message Authentication Code.</span>
-                    <span class="tag">Integrità</span>
-                </a>
-
-
-        </section>
-
-        <section class="category-section">
-            <h2 class="category-title">Generatori & Randomness</h2>
-            <div class="cards-grid">
-                <a href="/prng" class="cipher-card">
-                    <span class="cipher-name">PRNG (LCG)</span>
-                    <span class="cipher-desc">Linear Congruential Generator.</span>
-                    <span class="tag">Numeri Casuali</span>
-                </a>
-
-                <a href="/trng" class="cipher-card">
-                    <span class="cipher-name">TRNG</span>
-                    <span class="cipher-desc">True Random Number Generator (Entropia).</span>
-                    <span class="tag">Fisica</span>
+                    <span class="cipher-desc">Hash autenticato tramite chiave segreta.</span>
+                    <span class="tag">Autenticazione</span>
                 </a>
             </div>
         </section>
 
+
+        <!-- ========================================== -->
+        <!-- 3. INFRASTRUTTURA & TRUST                  -->
+        <!-- ========================================== -->
+        <div class="macro-section">
+            <div class="macro-title">3. Infrastruttura e Gestione della Fiducia</div>
+            <div class="macro-desc">Gestione delle Identità e Distribuzione delle Chiavi.</div>
+        </div>
+
+        <!-- Capitolo 6: PKI & KDC -->
         <section class="category-section">
-            <h2 class="category-title">Sicurezza di Rete</h2>
+            <h2 class="category-title"><span style="opacity:0.5;">Capitolo 6:</span>&nbsp;Gestione delle Chiavi & PKI
+            </h2>
+            <div class="cards-grid">
+                <a href="/kdc" class="cipher-card">
+                    <span class="cipher-name">Scenario KDC</span>
+                    <span class="cipher-desc">Centralizzato vs Decentralizzato. (Merkle, Needham-Schroeder)</span>
+                    <span class="tag">Key Distribution</span>
+                </a>
+                <a href="/kerberos" class="cipher-card">
+                    <span class="cipher-name">Kerberos</span>
+                    <span class="cipher-desc">Autenticazione centralizzata robusta basata su Ticket.</span>
+                    <span class="tag">SSO & Tickets</span>
+                </a>
+                <a href="/x509" class="cipher-card">
+                    <span class="cipher-name">Certificato X.509</span>
+                    <span class="cipher-desc">La base della PKI. Struttura, CA e Chain of Trust.</span>
+                    <span class="tag">Identità Digitale</span>
+                </a>
+            </div>
+        </section>
+
+
+        <!-- ========================================== -->
+        <!-- 4. SICUREZZA DI RETE (PROTOCOLLI)          -->
+        <!-- ========================================== -->
+        <div class="macro-section">
+            <div class="macro-title">4. Sicurezza di Rete (Protocolli Applicati)</div>
+            <div class="macro-desc">Protezione pratica delle comunicazioni ai vari livelli ISO/OSI.</div>
+        </div>
+
+        <!-- Capitolo 7: Protocolli -->
+        <section class="category-section">
+            <h2 class="category-title"><span style="opacity:0.5;">Capitolo 7:</span>&nbsp;Protocolli di Sicurezza</h2>
             <div class="cards-grid">
                 <a href="/ipsec" class="cipher-card">
-                    <span class="cipher-name">IPsec</span>
-                    <span class="cipher-desc">AH vs ESP, Transport vs Tunnel Mode.</span>
-                    <span class="tag">Layer 3</span>
+                    <span class="cipher-name">IPsec (Layer 3)</span>
+                    <span class="cipher-desc">Sicurezza IP. VPN, Tunnel Mode & Transport Mode.</span>
+                    <span class="tag">Network Layer</span>
                 </a>
-                <a href="/pgp" class="cipher-card" style="border-color: #d29922;">
-                    <span class="cipher-name">PGP</span>
-                    <span class="cipher-desc">Email, Web of Trust & Ibrido.</span>
-                    <span class="tag" style="background: #d29922; color: #1a1a1a;">Email Sec</span>
+                <a href="/tls" class="cipher-card">
+                    <span class="cipher-name">SSL / TLS (Layer 4/7)</span>
+                    <span class="cipher-desc">HTTPS e Web Security. Handshake e Record Protocol.</span>
+                    <span class="tag">Transport/App</span>
                 </a>
-                <a href="/firewall" class="cipher-card" style="border-color: #da3633;">
+                <a href="/ssh" class="cipher-card">
+                    <span class="cipher-name">SSH (Layer 7)</span>
+                    <span class="cipher-desc">Secure Shell per amministrazione remota sicura.</span>
+                    <span class="tag">Admin</span>
+                </a>
+                <a href="/pgp" class="cipher-card">
+                    <span class="cipher-name">PGP (Email)</span>
+                    <span class="cipher-desc">Pretty Good Privacy. Autenticazione e Cifratura Email.</span>
+                    <span class="tag">Web of Trust</span>
+                </a>
+            </div>
+        </section>
+
+
+        <!-- ========================================== -->
+        <!-- 5. DIFESA PERIMETRALE                      -->
+        <!-- ========================================== -->
+        <div class="macro-section">
+            <div class="macro-title">5. Difesa Perimetrale</div>
+            <div class="macro-desc">Protezione strutturale della rete aziendale.</div>
+        </div>
+
+        <!-- Capitolo 8: Difesa Architetturale -->
+        <section class="category-section">
+            <h2 class="category-title"><span style="opacity:0.5;">Capitolo 8:</span>&nbsp;Difesa Architetturale</h2>
+            <div class="cards-grid">
+                <a href="/firewall" class="cipher-card" style="border-left: 3px solid #da3633;">
                     <span class="cipher-name">Firewall & DMZ</span>
-                    <span class="cipher-desc">Tipi, Architettura & Politiche.</span>
-                    <span class="tag" style="background: #da3633; color: #1a1a1a;">Architettura</span>
+                    <span class="cipher-desc">Packet Filter, Proxy, Stateful Inspection & Topologie DMZ.</span>
+                    <span class="tag" style="background: rgba(218, 54, 51, 0.2); color: #da3633;">Network Def</span>
                 </a>
-                <a href="/kerberos" class="cipher-card" style="border-color: #d29922;">
-                    <span class="cipher-name">Kerberos</span>
-                    <span class="cipher-desc">Autenticazione TTP, TGT & Service Tickets.</span>
-                    <span class="tag" style="background: #d29922; color: #1a1a1a;">Boss Level</span>
+            </div>
+        </section>
+
+
+        <!-- ========================================== -->
+        <!-- 6. APPENDICE                               -->
+        <!-- ========================================== -->
+        <div class="macro-section" style="margin-top: 8rem; border-left-color: #7d8590;">
+            <div class="macro-title" style="color: #7d8590;">6. Appendice (Approfondimenti)</div>
+            <div class="macro-desc">Argomenti di supporto teorico.</div>
+        </div>
+
+        <!-- Capitolo 9: Randomness -->
+        <section class="category-section" style="border-style: dashed; opacity: 0.9;">
+            <h2 class="category-title"><span style="opacity:0.5;">Capitolo 9:</span>&nbsp;Generatori & Randomness</h2>
+            <div class="cards-grid">
+                <a href="/prng" class="cipher-card">
+                    <span class="cipher-name">PRNG</span>
+                    <span class="cipher-desc">Pseudo-Random Number Generators (Algoritmici).</span>
+                    <span class="tag">Software</span>
                 </a>
-                <a href="/tls" class="cipher-card" style="border-color: #3fb950;">
-                    <span class="cipher-name">SSL / TLS</span>
-                    <span class="cipher-desc">Handshake, Record Protocol & Session Resumption.</span>
-                    <span class="tag" style="background: #3fb950; color: #1a1a1a;">Web Sec</span>
-                </a>
-                <a href="/ssh" class="cipher-card" style="border-color: #f85149;">
-                    <span class="cipher-name">SSH</span>
-                    <span class="cipher-desc">Amministrazione Remota, TOFU & Tunneling.</span>
-                    <span class="tag" style="background: #f85149; color: #1a1a1a;">Remote Admin</span>
+                <a href="/trng" class="cipher-card">
+                    <span class="cipher-name">TRNG</span>
+                    <span class="cipher-desc">True Random Number Generators (Entropia).</span>
+                    <span class="tag">Hardware</span>
                 </a>
             </div>
         </section>

@@ -17,6 +17,14 @@
             <p>Polialfabetico: La chiave si ripete per cifrare il testo</p>
         </header>
 
+        <div class="info-box"
+            style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #8b5cf6;">
+            <p><strong>Spazio delle Chiavi:</strong> 26<sup>L</sup> (dove L è la lunghezza della chiave). Cresce
+                esponenzialmente con la lunghezza della chiave.</p>
+            <p><strong>Resistenza:</strong> Buona contro l'analisi di frequenza semplice (perché la stessa lettera è
+                cifrata in modi diversi). Tuttavia, vulnerabile al metodo Kasiski se il testo è abbastanza lungo.</p>
+        </div>
+
         <section class="controls">
             <div class="input-group">
                 <label for="plaintext">Testo in Chiaro (Solo Lettere):</label>
@@ -68,7 +76,8 @@
 
                 <h3 style="color: #58a6ff; margin-top: 20px;">2. Analisi delle Frequenze (Trovare la chiave)</h3>
                 <p>Una volta scoperta la lunghezza della chiave (diciamo <em>L</em>), il testo viene diviso in
-                    <em>L</em> colonne.</p>
+                    <em>L</em> colonne.
+                </p>
                 <p>Ogni colonna è stata cifrata con una singola lettera (Cifrario di Cesare). Basta applicare la normale
                     analisi delle frequenze (es. cercare la lettera 'E', la più comune) su ogni colonna per recuperare
                     la chiave completa.</p>

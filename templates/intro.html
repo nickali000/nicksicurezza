@@ -28,35 +28,48 @@
                     informatica garantisce 5 obiettivi fondamentali:</p>
                 <div class="pentagon-grid">
                     <div class="pentagon-item">
-                        <div class="icon"><i class="fas fa-user-secret"></i></div>
+                        <div class="image-container">
+                            <img src="{{ url_for('static', filename='images/confidentiality.png') }}"
+                                alt="Confidentiality">
+                        </div>
                         <h3>1. Confidenzialità</h3>
                         <p><strong>Definizione:</strong> Solo chi è autorizzato può leggere.</p>
                         <p><strong>Strumento:</strong> Crittografia (AES, RSA).</p>
                         <p><strong>Attacco:</strong> Sniffing/Snooping (Intercettazione).</p>
                     </div>
                     <div class="pentagon-item">
-                        <div class="icon"><i class="fas fa-file-signature"></i></div>
+                        <div class="image-container">
+                            <img src="{{ url_for('static', filename='images/integrity.png') }}" alt="Integrity">
+                        </div>
                         <h3>2. Integrità</h3>
                         <p><strong>Definizione:</strong> I dati non devono essere modificati.</p>
                         <p><strong>Strumento:</strong> Hash (SHA-256), HMAC.</p>
                         <p><strong>Attacco:</strong> Tampering (Modifica).</p>
                     </div>
                     <div class="pentagon-item">
-                        <div class="icon"><i class="fas fa-server"></i></div>
+                        <div class="image-container">
+                            <img src="{{ url_for('static', filename='images/availability.png') }}" alt="Availability">
+                        </div>
                         <h3>3. Disponibilità</h3>
                         <p><strong>Definizione:</strong> Il sistema deve funzionare quando serve.</p>
                         <p><strong>Strumento:</strong> Ridondanza, Firewall.</p>
                         <p><strong>Attacco:</strong> DoS (Denial of Service).</p>
                     </div>
                     <div class="pentagon-item">
-                        <div class="icon"><i class="fas fa-id-card"></i></div>
+                        <div class="image-container">
+                            <img src="{{ url_for('static', filename='images/authentication.png') }}"
+                                alt="Authentication">
+                        </div>
                         <h3>4. Autenticazione</h3>
                         <p><strong>Definizione:</strong> Certezza dell'identità (Sei Alice?).</p>
                         <p><strong>Strumento:</strong> Password, Kerberos.</p>
                         <p><strong>Attacco:</strong> Spoofing (Mascheramento).</p>
                     </div>
                     <div class="pentagon-item">
-                        <div class="icon"><i class="fas fa-gavel"></i></div>
+                        <div class="image-container">
+                            <img src="{{ url_for('static', filename='images/non_repudiation.png') }}"
+                                alt="Non-Repudiation">
+                        </div>
                         <h3>5. Non Ripudio</h3>
                         <p><strong>Definizione:</strong> L'autore non può negare l'azione.</p>
                         <p><strong>Strumento:</strong> Firma Digitale.</p>
@@ -139,35 +152,50 @@
         <!-- 6. Tassonomia -->
         <section class="section taxonomy-section">
             <h2>6. Tassonomia della Crittografia</h2>
-            <div class="tree">
-                <ul>
-                    <li>
-                        <span class="root-node">Crittografia</span>
-                        <ul>
-                            <li>
-                                <span class="branch-node">1. Per Operazioni</span>
-                                <ul>
-                                    <li><strong>Sostituzione:</strong> Cambio lettera (Cesare, AES S-Box)</li>
-                                    <li><strong>Trasposizione:</strong> Cambio ordine (Rail Fence)</li>
-                                </ul>
-                            </li>
-                            <li>
-                                <span class="branch-node">2. Per Chiavi</span>
-                                <ul>
-                                    <li><strong>Simmetrica:</strong> Stessa chiave (AES, DES). Veloce.</li>
-                                    <li><strong>Asimmetrica:</strong> Chiave Pubblica/Privata (RSA). Lenta.</li>
-                                </ul>
-                            </li>
-                            <li>
-                                <span class="branch-node">3. Per Dati</span>
-                                <ul>
-                                    <li><strong>A Blocchi:</strong> 64/128 bit alla volta (AES).</li>
-                                    <li><strong>A Flusso:</strong> 1 bit alla volta (RC4, OTP).</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
+            <div class="taxonomy-chart">
+                <div class="node root">
+                    <span>Crittografia</span>
+                </div>
+                <div class="branches">
+                    <!-- Branch 1: Operations -->
+                    <div class="branch">
+                        <div class="node-category">1. Per Operazioni</div>
+                        <div class="leaves">
+                            <div class="leaf">
+                                <strong>Sostituzione</strong> <br> (Cesare, AES S-Box)
+                            </div>
+                            <div class="leaf">
+                                <strong>Trasposizione</strong> <br> (Rail Fence)
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Branch 2: Keys -->
+                    <div class="branch">
+                        <div class="node-category">2. Per Chiavi</div>
+                        <div class="leaves">
+                            <div class="leaf">
+                                <strong>Simmetrica</strong> <br> (AES, DES) <br> <small>Veloce</small>
+                            </div>
+                            <div class="leaf">
+                                <strong>Asimmetrica</strong> <br> (RSA) <br> <small>Lenta</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Branch 3: Data -->
+                    <div class="branch">
+                        <div class="node-category">3. Per Dati</div>
+                        <div class="leaves">
+                            <div class="leaf">
+                                <strong>A Blocchi</strong> <br> (AES)
+                            </div>
+                            <div class="leaf">
+                                <strong>A Flusso</strong> <br> (RC4, OTP)
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 

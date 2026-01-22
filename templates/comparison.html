@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confronto Definitivo - Cifrari Asimmetrici</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        .comparison-table-container {
+            overflow-x: auto;
+            margin: 2rem 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--card-bg);
+            color: var(--text-primary);
+            min-width: 800px;
+            /* Force scroll on small screens */
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background-color: rgba(255, 255, 255, 0.05);
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        td {
+            vertical-align: top;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Highlight specific cells */
+        .highlight-good {
+            color: #7ee787;
+            font-weight: 600;
+        }
+
+        .highlight-bad {
+            color: #ff7b72;
+            font-weight: 600;
+        }
+
+        .highlight-warn {
+            color: #d2a8ff;
+            font-weight: 600;
+        }
+
+        .section-header {
+            margin-top: 4rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--accent);
+            padding-left: 1rem;
+        }
+
+        .section-header h2 {
+            margin: 0;
+            font-size: 2rem;
+            color: #fff;
+        }
+
+        .analysis-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .analysis-card h3 {
+            color: var(--accent);
+            margin-top: 0;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .analysis-card h3::before {
+            content: '';
+            display: block;
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        .badge-role {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-left: auto;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ccc;
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .key-mgmt-section {
+            background: rgba(48, 54, 61, 0.3);
+            border: 1px dashed var(--border);
+            padding: 2rem;
+            border-radius: 12px;
+        }
+
+        .scenario-box {
+            margin-bottom: 2rem;
+        }
+
+        .scenario-box:last-child {
+            margin-bottom: 0;
+        }
+
+        .scenario-title {
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .actor-line {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+            color: var(--text-secondary);
+        }
+
+        .key-highlight {
+            color: var(--accent);
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(88, 166, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .final-synthesis {
+            background: linear-gradient(135deg, rgba(31, 111, 235, 0.1), rgba(31, 111, 235, 0.05));
+            border: 1px solid rgba(31, 111, 235, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        .quote-box {
+            border-left: 4px solid #58a6ff;
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            color: #e6edf3;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="home-btn"><i class="fas fa-arrow-left"></i> Menu</a>
+            <h1>Il Confronto Definitivo</h1>
+            <p>La tua ancora di salvezza per l'esame: differenze, usi e debolezze dei cifrari asimmetrici.</p>
+        </header>
+
+        <!-- 1. LA TABELLA TECNICA -->
+        <section>
+            <div class="section-header">
+                <h2>1. La Tabella "Master"</h2>
+                <p style="color: var(--text-secondary); margin-top: 0.5rem;">Tutto a colpo d'occhio. Memorizza queste
+                    differenze strutturali.</p>
+            </div>
+
+            <div class="comparison-table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Caratteristica</th>
+                            <th>RSA</th>
+                            <th>Diffie-Hellman (DH)</th>
+                            <th>ElGamal</th>
+                            <th>DSA</th>
+                            <th>ECC (Elliptic Curve)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Famiglia Matematica</strong></td>
+                            <td>Fattorizzazione <br><span class="code-font">(n = p*q)</span></td>
+                            <td>Logaritmo Discreto <br><span class="code-font">(g^x mod p)</span></td>
+                            <td>Logaritmo Discreto</td>
+                            <td>Logaritmo Discreto</td>
+                            <td>Curve Ellittiche <br><span class="code-font">(y^2 = x^3 + ax + b)</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Scopo Principale</strong></td>
+                            <td class="highlight-good">Universale<br>(Cifra & Firma)</td>
+                            <td>Scambio Chiavi<br>(Key Exchange)</td>
+                            <td>Cifratura<br>(Confidenzialità)</td>
+                            <td>Firma Digitale<br>(Autenticazione)</td>
+                            <td class="highlight-good">Universale<br>(ECDH, ECDSA)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Input</strong></td>
+                            <td>Messaggio Intero</td>
+                            <td>Numeri Parziali<br>(g^a, g^b)</td>
+                            <td>Messaggio Intero</td>
+                            <td><strong>HASH</strong> del Messaggio</td>
+                            <td>Dipende<br>(Punti sulla curva)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Output</strong></td>
+                            <td>Cifrato<br>(stessa lunghezza)</td>
+                            <td>Chiave Condivisa<br>(Segreto Comune)</td>
+                            <td class="highlight-warn">Cifrato Doppia Lungh.<br>(2 numeri)</td>
+                            <td class="highlight-good">Firma Corta<br>(2 numeri di 160+ bit)</td>
+                            <td>Punti compressi<br>(molto corti)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Efficienza Chiavi</strong></td>
+                            <td class="highlight-bad">Bassa<br>(Chiavi enormi)</td>
+                            <td>Media</td>
+                            <td>Media</td>
+                            <td>Media</td>
+                            <td class="highlight-good">Altissima<br>(Chiavi minuscole)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Randomness (k)</strong></td>
+                            <td>Non serve per ogni msg<br>(Solo per chiavi)</td>
+                            <td>Serve per generare a, b</td>
+                            <td class="highlight-warn">CRUCIALE<br>per ogni msg</td>
+                            <td class="highlight-warn">CRUCIALE<br>per ogni firma</td>
+                            <td>Cruciale</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 2. ANALISI FUNZIONALE -->
+        <section>
+            <div class="section-header">
+                <h2>2. Analisi Funzionale</h2>
+                <p style="color: var(--text-secondary); margin-top: 0.5rem;">A cosa servono davvero e le loro metafore.
+                </p>
+            </div>
+
+            <div class="analysis-grid">
+                <!-- RSA -->
+                <div class="analysis-card">
+                    <h3>
+                        RSA
+                        <span class="badge-role" style="background: rgba(239, 68, 68, 0.2); color: #ef4444;">Il
+                            Coltellino Svizzero</span>
+                    </h3>
+                    <p>È l'algoritmo "storico". Fa tutto, ma oggi inizia a sentire il peso dell'età.</p>
+                    <ul style="margin-top: 1rem; color: var(--text-secondary); font-size: 0.9em; padding-left: 1.2rem;">
+                        <li><strong>Cifra:</strong> Alice usa la Pubblica di Bob (Segretezza).</li>
+                        <li><strong>Firma:</strong> Alice usa la PROPRIA Privata (Autenticità).</li>
+                    </ul>
+                    <p style="margin-top: 1rem; font-size: 0.9em;"><strong style="color: var(--text-primary);">Unico
+                            Reversibile:</strong> La stessa matematica funziona in entrambi i sensi.</p>
+                </div>
+
+                <!-- DH -->
+                <div class="analysis-card">
+                    <h3>
+                        Diffie-Hellman
+                        <span class="badge-role" style="background: rgba(59, 130, 246, 0.2); color: #3b82f6;">Il
+                            Negoziatore</span>
+                    </h3>
+                    <p>Non cifra messaggi, è un protocollo di accordo.</p>
+                    <p style="margin-top: 1rem; font-size: 0.9em; color: var(--text-secondary);">Permette a due
+                        sconosciuti di urlarsi dei numeri e concordare un segreto comune.</p>
+                    <p style="margin-top: 1rem; font-size: 0.9em;"><strong
+                            style="color: var(--text-primary);">Interattivo:</strong> Richiede che Alice e Bob "parlino"
+                        attivamente.</p>
+                </div>
+
+                <!-- ElGamal -->
+                <div class="analysis-card">
+                    <h3>
+                        ElGamal
+                        <span class="badge-role" style="background: rgba(168, 85, 247, 0.2); color: #a855f7;">Il
+                            Messaggero Asincrono</span>
+                    </h3>
+                    <p>L'adattamento di DH per inviare messaggi segreti "unidirezionali".</p>
+                    <p style="margin-top: 1rem; font-size: 0.9em;"><strong style="color: var(--text-primary);">Fattore
+                            Casuale (k):</strong> Cifrando "CIAO" due volte, ottieni due cifrati diversi (ottimo!).</p>
+                    <p style="margin-top: 0.5rem; font-size: 0.9em; color: #ff7b72;"><strong>Difetto:</strong> Il
+                        cifrato è grande il doppio del messaggio originale.</p>
+                </div>
+
+                <!-- DSA -->
+                <div class="analysis-card">
+                    <h3>
+                        DSA
+                        <span class="badge-role" style="background: rgba(245, 158, 11, 0.2); color: #f59e0b;">Il
+                            Notaio</span>
+                    </h3>
+                    <p>Nato specificamente per firmare (NIST).</p>
+                    <p style="margin-top: 1rem; font-size: 0.9em; color: var(--text-secondary);">Non garantisce
+                        segretezza, solo Integrità e Autenticità.</p>
+                    <p style="margin-top: 1rem; font-size: 0.9em;"><strong
+                            style="color: var(--text-primary);">Veloce:</strong> Produce firme corte (es. 320 bit
+                        totali) indipendentemente dalla grandezza del file (lavora sull'HASH).</p>
+                </div>
+
+                <!-- ECC -->
+                <div class="analysis-card">
+                    <h3>
+                        ECC
+                        <span class="badge-role" style="background: rgba(34, 197, 94, 0.2); color: #22c55e;">Il Futuro
+                            Efficiente</span>
+                    </h3>
+                    <p>Una diversa base matematica per fare tutto il resto (ECDH, ECDSA).</p>
+                    <p style="margin-top: 1rem; font-size: 0.9em;"><strong
+                            style="color: var(--text-primary);">Efficienza Assoluta:</strong> Una chiave ECC a 256 bit
+                        protegge come una RSA a 3072 bit.</p>
+                    <p style="margin-top: 0.5rem; font-size: 0.9em; color: var(--text-secondary);">Obbligatorio su
+                        Smartphone, Smart Card e HTTPS moderno.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. GESTIONE CHIAVI -->
+        <section>
+            <div class="section-header">
+                <h2>3. La Gestione delle Chiavi (Chi usa cosa?)</h2>
+                <p style="color: var(--text-secondary); margin-top: 0.5rem;">Visualizzalo così per non sbagliare
+                    all'orale.</p>
+            </div>
+
+            <div class="key-mgmt-section">
+                <!-- Scenario 1 -->
+                <div class="scenario-box">
+                    <div class="scenario-title">Scenario 1: Voglio mandare un messaggio segreto (Confidenzialità)</div>
+                    <div style="margin-bottom: 0.5rem; font-size: 0.9em; color: #aaa;">Algoritmi: RSA Encryption,
+                        ElGamal</div>
+                    <div class="actor-line">
+                        <span style="min-width: 120px;">Mittente (Alice):</span>
+                        <span>Usa la <span class="key-highlight">Chiave PUBBLICA</span> del Destinatario (Bob).</span>
+                    </div>
+                    <div class="actor-line">
+                        <span style="min-width: 120px;">Destinatario (Bob):</span>
+                        <span>Usa la <span class="key-highlight">Chiave PRIVATA</span> per aprire.</span>
+                    </div>
+                </div>
+
+                <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 1.5rem 0;">
+
+                <!-- Scenario 2 -->
+                <div class="scenario-box">
+                    <div class="scenario-title">Scenario 2: Voglio firmare un documento (Autenticità)</div>
+                    <div style="margin-bottom: 0.5rem; font-size: 0.9em; color: #aaa;">Algoritmi: RSA Signature, DSA,
+                        ECDSA</div>
+                    <div class="actor-line">
+                        <span style="min-width: 120px;">Mittente (Alice):</span>
+                        <span>Usa la <span class="key-highlight">PROPRIA Chiave PRIVATA</span> per firmare.</span>
+                    </div>
+                    <div class="actor-line">
+                        <span style="min-width: 120px;">Destinatario (Bob):</span>
+                        <span>Usa la <span class="key-highlight">Chiave PUBBLICA</span> di Alice per verificare.</span>
+                    </div>
+                </div>
+
+                <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 1.5rem 0;">
+
+                <!-- Scenario 3 -->
+                <div class="scenario-box">
+                    <div class="scenario-title">Scenario 3: Voglio creare un tunnel sicuro (Key Exchange)</div>
+                    <div style="margin-bottom: 0.5rem; font-size: 0.9em; color: #aaa;">Algoritmi: Diffie-Hellman, ECDH
+                    </div>
+                    <div class="actor-line">
+                        <span style="min-width: 120px;">Entrambi:</span>
+                        <span>Usano la propria Privata + la Pubblica dell'altro per derivare il <span
+                                class="key-highlight" style="color: #f59e0b;">segreto comune</span>.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. SINTESI FINALE -->
+        <section class="final-synthesis">
+            <h2 style="color: #58a6ff; margin-bottom: 1rem;">Sintesi Finale per l'Esame</h2>
+            <p style="font-size: 1.1rem;">Se il prof ti chiede: <em style="color: #fff;">"Qual è la differenza
+                    sostanziale tra RSA e gli algoritmi basati sul Logaritmo Discreto (ElGamal/DSA)?"</em></p>
+
+            <div class="quote-box">
+                "La differenza principale è nella <strong>versatilità e nell'efficienza</strong>.<br><br>
+                <strong>RSA</strong> è basato sulla fattorizzazione ed è un sistema 'completo' (reversibile per
+                cifratura e firma), ma richiede chiavi molto lunghe.<br>
+                <strong>ElGamal e DSA</strong> si basano sul logaritmo discreto e sono 'specializzati': ElGamal cifra
+                (ma espande il messaggio), DSA firma (producendo firme compatte).<br><br>
+                Spesso si preferisce usare DSA/ECC per la firma e Diffie-Hellman per lo scambio chiavi, abbandonando RSA
+                per motivi di performance."
+            </div>
+        </section>
+
+        <div style="text-align: center; margin-top: 50px; margin-bottom: 50px;">
+            <a href="/" style="text-decoration: none;">
+                <button
+                    style="padding: 12px 24px; font-size: 1em; background: #21262d; color: #c9d1d9; border: 1px solid #30363d; border-radius: 6px; cursor: pointer; transition: background 0.2s;">
+                    <i class="fas fa-arrow-left"></i> Torna al Menu
+                </button>
+            </a>
+        </div>
+    </div>
+</body>
+
+</html>

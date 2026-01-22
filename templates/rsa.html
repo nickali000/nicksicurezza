@@ -142,6 +142,69 @@
                 </div>
             </div>
         </section>
+
+        <!-- 5. Attacks (New Section) -->
+        <!-- 5. Attacks (New Section) -->
+        <section class="section attacks" style="border-left: 5px solid #ef4444;">
+            <h2>5. Attacchi a RSA (Approfondimento)</h2>
+            <div class="attacks-grid">
+                <!-- 1. Brute Force -->
+                <div class="attack-card">
+                    <h3>1. Forza Bruta</h3>
+                    <p>Si prova ogni chiave possibile. La difesa è usare uno <strong>Spazio delle Chiavi</strong>
+                        enorme.</p>
+                    <ul style="margin-left: 20px; font-size: 0.9em; color: #ccc;">
+                        <li>512 bit: Debole (crackabile).</li>
+                        <li>1024 bit: A rischio.</li>
+                        <li><strong>2048 bit</strong>: Standard attuale (Sicuro).</li>
+                    </ul>
+                </div>
+
+                <!-- 2. Mathematical -->
+                <div class="attack-card">
+                    <h3>2. Attacchi Matematici</h3>
+                    <p>Obiettivo principale: <strong>Fattorizzare n</strong> (trovare p e q). Se trovi <em>p,q</em> ->
+                        calcoli <em>φ(n)</em> -> trovi <em>d</em>.</p>
+                    <div style="margin-top:10px; border-top:1px solid #555; paddingTop:5px;">
+                        <span style="font-size:0.8em; color:#aaa;">STRUMENTI:</span>
+                        <ul style="margin-left: 20px; font-size: 0.85em; color: #ccc;">
+                            <li><strong>GNFS</strong> (Generalized Number Field Sieve): Algoritmo moderno (post-1990),
+                                molto più veloce del vecchio "Crivello di Eratostene".</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 3. Timing (Dangerous) -->
+                <div class="attack-card">
+                    <span class="danger-badge">Più Pericoloso ⚠️</span>
+                    <h3>3. Attacchi a Tempo</h3>
+                    <p>Analizzano il tempo di decifratura (elaborare '1' è più lento di '0').</p>
+                    <div style="margin-top:10px; background:rgba(0,0,0,0.2); padding:5px; border-radius:4px;">
+                        <strong>CONTROMISURE:</strong>
+                        <ul style="margin-left: 20px; font-size: 0.85em; color: #fbbf24;">
+                            <li><strong>Tempo Costante:</strong> Forzare tutte le operazioni al tempo del "caso
+                                peggiore".</li>
+                            <li><strong>Ritardo Casuale:</strong> Aggiungere noise (rumore), ma non sempre basta.</li>
+                            <li><strong>Blinding:</strong> Moltiplicare il testo cifrato per un numero casuale prima di
+                                decifrare.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 4. Chosen Ciphertext -->
+                <div class="attack-card">
+                    <h3>4. Testo Cifrato Scelto (CCA)</h3>
+                    <p>L'attaccante crea messaggi "ad hoc" per vedere come reagisce il server (es. errori di padding).
+                    </p>
+                    <div style="margin-top:10px;">
+                        <span style="font-size:0.8em; color:#aaa;">SOLUZIONE REALE:</span>
+                        <p style="color:#4ade80; font-weight:bold;">OAEP (Optimal Asymmetric Encryption Padding)</p>
+                        <p style="font-size:0.85em; color:#ccc;">Aggiunge bit casuali ed elabora il messaggio prima di
+                            cifrarlo, rendendo l'attacco inefficace.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
         </section>
 
         <div style="text-align: center; margin-top: 50px; margin-bottom: 20px;">
