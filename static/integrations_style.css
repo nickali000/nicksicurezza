@@ -1,0 +1,273 @@
+/* Dark Theme consistent with the app */
+body {
+    background-color: #0d1117;
+    color: #c9d1d9;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 40px;
+    border-bottom: 1px solid #30363d;
+    padding-bottom: 20px;
+}
+
+header h1 {
+    color: #f0f6fc;
+    font-size: 2.2rem;
+    margin-bottom: 5px;
+}
+
+header p {
+    color: #8b949e;
+    font-size: 1.1rem;
+}
+
+.home-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: #58a6ff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.section {
+    margin-bottom: 50px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #30363d;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.section-header h2 {
+    color: #f0f6fc;
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.tag {
+    background: #21262d;
+    color: #8b949e;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-family: 'JetBrains Mono', monospace;
+    border: 1px solid #30363d;
+}
+
+.card {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.card h3 {
+    margin-top: 0;
+    color: #f0f6fc;
+    border-bottom: 1px solid #30363d;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+/* 1. EMAIL SECTION */
+.smime-card {
+    border-left: 4px solid #58a6ff;
+}
+
+.pec-card {
+    border-left: 4px solid #d29922;
+}
+
+.details-box {
+    background: #0d1117;
+    padding: 15px;
+    border-radius: 6px;
+    margin-top: 15px;
+}
+
+.process-visual {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    text-align: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.step {
+    flex: 1;
+    background: #0d1117;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #30363d;
+    min-width: 150px;
+}
+
+.step .icon {
+    font-size: 1.8rem;
+    color: #d29922;
+    margin-bottom: 10px;
+}
+
+.arrow {
+    font-size: 1.5rem;
+    color: #8b949e;
+}
+
+/* 2. PKI SECTION */
+.revoca-card {
+    border-left: 4px solid #a371f7;
+}
+
+.question {
+    font-style: italic;
+    color: #8b949e;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.comp-item {
+    background: #0d1117;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #30363d;
+}
+
+.bg-dark {
+    background: #0d1117;
+}
+
+.bg-highlight {
+    background: rgba(56, 139, 253, 0.05);
+    border-color: #58a6ff;
+}
+
+.bad {
+    color: #f85149;
+    font-weight: bold;
+    font-size: 0.8rem;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.good {
+    color: #3fb950;
+    font-weight: bold;
+    font-size: 0.8rem;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* 3. IPSEC SECTION */
+.ipsec-card {
+    border-left: 4px solid #3fb950;
+}
+
+.simple-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.simple-table th,
+.simple-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #30363d;
+}
+
+.ah-col {
+    color: #f85149;
+}
+
+.esp-col {
+    color: #3fb950;
+}
+
+.yes {
+    color: #3fb950;
+}
+
+.no {
+    color: #ff7b72;
+    opacity: 0.7;
+}
+
+/* 4. RISK SECTION */
+.risk-card {
+    border-left: 4px solid #ff7b72;
+}
+
+.math-box {
+    background: #0d1117;
+    padding: 15px;
+    text-align: center;
+    border-radius: 6px;
+    border: 1px dashed #ff7b72;
+    margin: 15px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.2rem;
+}
+
+.rosi-formula {
+    background: #21262d;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    overflow-x: auto;
+    color: #f0f6fc;
+}
+
+.home-btn-large {
+    background: #238636;
+    color: white;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.home-btn-large:hover {
+    background: #2ea043;
+}
+
+/* Responsiveness */
+@media (max-width: 600px) {
+    .comparison-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .process-visual {
+        flex-direction: column;
+    }
+
+    .arrow {
+        transform: rotate(90deg);
+        margin: 10px 0;
+    }
+}

@@ -7,6 +7,8 @@
     <title>Cifrario di Vernam (Addizione Modulare)</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='vernam_style.css') }}">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 
 <body>
@@ -16,6 +18,60 @@
             <h1>Cifrario di Vernam</h1>
             <p>Addizione Modulare (Mod 26): C = (P + K) % 26</p>
         </header>
+
+        <!-- Perfect Secrecy Content -->
+        <section class="section">
+            <div class="card perfect-secrecy-card">
+                <h2><i class="fas fa-crown"></i> La Segretezza Perfetta (Perfect Secrecy)</h2>
+                <p>È perfetto perché possiede la <strong>Segretezza Perfetta</strong> teorizzata da Claude Shannon. È
+                    matematicamente impossibile da rompere, anche con infinita potenza di calcolo.</p>
+
+                <div class="theory-comparison">
+                    <div class="theory-block conditional">
+                        <h3>Sicurezza Computazionale</h3>
+                        <p>Algoritmi come AES, RSA:</p>
+                        <p><em>"Si può rompere, ma ci vorrebbero 1 miliardo di anni"</em>.</p>
+                    </div>
+                    <div class="theory-block unconditional">
+                        <h3>Sicurezza Incondizionata</h3>
+                        <p>OTP/Vernam:</p>
+                        <p><em>"Non si può rompere, punto."</em></p>
+                    </div>
+                </div>
+
+                <h3><i class="fas fa-gavel"></i> Le 3 Regole di Shannon</h3>
+                <p>Per ottenere questa magia, devi rispettare 3 regole rigidissime. Se ne violi anche solo una, il
+                    sistema
+                    crolla.</p>
+                <ul class="shannon-rules">
+                    <li><strong>1. Casualità:</strong> La chiave deve essere generata in modo Veramente Casuale (non da
+                        un computer, ma da processi fisici come decadimento radioattivo o lancio di dadi). Se usi un
+                        computer (pseudo-random), diventa un Stream Cipher
+                        violabile (come RC4).</li>
+                    <li><strong>2. Lunghezza:</strong> La chiave deve essere lunga almeno quanto il messaggio. <br>
+                        (Per cifrare un file da 1GB, serve una chiave da 1GB).</li>
+                    <li><strong>3. Monouso (One-Time):</strong> La chiave non deve MAI essere riutilizzata. <br>
+                        <small>
+                            Se usi la stessa chiave \(K\) per due messaggi \(M_1\) e \(M_2\):<br>
+                            1. \(C_1 = M_1 + K\) <br>
+                            2. \(C_2 = M_2 + K\) <br>
+                            3. L'attaccante sottrae i cifrati: \(C_1 - C_2\) <br>
+                            4. Risultato: \((M_1 + K) - (M_2 + K) = M_1 - M_2\) <br>
+                            <strong>La chiave \(K\) si è cancellata!</strong> L'attaccante ora ha la differenza tra i
+                            messaggi e può risalirvi.
+                        </small>
+                    </li>
+                </ul>
+
+                <div class="alert-box warning">
+                    <strong>"Se è perfetto, perché non lo usiamo sempre?"</strong><br>
+                    Risposta: Per il <strong>Problema della Distribuzione delle Chiavi</strong>.<br>
+                    Se devo mandare a Bob un file segreto da 1GB, devo prima incontrarlo fisicamente per dargli una
+                    chiavetta USB con la chiave OTP da 1GB. Ma se posso incontrarlo fisicamente per dargli la chiave...
+                    tanto vale che gli dia direttamente il file segreto!
+                </div>
+            </div>
+        </section>
 
         <section class="controls">
             <div class="input-group">

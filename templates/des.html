@@ -104,6 +104,77 @@
             </div>
 
             <div class="card"
+                style="background: #161b22; border: 1px solid #30363d; padding: 20px; border-radius: 8px; margin-bottom: 2rem; border-left: 5px solid #a371f7;">
+                <h2 style="color: #a371f7; margin-top: 0;">🔬 APPROFONDIMENTO: Criteri SAC e BIC</h2>
+                <p>Questi sono concetti di <strong>Teoria dell'Informazione</strong> applicati alla progettazione delle
+                    S-Box. <br>
+                    Se all'esame ti chiedono: <em>"Come si progetta una buona S-Box?"</em>, rispondi con questi due
+                    criteri.</p>
+
+                <div class="grid-col-2"
+                    style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                    <div style="background: #0d1117; padding: 15px; border-radius: 6px; border: 1px solid #30363d;">
+                        <h3 style="color: #58a6ff; margin-top: 0;">1. SAC (Strict Avalanche Criterion)</h3>
+                        <p style="font-size: 0.9em; color: #8b949e; margin-bottom: 10px;">Definito da Webster e Tavares
+                        </p>
+                        <p><strong>Concetto:</strong> Se inverto <strong>1 singolo bit</strong> in input alla S-Box,
+                            ciascun bit di output deve cambiare con una probabilità del <strong>50%</strong>.</p>
+                        <p style="border-top: 1px solid #30363d; padding-top: 10px; margin-top: 10px;">
+                            <strong>Perché?</strong> Impedisce che l'output dipenda troppo da pochi bit di input,
+                            massimizzando la <em>confusione</em>.
+                        </p>
+                    </div>
+
+                    <div style="background: #0d1117; padding: 15px; border-radius: 6px; border: 1px solid #30363d;">
+                        <h3 style="color: #d29922; margin-top: 0;">2. BIC (Bit Independence Criterion)</h3>
+                        <p style="font-size: 0.9em; color: #8b949e; margin-bottom: 10px;">Indipendenza Statistica</p>
+                        <p><strong>Concetto:</strong> Se inverto un bit di input \(i\), i bit di output \(j\) e \(k\)
+                            devono cambiare <strong>indipendentemente</strong> l'uno dall'altro. Non ci deve essere
+                            correlazione statistica tra i cambiamenti dei bit di uscita.</p>
+                        <p style="border-top: 1px solid #30363d; padding-top: 10px; margin-top: 10px;">
+                            <strong>Perché?</strong> Rende difficile la <em>crittoanalisi differenziale</em>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card"
+                style="background: #161b22; border: 1px solid #30363d; padding: 20px; border-radius: 8px; margin-bottom: 2rem; border-left: 5px solid #d29922;">
+                <h2 style="color: #d29922; margin-top: 0;">⏱️ Resistenza ai Timing Attack</h2>
+                <p>Un aspetto interessante della sicurezza fisica/implementativa del DES.</p>
+
+                <div
+                    style="background: #0d1117; padding: 15px; border-radius: 6px; border: 1px solid #30363d; margin-top: 15px;">
+                    <h3 style="color: #c9d1d9;">Il Concetto</h3>
+                    <p>In genere, il tempo impiegato da un processore per generare o crittografare un "0" o un "1" può
+                        essere <strong>leggermente differente</strong> a livello di nanosecondi.</p>
+                    <p>Se un attaccante ha la possibilità di misurare con estrema precisione il tempo impiegato per
+                        cifrare un oggetto, teoricamente potrebbe sfruttare questa informazione per <strong>dedurre la
+                            chiave</strong>.</p>
+                </div>
+
+                <div class="grid-col-2"
+                    style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                    <div>
+                        <h4 style="color: #f85149;">La Minaccia</h4>
+                        <p>Questo è un attacco <strong>Side-Channel</strong> (o Hardware) perché non dipende
+                            dall'algoritmo matematico puro, ma da <em>come viene fisicamente implementato</em> il
+                            dispositivo.</p>
+                        <p>È una tecnica potenzialmente sfruttabile sia contro <strong>DES</strong> che contro
+                            <strong>AES</strong>.</p>
+                    </div>
+                    <div>
+                        <h4 style="color: #3fb950;">La Difesa</h4>
+                        <p>Gli autori sostengono che il DES sia <strong>piuttosto resistente</strong> a questo tipo di
+                            attacco, anche se non del tutto immune.</p>
+                        <p>Le varianti più moderne e sofisticate, come <strong>Triple-DES</strong> e le implementazioni
+                            corrette di <strong>AES</strong> (es. usando operazioni constant-time), scongiurano
+                            maggiormente le probabilità di risalire alla chiave in questo modo.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card"
                 style="background: #161b22; border: 1px solid #30363d; padding: 20px; border-radius: 8px;">
                 <h2 style="color: #3fb950; margin-top: 0;">⚔️ Confronto: DES vs AES</h2>
                 <div style="overflow-x: auto;">

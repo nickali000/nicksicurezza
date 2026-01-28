@@ -348,6 +348,10 @@ def encrypt_monoalphabetic():
 def caesar():
     return render_template('caesar.html')
 
+@app.route('/enigma')
+def enigma():
+    return render_template('enigma.html')
+
 @app.route('/encrypt_caesar', methods=['POST'])
 def encrypt_caesar():
     data = request.json
@@ -607,9 +611,6 @@ def ecc_shared_secret_route():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
 @app.route('/ecc_get_points', methods=['POST'])
 def ecc_get_points_route():
     data = request.json
@@ -622,6 +623,14 @@ def ecc_get_points_route():
         return jsonify({"points": points})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+@app.route('/rc4')
+def rc4():
+    return render_template('rc4.html')
+
+@app.route('/integrations')
+def integrations():
+    return render_template('integrations.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

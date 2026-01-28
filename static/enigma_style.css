@@ -1,0 +1,252 @@
+body {
+    background-color: #0d1117;
+    color: #c9d1d9;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 40px;
+    border-bottom: 1px solid #30363d;
+    padding-bottom: 20px;
+}
+
+header h1 {
+    color: #f0f6fc;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+header p {
+    color: #8b949e;
+    font-size: 1.1rem;
+}
+
+.home-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: #58a6ff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.home-btn:hover {
+    text-decoration: underline;
+}
+
+.card {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.card h2 {
+    color: #58a6ff;
+    border-bottom: 1px solid #30363d;
+    padding-bottom: 15px;
+    margin-top: 0;
+}
+
+/* Visualization Styles */
+.diagram-container {
+    padding: 20px 0;
+    overflow-x: auto;
+}
+
+.flow-diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.block {
+    background: #21262d;
+    border: 2px solid #58a6ff;
+    color: #f0f6fc;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-weight: bold;
+    text-align: center;
+    min-width: 80px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+}
+
+.block.key {
+    border-color: #f0f6fc;
+    background: #30363d;
+}
+
+.block.plugboard {
+    border-color: #a371f7;
+}
+
+/* Purple for complexity */
+.block.rotor {
+    border-color: #3fb950;
+}
+
+/* Green for components */
+.block.reflector {
+    border-color: #d29922;
+}
+
+/* Orange/Gold for special */
+.block.lamp {
+    border-color: #f85149;
+    background: #30363d;
+    box-shadow: 0 0 10px rgba(248, 81, 73, 0.4);
+}
+
+.arrow {
+    color: #8b949e;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.arrow-down {
+    transform: rotate(90deg);
+}
+
+.caption {
+    text-align: center;
+    color: #8b949e;
+    font-style: italic;
+    margin-top: 15px;
+    font-size: 0.9rem;
+}
+
+/* Math Section Styles */
+.math-breakdown {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.math-item {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.math-item h3 {
+    font-size: 1.1rem;
+    color: #d29922;
+    margin-top: 0;
+}
+
+.math-item.highlight {
+    border-color: #a371f7;
+    background: rgba(163, 113, 247, 0.05);
+}
+
+.formula {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.2rem;
+    color: #f0f6fc;
+    text-align: center;
+    padding: 10px;
+    background: #161b22;
+    border-radius: 4px;
+    margin: 10px 0 0 0;
+}
+
+.total-calc {
+    margin-top: 30px;
+    padding: 20px;
+    background: #0d1117;
+    border-left: 5px solid #d29922;
+    border-radius: 6px;
+}
+
+.highlight-box {
+    background: rgba(210, 153, 34, 0.1);
+    color: #d29922;
+    padding: 15px;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: 6px;
+    margin: 10px 0;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.note {
+    font-size: 0.9rem;
+    color: #8b949e;
+    text-align: center;
+}
+
+/* Weakness Section */
+.feature-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+@media (min-width: 768px) {
+    .feature-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.feature {
+    background: #0d1117;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #30363d;
+}
+
+.feature h3 {
+    color: #79c0ff;
+    margin-top: 0;
+}
+
+.feature.fatal {
+    border-color: #f85149;
+    background: rgba(248, 81, 73, 0.05);
+}
+
+.feature.fatal h3 {
+    color: #f85149;
+}
+
+.math-statement {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.5rem;
+    text-align: center;
+    color: #f85149;
+    margin: 20px 0;
+}
+
+.home-btn-large {
+    background: #238636;
+    color: white;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.home-btn-large:hover {
+    background: #2ea043;
+}

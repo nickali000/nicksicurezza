@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integrazioni & Trabocchetti Esame</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='integrations_style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="home-btn"><i class="fas fa-arrow-left"></i> Menu</a>
+            <h1>Integrazioni & "Trabocchetti"</h1>
+            <p>I dettagli finali essenziali per il 30 (S/MIME, PEC, OCSP, AH/ESP, Risk)</p>
+        </header>
+
+        <!-- 1. SICUREZZA EMAIL: S/MIME & PEC -->
+        <section class="section" id="email">
+            <div class="section-header">
+                <h2>1. Sicurezza Email Aziendale (vs PGP)</h2>
+                <span class="tag">Capitolo 7</span>
+            </div>
+
+            <div class="card-group">
+                <!-- S/MIME -->
+                <div class="card smime-card">
+                    <h3><i class="fas fa-envelope-open-text"></i> S/MIME (Lo Standard Aziendale)</h3>
+                    <p><em>Differenza con PGP:</em> PGP è anarchico (Web of Trust), <strong>S/MIME è Gerarchico</strong>
+                        (usa PKI e Certificati X.509 ufficiali).</p>
+
+                    <div class="details-box">
+                        <h4>Le Funzioni (PKCS#7)</h4>
+                        <ul>
+                            <li><strong>Enveloped Data (Busta):</strong> Per la <em>Confidenzialità</em>. <br>
+                                <small>Cifra messaggio con chiave simmetrica random, poi cifra la chiave con la Pubblica
+                                    del destinatario.</small>
+                            </li>
+                            <li><strong>Signed Data (Firma):</strong> Per <em>Autenticazione + Integrità</em>. <br>
+                                <small>Hash cifrato con la Privata del mittente.</small>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- PEC -->
+                <div class="card pec-card">
+                    <h3><i class="fas fa-stamp"></i> PEC (Posta Elettronica Certificata)</h3>
+                    <p><em>Scopo:</em> <strong>Valore Legale</strong> (non segretezza!). Equivalente alla Raccomandata
+                        A/R.</p>
+
+                    <div class="process-visual">
+                        <div class="step">
+                            <div class="icon"><i class="fas fa-paper-plane"></i></div>
+                            <strong>1. Accettazione</strong>
+                            <p>Il TUO Gestore controlla e ti dà la ricevuta. <br><em>"Spedito in data X"</em></p>
+                        </div>
+                        <div class="arrow">→</div>
+                        <div class="step">
+                            <div class="icon"><i class="fas fa-envelope"></i></div>
+                            <strong>2. Busta di Trasporto</strong>
+                            <p>Il messaggio originale viene imbustato e <strong>Firmato</strong> dal Gestore.</p>
+                        </div>
+                        <div class="arrow">→</div>
+                        <div class="step">
+                            <div class="icon"><i class="fas fa-check-circle"></i></div>
+                            <strong>3. Consegna</strong>
+                            <p>Il Gestore DESTINATARIO ti manda la ricevuta finale. <br><em>"Consegnato"</em></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. PKI: REVOCA -->
+        <section class="section" id="pki">
+            <div class="section-header">
+                <h2>2. PKI: Gestione della Revoca</h2>
+                <span class="tag">Capitolo 6</span>
+            </div>
+            <div class="card revoca-card">
+                <p class="question">"Se perdo la chiave privata, come faccio a invalidare il certificato?"</p>
+
+                <div class="comparison-grid">
+                    <div class="comp-item bg-dark">
+                        <h4>CRL (Certificate Revocation List)</h4>
+                        <span class="bad">Lento / Offline</span>
+                        <p>Una "lista nera" di seriali revocati. Il client deve scaricarla periodicamente.</p>
+                        <p><em>Difetto:</em> C'è una finestra di rischio tra un aggiornamento e l'altro.</p>
+                    </div>
+                    <div class="comp-item bg-highlight">
+                        <h4>OCSP (Online Certificate Status Protocol)</h4>
+                        <span class="good">Veloce / Real-time</span>
+                        <p>Interrogazione diretta alla CA: <em>"Questo certificato è ancora valido?"</em></p>
+                        <p><em>Risposte:</em> Good, Revoked, Unknown.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. IPSEC: AH VS ESP -->
+        <section class="section" id="ipsec">
+            <div class="section-header">
+                <h2>3. IPsec: AH vs ESP</h2>
+                <span class="tag">Capitolo 7</span>
+            </div>
+            <div class="card ipsec-card">
+                <p>IPsec offre due protocolli distinti. Devi sapere la differenza.</p>
+
+                <table class="simple-table">
+                    <thead>
+                        <tr>
+                            <th>Protocollo</th>
+                            <th>Nome Completo</th>
+                            <th>Autenticazione & Integrità?</th>
+                            <th>Cifratura (Confidenzialità)?</th>
+                            <th>Cosa Protegge</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="ah-col"><strong>AH</strong></td>
+                            <td>Authentication Header</td>
+                            <td class="yes">✅ SÌ</td>
+                            <td class="no">❌ NO (Dati leggibili!)</td>
+                            <td>Payload + Header IP (Indirizzi)</td>
+                        </tr>
+                        <tr>
+                            <td class="esp-col"><strong>ESP</strong></td>
+                            <td>Encapsulating Security Payload</td>
+                            <td class="yes">✅ SÌ</td>
+                            <td class="yes">✅ SÌ (Cifrato)</td>
+                            <td>Solo Payload (Header IP esterno è nuovo)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 4. ANALISI RISCHI -->
+        <section class="section" id="risk">
+            <div class="section-header">
+                <h2>4. Analisi dei Rischi (Economicità)</h2>
+                <span class="tag">Appendice</span>
+            </div>
+            <div class="card risk-card">
+                <h3>Formula ROSI (Return on Security Investment)</h3>
+                <p><strong>Concetto Base:</strong> Non spendo 100€ per proteggere un dato che ne vale 10€.</p>
+
+                <div class="math-box">
+                    $$ R = P \times V $$
+                    <p><small>Rischio (R) = Probabilità (P) × Valore dell'Asset (V)</small></p>
+                </div>
+
+                <p>La spesa di sicurezza (Costo) deve essere minore del Rischio stimato (o della Riduzione del Rischio).
+                </p>
+                <div class="rosi-formula">
+                    ROSI = \frac{(Rischio_{Prima} - Rischio_{Dopo}) - Costo_{Soluzione}}{Costo_{Soluzione}}
+                </div>
+            </div>
+        </section>
+
+        <div style="text-align: center; margin-top: 50px; margin-bottom: 20px;">
+            <a href="/" class="home-btn-large"><i class="fas fa-home"></i> Torna al Menu</a>
+        </div>
+    </div>
+</body>
+
+</html>

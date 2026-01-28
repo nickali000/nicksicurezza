@@ -68,6 +68,17 @@
                                 molto brevi.</li>
                         </ul>
                     </div>
+
+                    <div class="card" style="border-left: 3px solid #ff7b72;">
+                        <h3><i class="fas fa-exclamation-triangle"></i> Vulnerabilità (Esame)</h3>
+                        <ul>
+                            <li><strong>Pattern Visibili</strong>: Se cifri un'immagine (es. il Pinguino), vedi ancora i
+                                contorni.</li>
+                            <li><strong>Cut & Paste Attack</strong>: Un attaccante può tagliare un blocco cifrato da un
+                                messaggio e incollarlo in un altro senza rompere decifratura (i blocchi sono
+                                indipendenti).</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <div class="visual-col">
@@ -124,6 +135,16 @@
                             <li>Database cifrati.</li>
                             <li>Protocolli vecchi (TLS 1.0, SSL).</li>
                             <li>Autenticazione (CBC-MAC).</li>
+                        </ul>
+                    </div>
+
+                    <div class="card" style="border-left: 3px solid #d29922;">
+                        <h3><i class="fas fa-exclamation-triangle"></i> Vulnerabilità</h3>
+                        <ul>
+                            <li><strong>Error Propagation</strong>: Se c'è un errore di bit nel blocco cifrato \(C_1\),
+                                la decifratura si rompe totalmente per \(M_1\) e parzialmente per \(M_2\).</li>
+                            <li><strong>Lentezza</strong>: Essendo sequenziale, non sfrutta i processori multi-core.
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -296,6 +317,14 @@
                             <li>TLS 1.3 (GCM è basato su CTR).</li>
                             <li>Processori Multi-Core.</li>
                         </ul>
+                    </div>
+
+                    <div class="card" style="border-left: 3px solid #ff7b72;">
+                        <h3><i class="fas fa-skull-crossbones"></i> Debolezza Mortale</h3>
+                        <p>Non bisogna <strong>MAI</strong> riusare la coppia <em>(Chiave, Counter)</em>.</p>
+                        <p style="font-size: 0.9em; margin-top: 5px;">Se lo fai, la sicurezza crolla istantaneamente
+                            (come riusare un One Time Pad). Basta un XOR tra due crittogrammi per ottenere lo XOR dei
+                            messaggi in chiaro.</p>
                     </div>
                 </div>
 

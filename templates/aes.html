@@ -45,19 +45,73 @@
                     <div class="state-cell-visual">15</div>
                 </div>
                 <p style="font-size: 0.85rem; color: var(--text-secondary);">I 128 bit (16 byte) riempiono la matrice
-                    <em>per colonna</em>. ShiftRows lavora sulle righe, MixColumns sulle colonne.</p>
+                    <em>per colonna</em>. ShiftRows lavora sulle righe, MixColumns sulle colonne.
+                </p>
             </div>
 
-            <!-- 2. Galois Fields -->
-            <div class="concept-box">
-                <div class="concept-title"><i class="fas fa-calculator"></i> Matematica: Galois Fields</div>
-                <p>Le operazioni in AES avvengono nel campo finito <strong>GF(2<sup>8</sup>)</strong>.</p>
-                <div class="math-note">
-                    a(x) • b(x) mod P(x)<br>
-                    dove P(x) = x<sup>8</sup> + x<sup>4</sup> + x<sup>3</sup> + x + 1
+            <!-- 2. Galois Fields (Deep Dive) -->
+            <div class="concept-box" style="grid-column: 1 / -1;">
+                <div class="concept-title"><i class="fas fa-calculator"></i> Advanced Encryption Standard (AES) - Il
+                    Motore Matematico</div>
+
+                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 300px;">
+                        <h4 style="color: #58a6ff; margin-bottom: 10px;">1. Il Polinomio Irriducibile (Da imparare a
+                            memoria)</h4>
+
+                        <div
+                            style="background: rgba(88, 166, 255, 0.1); border-left: 3px solid #58a6ff; padding: 10px; margin-bottom: 10px; font-size: 0.9em;">
+                            <strong>Il Problema:</strong> Se in un computer fai 200 x 200, ottieni 40.000. Questo numero
+                            richiede 16 bit (2 byte). <br>
+                            Ma AES deve lavorare sempre dentro <strong>1 byte (8 bit)</strong>.
+                        </div>
+
+                        <div
+                            style="background: rgba(63, 185, 80, 0.1); border-left: 3px solid #3fb950; padding: 10px; margin-bottom: 15px; font-size: 0.9em;">
+                            <strong>La Soluzione:</strong> Usare un Campo Finito (Galois Field)
+                            <strong>GF(2<sup>8</sup>)</strong>. <br>
+                            I byte sono visti come polinomi. Le operazioni avvengono <em>modulo</em> un Polinomio
+                            Irriducibile <a href="#" title="m(x) = x^8 + x^4 + x^3 + x + 1"
+                                style="color:#58a6ff; text-decoration:none;">(?)</a>. <br>
+                            <strong>Risultato:</strong> Qualsiasi operazione matematica fai, il risultato "rimbalza" e
+                            rientra sempre in 8 bit.
+                        </div>
+
+                        <div class="math-note expanded"
+                            style="background: #0d1117; padding: 15px; border-radius: 6px; border: 1px solid #30363d; margin: 15px 0; text-align: center;">
+                            <span style="color: #a371f7; font-size: 1.2em;">m(x) = x<sup>8</sup> + x<sup>4</sup> +
+                                x<sup>3</sup> + x + 1</span>
+                            <div style="margin-top: 5px; font-size: 0.8em; color: #8b949e;">(Se lo scrivi alla lavagna o
+                                lo citi, il 30 è garantito)</div>
+                        </div>
+                    </div>
+
+                    <div style="flex: 1; min-width: 300px;">
+                        <h4 style="color: #3fb950; margin-bottom: 10px;">2. Le 4 Fasi del Round (Ordine Esatto)</h4>
+                        <ul style="list-style: none; padding: 0; margin: 0;">
+                            <li style="margin-bottom: 10px; border-left: 3px solid #ff7b72; padding-left: 10px;">
+                                <strong style="color: #ff7b72;">SubBytes</strong>: Sostituzione non lineare (S-Box).
+                                <br>
+                                <span style="font-size: 0.9em; color: #8b949e;">È l'unica fase non lineare! Serve a
+                                    distruggere le strutture statistiche (<strong>Confusione</strong>).</span>
+                            </li>
+                            <li style="margin-bottom: 10px; border-left: 3px solid #d29922; padding-left: 10px;">
+                                <strong style="color: #d29922;">ShiftRows</strong>: Permutazione delle righe. <br>
+                                <span style="font-size: 0.9em; color: #8b949e;">(Riga 0: shift 0; Riga 1: shift
+                                    1...).</span>
+                            </li>
+                            <li style="margin-bottom: 10px; border-left: 3px solid #a371f7; padding-left: 10px;">
+                                <strong style="color: #a371f7;">MixColumns</strong>: Mescola i dati nelle colonne usando
+                                la matematica di Galois. <br>
+                                <span style="font-size: 0.9em; color: #8b949e;">Serve a spargere l'informazione
+                                    (<strong>Diffusione</strong>).</span>
+                            </li>
+                            <li style="margin-bottom: 10px; border-left: 3px solid #79c0ff; padding-left: 10px;">
+                                <strong style="color: #79c0ff;">AddRoundKey</strong>: XOR con la chiave del round.
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <p style="font-size: 0.9rem;">Questo evita l'overflow (risultati > 255) e garantisce che ogni operazione
-                    (come MixColumns) sia perfettamente invertibile.</p>
             </div>
 
             <!-- 3. Key Expansion -->

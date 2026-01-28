@@ -132,10 +132,16 @@
 }
 
 .matrix-cell.highlight-sec {
-    background: #fff;
+    background: #f39c12;
     color: #000;
-    box-shadow: 0 0 8px #fff;
+    box-shadow: 0 0 10px #f39c12;
+    transform: scale(1.05);
     border: 2px solid #000;
+}
+
+.matrix-cell.highlight-sec .top,
+.matrix-cell.highlight-sec .bot {
+    color: #000 !important;
 }
 
 /* Math Log */

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enigma: La Macchina del Mistero</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='enigma_style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="home-btn"><i class="fas fa-arrow-left"></i> Menu</a>
+            <h1>Anatomia di Enigma</h1>
+            <p>Ingegneria, Crittografia e il Segreto della sua Debolezza</p>
+        </header>
+
+        <section class="section theory-section">
+            <div class="card visual-card">
+                <h2><i class="fas fa-microchip"></i> Schema Funzionale</h2>
+                <div class="diagram-container">
+                    <!-- Simple visual representation using CSS flexbox for the block diagram -->
+                    <div class="flow-diagram">
+                        <div class="block key">Tasto</div>
+                        <div class="arrow">→</div>
+                        <div class="block plugboard">Plugboard<br>(Steckerbrett)</div>
+                        <div class="arrow">→</div>
+                        <div class="block rotor">Rotore<br>3</div>
+                        <div class="arrow">→</div>
+                        <div class="block rotor">Rotore<br>2</div>
+                        <div class="arrow">→</div>
+                        <div class="block rotor">Rotore<br>1</div>
+                        <div class="arrow">→</div>
+                        <div class="block reflector">Riflettore<br>(Umkehrwalze)</div>
+                    </div>
+                    <div class="flow-diagram reverse">
+                        <div class="block lamp">Lampadina</div>
+                        <div class="arrow">←</div>
+                        <div class="block plugboard">Plugboard</div>
+                        <div class="arrow">←</div>
+                        <div class="block rotor">Rotore<br>3</div>
+                        <div class="arrow">←</div>
+                        <div class="block rotor">Rotore<br>2</div>
+                        <div class="arrow">←</div>
+                        <div class="block rotor">Rotore<br>1</div>
+                        <div class="arrow arrow-down">↲</div>
+                    </div>
+                </div>
+                <p class="caption">Il segnale entra dal tasto, attraversa la Plugboard, poi i tre rotori, rimbalza nel
+                    Riflettore e torna indietro attraverso i rotori e la Plugboard fino ad accendere la lampadina.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="card math-card">
+                <h2><i class="fas fa-calculator"></i> APPROFONDIMENTO: La Matematica delle Chiavi</h2>
+                <div>
+                    <p>La complessità di Enigma non deriva da un singolo componente, ma dalla combinazione
+                        moltiplicativa di tutti gli elementi. Ecco l'analisi combinatoria precisa.</p>
+
+                    <div class="math-breakdown">
+                        <div class="math-item">
+                            <h3>1. Ordine dei Rotori</h3>
+                            <p>3 rotori scelti da un set di 5 disponibili.</p>
+                            <p class="formula">\( 5 \times 4 \times 3 = 60 \)</p>
+                        </div>
+
+                        <div class="math-item">
+                            <h3>2. Posizioni Iniziali</h3>
+                            <p>Ogni rotore ha 26 posizioni (\(A-Z\)).</p>
+                            <p class="formula">\( 26 \times 26 \times 26 = 17.576 \)</p>
+                        </div>
+
+                        <div class="math-item highlight">
+                            <h3>3. Plugboard (Steckerbrett) - Il Vero Mostro</h3>
+                            <p>Collega coppie di lettere (max 10 coppie). Il numero di combinazioni è astronomico.</p>
+                            <p class="formula">\( \approx 150 \times 10^{12} \) (150 Trilioni)</p>
+                        </div>
+                    </div>
+
+                    <div class="total-calc">
+                        <h3>Totale Combinazioni (Spazio delle Chiavi)</h3>
+                        <p>Teorico (Spazio totale possibile): \( \approx 3 \times 10^{114} \)</p>
+                        <p class="highlight-box">Pratico Operativo: \( \approx 10^{16} \)</p>
+                        <p class="note">È questo numero colossale che convinceva i tedeschi dell'inviolabilità di
+                            Enigma.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="card weakness-card">
+                <h2><i class="fas fa-exclamation-triangle"></i> Dettaglio Costruttivo & La Debolezza Mortale</h2>
+                <div class="feature-grid">
+                    <div class="feature">
+                        <h3>Il Riflettore (Umkehrwalze)</h3>
+                        <p><strong>Funzione:</strong> Rende la macchina <em>reciproca</em>. Se digito A e si accende G,
+                            allora digitando G si accenderà A.</p>
+                        <p><strong>Vantaggio:</strong> La macchina per cifrare e decifrare è identica. Non serve una
+                            modalità "decifra", basta resettare i rotori e digitare il messaggio cifrato.</p>
+                    </div>
+                    <div class="feature fatal">
+                        <h3>Il Difetto Fatale</h3>
+                        <p>A causa del cablaggio del riflettore, una lettera non viene <strong>MAI</strong> cifrata in
+                            se stessa.</p>
+                        <p class="math-statement">\( P(x) \neq x \)</p>
+                        <p><strong>Conseguenza:</strong> Questo è il tallone d'Achille matematico. Se in un messaggio
+                            cifrato vedi una "A", sai con certezza assoluta che la lettera originale
+                            <strong>NON</strong> era una "A". Alan Turing sfruttò questa certezza per escludere milioni
+                            di combinazioni e rompere il codice.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
+            <a href="/" class="home-btn-large"><i class="fas fa-home"></i> Torna al Menu</a>
+        </div>
+    </div>
+</body>
+
+</html>

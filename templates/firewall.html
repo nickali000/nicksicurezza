@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Firewall & Architecture</title>
+    <title>Difesa & Minacce</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='firewall_style.css') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
@@ -13,142 +13,164 @@
     <a href="/" class="home-btn"><i class="fas fa-arrow-left"></i> Menu</a>
 
     <div class="container">
-        <h1>Architettura di Difesa</h1>
-        <div class="subtitle">Firewall, DMZ & Security Policies</div>
+        <h1>Difesa e Minacce</h1>
+        <div class="subtitle">Firewall, Intrusioni & Malware</div>
 
-        <!-- SECTION 1: THE 3 TYPES -->
-        <h2 style="text-align:center;">1. L'Evoluzione (I 3 Tipi)</h2>
-        <div class="types-grid">
-            <!-- Type 1 -->
-            <div class="type-card" style="border-top: 3px solid var(--fw-l3);">
-                <div class="type-badge l3-color">L3 - Network</div>
-                <i class="fas fa-filter type-icon l3-color"></i>
-                <h3>Packet Filter</h3>
-                <p><em>"Il Portiere Stupido"</em></p>
-                <div style="text-align: left; margin-top: 15px; font-size: 0.9em; color: #aaa;">
-                    <ul>
-                        <li><strong>Stateless:</strong> Non ricorda nulla.</li>
-                        <li>Guarda solo IP & Porta.</li>
-                        <li>Vulnerabile a IP Spoofing.</li>
-                    </ul>
-                </div>
+        <!-- SECTION 1: INTRUDERS & THREATS -->
+        <h2 style="text-align:center;">1. Gli Intrusi (Il Nemico)</h2>
+        <p style="text-align: center; color: #8b949e; margin-bottom: 20px;">Chi sta cercando di entrare?</p>
+
+        <div class="types-grid" style="margin-bottom: 40px;">
+            <div class="type-card" style="border-top: 3px solid #f85149;">
+                <div class="type-badge" style="background: #f85149;">Esterale</div>
+                <i class="fas fa-mask type-icon" style="color: #f85149;"></i>
+                <h3>Masquerader</h3>
+                <p>Un estraneo che finge di essere un utente autorizzato.</p>
             </div>
-
-            <!-- Type 2 -->
-            <div class="type-card" style="border-top: 3px solid var(--fw-l4);">
-                <div class="type-badge l4-color">L4 - Transport</div>
-                <i class="fas fa-memory type-icon l4-color"></i>
-                <h3>Stateful Inspection</h3>
-                <p><em>"Il Portiere con Memoria"</em></p>
-                <div style="text-align: left; margin-top: 15px; font-size: 0.9em; color: #aaa;">
-                    <ul>
-                        <li><strong>State Table:</strong> Ricorda le connessioni aperte.</li>
-                        <li>Blocca traffico non richiesto.</li>
-                        <li>Standard moderno minimo.</li>
-                    </ul>
-                </div>
+            <div class="type-card" style="border-top: 3px solid #db6d28;">
+                <div class="type-badge" style="background: #db6d28;">Interno</div>
+                <i class="fas fa-user-tie type-icon" style="color: #db6d28;"></i>
+                <h3>Misfeasor</h3>
+                <p>Un utente legittimo che abusa dei propri privilegi (es. un dipendente).</p>
             </div>
-
-            <!-- Type 3 -->
-            <div class="type-card" style="border-top: 3px solid var(--fw-l7);">
-                <div class="type-badge l7-color">L7 - App</div>
-                <i class="fas fa-user-secret type-icon l7-color"></i>
-                <h3>Application Proxy</h3>
-                <p><em>"L'Intermediario Paranoico"</em></p>
-                <div style="text-align: left; margin-top: 15px; font-size: 0.9em; color: #aaa;">
-                    <ul>
-                        <li>Spezza la connessione in due.</li>
-                        <li>Ispeziona il <strong>Contenuto</strong> (Virus, Comandi).</li>
-                        <li>Più lento, ma più sicuro.</li>
-                    </ul>
-                </div>
+            <div class="type-card" style="border-top: 3px solid #a371f7;">
+                <div class="type-badge" style="background: #a371f7;">Furtivo</div>
+                <i class="fas fa-ghost type-icon" style="color: #a371f7;"></i>
+                <h3>Clandestine</h3>
+                <p>Chi elude i controlli (es. scalata privilegi) per nascondersi.</p>
             </div>
         </div>
 
-        <!-- SECTION 2: DMZ ARCHITECTURE -->
-        <h2 style="text-align:center; margin-top: 60px;">2. La DMZ (Il "Panino")</h2>
-        <p style="text-align:center; color:#8b949e; margin-bottom: 20px;">
-            Come esporre servizi pubblici senza rischiare i dati interni.
+        <!-- SECTION 2: MALWARE -->
+        <h2 style="text-align:center; margin-top: 60px;">2. Software Malevolo (Le Armi)</h2>
+        <div
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 40px;">
+            <div class="policy-box" style="cursor: default;">
+                <i class="fas fa-biohazard policy-icon" style="color: #da3633;"></i>
+                <h3>Virus & Worms</h3>
+                <p>Si replicano. I virus infettano file, i worm si propagano nella rete.</p>
+            </div>
+            <div class="policy-box" style="cursor: default;">
+                <i class="fas fa-horse-head policy-icon" style="color: #d29922;"></i>
+                <h3>Trojan Horse</h3>
+                <p>Sembra software buono, ma nasconde funzioni malevole.</p>
+            </div>
+            <div class="policy-box" style="cursor: default;">
+                <i class="fas fa-bomb policy-icon" style="color: #fca3bc;"></i>
+                <h3>Logic Bomb</h3>
+                <p>Dorme finché non si verifica una condizione specifica.</p>
+            </div>
+            <div class="policy-box" style="cursor: default;">
+                <i class="fas fa-door-open policy-icon" style="color: #7ee787;"></i>
+                <h3>Backdoor</h3>
+                <p>Un'entrata segreta lasciata aperta per bypassare i controlli.</p>
+            </div>
+        </div>
+
+        <!-- SECTION 3: FIREWALL CLASSIFICATION -->
+        <h2 style="text-align:center; margin-top: 60px;">3. I Firewall (La Classificazione)</h2>
+        <p style="text-align: center; color: #8b949e; margin-bottom: 30px;">
+            Questa classificazione si basa su <strong>3 Criteri</strong> distinti.
         </p>
 
-        <div class="dmz-container">
-            <!-- INTERNET -->
-            <div class="zone-box zone-internet">
-                <span class="zone-label" style="color:var(--zone-internet);">Internet (Insecure)</span>
-                <i class="fas fa-globe" style="font-size:2em; color:var(--zone-internet);"></i>
+        <!-- 3.1 FUNCTION (STATE) -->
+        <div class="subtitle"
+            style="text-align: left; border-left: 4px solid var(--accent-color); padding-left: 10px; margin-bottom: 20px;">
+            3.1. Per Modalità di Funzionamento (State)
+        </div>
+        <div class="types-grid" style="margin-bottom: 40px;">
+            <!-- Stateless -->
+            <div class="type-card" style="border-top: 3px solid var(--fw-l3);">
+                <div class="type-badge l3-color">Livello 1</div>
+                <i class="fas fa-bolt type-icon l3-color"></i>
+                <h3>Stateless (Senza Stato)</h3>
+                <p><em>"Analisi Singola"</em></p>
+                <ul style="text-align: left; margin-top: 15px; font-size: 0.9em; color: #aaa;">
+                    <li>Analizza ogni pacchetto <strong>singolarmente</strong> (come se fosse il primo).</li>
+                    <li>Guarda solo Header (IP, Porta).</li>
+                    <li><strong>Contro:</strong> Non capisce il contesto (es. è una risposta o un attacco?).</li>
+                </ul>
             </div>
 
-            <!-- EXT FW -->
-            <div class="fw-bar">
-                <i class="fas fa-brick-wall" style="margin-right:10px;"></i> Firewall Esterno
-            </div>
-            <div style="font-size:0.8em; color:#aaa; margin-top:-10px; margin-bottom:5px;">Apre solo Porta 80/443</div>
-
-            <!-- DMZ -->
-            <div class="zone-box zone-dmz">
-                <span class="zone-label" style="color:var(--zone-dmz);">DMZ (Zona Cuscinetto)</span>
-                <div style="display:flex; justify-content:center;">
-                    <div class="server-icon">
-                        <i class="fas fa-server"></i>
-                        <div>Web Server</div>
-                    </div>
-                    <div class="server-icon">
-                        <i class="fas fa-envelope"></i>
-                        <div>Mail Relay</div>
-                    </div>
-                    <div class="server-icon">
-                        <i class="fas fa-sitemap"></i>
-                        <div>DNS Pub</div>
-                    </div>
-                </div>
-                <p style="margin:5px 0 0 0; font-size:0.8em; color:#d29922;"><em>"Contenimento: Se bucano qui, non
-                        entrano in LAN."</em></p>
-            </div>
-
-            <!-- INT FW -->
-            <div class="fw-bar">
-                <i class="fas fa-brick-wall" style="margin-right:10px;"></i> Firewall Interno
-            </div>
-            <div style="font-size:0.8em; color:#aaa; margin-top:-10px; margin-bottom:5px;">Blocca QUASI tutto (Molto
-                Restrittivo)</div>
-
-            <!-- LAN -->
-            <div class="zone-box zone-lan">
-                <span class="zone-label" style="color:var(--zone-lan);">LAN Interna (Secure)</span>
-                <div style="display:flex; justify-content:center;">
-                    <div class="server-icon">
-                        <i class="fas fa-desktop"></i>
-                        <div>PC Dipendenti</div>
-                    </div>
-                    <div class="server-icon">
-                        <i class="fas fa-database"></i>
-                        <div>DB Sensibile</div>
-                    </div>
-                </div>
+            <!-- Stateful -->
+            <div class="type-card" style="border-top: 3px solid var(--fw-l4);">
+                <div class="type-badge l4-color">Livello 2</div>
+                <i class="fas fa-brain type-icon l4-color"></i>
+                <h3>Stateful (Con Stato)</h3>
+                <p><em>"Analisi di Contesto"</em></p>
+                <ul style="text-align: left; margin-top: 15px; font-size: 0.9em; color: #aaa;">
+                    <li>Mantiene una <strong>Tabella di Stato</strong> delle connessioni.</li>
+                    <li>Capisce il contesto: "Questo pacchetto è una risposta attesa?".</li>
+                    <li><strong>Pro:</strong> Molto più sicuro.</li>
+                </ul>
             </div>
         </div>
 
-        <!-- SECTION 3: POLICIES -->
-        <h2 style="text-align:center; margin-top: 60px;">3. Le Politiche (Filosofia)</h2>
-
-        <div class="policies-container">
+        <!-- 3.2 POLICY -->
+        <div class="subtitle"
+            style="text-align: left; border-left: 4px solid var(--accent-color); padding-left: 10px; margin-bottom: 20px;">
+            3.2. Per Politica di Sicurezza (Policy)
+        </div>
+        <div class="policies-container" style="margin-bottom: 40px;">
             <div id="policy-allow" class="policy-box" onclick="togglePolicy('allow')">
-                <i class="fas fa-door-open policy-icon" style="color:#da3633;"></i>
-                <h3>Default Allow</h3>
-                <p>"Tutto permesso tranne..."</p>
+                <i class="fas fa-list-ul policy-icon" style="color:#da3633;"></i>
+                <h3>Blacklist</h3>
+                <p><strong>"Tutto permesso tranne..."</strong><br>Blocco solo i cattivi noti.<br><span
+                        style="font-size:0.8em; color:#aaa;">(Poco Sicuro)</span></p>
             </div>
 
             <div id="policy-deny" class="policy-box" onclick="togglePolicy('deny')">
-                <i class="fas fa-door-closed policy-icon" style="color:#2ea043;"></i>
-                <h3>Default Deny</h3>
-                <p>"Tutto vietato tranne..."</p>
+                <i class="fas fa-check-double policy-icon" style="color:#2ea043;"></i>
+                <h3>Whitelist</h3>
+                <p><strong>"Tutto vietato tranne..."</strong><br>Default Deny.<br><span
+                        style="font-size:0.8em; color:#aaa;">(Best Practice)</span></p>
+            </div>
+        </div>
+        <div id="policy-desc"
+            style="background:#21262d; border:1px solid #30363d; padding:15px; margin-bottom:40px; text-align:center; border-radius:6px; display:none;">
+        </div>
+
+
+        <!-- 3.3 POSITIONING -->
+        <div class="subtitle"
+            style="text-align: left; border-left: 4px solid var(--accent-color); padding-left: 10px; margin-bottom: 20px;">
+            3.3. Per Posizionamento
+        </div>
+        <div class="types-grid" style="grid-template-columns: 1fr 1fr; margin-bottom: 60px;">
+            <div class="type-card">
+                <i class="fas fa-network-wired type-icon" style="color: #58a6ff;"></i>
+                <h3>Firewall di Rete</h3>
+                <p>Protegge l'<strong>intero perimetro</strong> aziendale.</p>
+            </div>
+            <div class="type-card">
+                <i class="fas fa-laptop-house type-icon" style="color: #58a6ff;"></i>
+                <h3>Firewall Personale (Host)</h3>
+                <p>Software sul singolo PC (es. Windows Defender). Protegge l'endpoint anche se l'hacker è già nella
+                    LAN.</p>
             </div>
         </div>
 
-        <div id="policy-desc"
-            style="background:#21262d; border:1px solid #30363d; padding:15px; margin-top:20px; text-align:center; border-radius:6px;">
-            <!-- Content will be injected by JS -->
+
+        <!-- SECTION 4: THE JOLLY -->
+        <h2 style="text-align:center; margin-top: 60px;">4. Il "Jolly" (Bastion Host)</h2>
+        <p style="text-align: center; color: #8b949e; margin-bottom: 20px;">L'elemento chiave da citare per la lode.</p>
+
+        <div
+            style="background: rgba(47, 129, 247, 0.1); border: 2px solid #2f81f7; padding: 25px; border-radius: 12px; position: relative; overflow: hidden;">
+            <i class="fas fa-chess-knight"
+                style="position: absolute; right: -20px; bottom: -20px; font-size: 10rem; color: rgba(47, 129, 247, 0.1); transform: rotate(-15deg);"></i>
+
+            <h3 style="color: #2f81f7; margin-top: 0; font-size: 1.5rem;"><i class="fas fa-shield-alt"></i> Bastion Host
+            </h3>
+            <div style="font-size: 1.1rem; line-height: 1.6; position: relative; z-index: 1;">
+                <p><strong>Cos'è:</strong> Un server esposto direttamente a Internet (in trincea).</p>
+                <p><strong>Funzione:</strong> È l'unico punto di ingresso autorizzato per l'amministrazione (Jump Box).
+                </p>
+                <p><strong>Blindatura:</strong> Ha tutti i servizi inutili spenti. Ci aspettiamo che venga attaccato: se
+                    cade lui, la rete interna è ancora salva.</p>
+            </div>
         </div>
+
 
         <div style="text-align: center; margin-top: 50px; margin-bottom: 20px;">
             <a href="/" style="text-decoration: none;">

@@ -798,6 +798,60 @@ body.animations-paused .equation-part {
     color: var(--accent);
 }
 
+/* Perfect Secrecy / Theory Cards */
+.perfect-secrecy-card {
+    border-top: 4px solid #facc15;
+    /* Yellow/Gold for Perfect */
+}
+
+.theory-comparison {
+    display: flex;
+    gap: 20px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.theory-block {
+    flex: 1;
+    min-width: 250px;
+    padding: 15px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+}
+
+.theory-block.conditional h3 {
+    color: #f87171;
+    margin-top: 0;
+}
+
+.theory-block.unconditional h3 {
+    color: #4ade80;
+    margin-top: 0;
+}
+
+.shannon-rules {
+    list-style: none;
+    padding: 0;
+}
+
+.shannon-rules li {
+    margin-bottom: 15px;
+    padding: 10px 15px;
+    background: rgba(255, 255, 255, 0.02);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 4px 4px 0;
+}
+
+.alert-box.warning {
+    background: rgba(234, 179, 8, 0.1);
+    border-left: 4px solid #eab308;
+    color: #fef08a;
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 4px;
+}
+
 .key-expansion-visual {
     display: flex;
     align-items: center;

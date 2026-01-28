@@ -301,6 +301,92 @@
             </div>
         </div>
 
+        <!-- SECTION 8: ATTACKS -->
+        <h2 style="text-align:center; margin-top:50px; margin-bottom:10px;">8. Gli Attacchi (Come si Rompe)</h2>
+        <div class="subtitle" style="margin-bottom:20px; color: #ff6b6b;">Le Armi degli Hacker contro SSL/TLS</div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+
+            <!-- 1. Self-Signed / MITM -->
+            <div
+                style="background: rgba(255,107,107,0.1); border: 1px solid rgba(255,107,107,0.3); padding: 15px; border-radius: 8px;">
+                <h3 style="color: #ff6b6b; margin-top: 0;"><i class="fas fa-certificate"></i> Self-Signed Certificate &
+                    MITM</h3>
+                <p style="font-size: 0.95rem;">
+                    <strong>L'Attacco:</strong> L'hacker si piazza nel mezzo (MITM) e presenta un certificato
+                    <em>autofirmato</em>.
+                    Lui dice "Sono io la Banca!" ma il certificato se lo è stampato da solo.
+                </p>
+                <div
+                    style="background: #2d2d2d; padding: 10px; border-radius: 4px; margin-top: 10px; font-size: 0.9rem;">
+                    <i class="fas fa-skull"></i> <strong>Il Pericolo:</strong> Se l'utente ignora l'avviso di sicurezza
+                    ("Sito non sicuro") e clicca "Avanti", la connessione è compromessa.
+                </div>
+            </div>
+
+            <!-- 2. Handshake Attacks -->
+            <div
+                style="background: rgba(255,107,107,0.1); border: 1px solid rgba(255,107,107,0.3); padding: 15px; border-radius: 8px;">
+                <h3 style="color: #ff6b6b; margin-top: 0;"><i class="fas fa-handshake-slash"></i> Attacchi all'Handshake
+                </h3>
+                <p style="font-size: 0.95rem;">
+                    <strong>L'Attacco:</strong> Manipolazione dei messaggi iniziali. L'hacker inganna client e server
+                    facendogli credere che supportano solo algoritmi deboli (Downgrade Attack).
+                </p>
+                <div
+                    style="background: #2d2d2d; padding: 10px; border-radius: 4px; margin-top: 10px; font-size: 0.9rem;">
+                    <i class="fas fa-arrow-down"></i> <strong>Risultato:</strong> Si finisce ad usare chiavi deboli che
+                    l'hacker può rompere facilmente.
+                </div>
+            </div>
+
+            <!-- 3. BEAST -->
+            <div
+                style="background: rgba(255,107,107,0.1); border: 1px solid rgba(255,107,107,0.3); padding: 15px; border-radius: 8px;">
+                <h3 style="color: #ff6b6b; margin-top: 0;"><i class="fas fa-paw"></i> BEAST Legacy</h3>
+                <p style="font-size: 0.95rem;">
+                    <strong>L'Attacco:</strong> <em>Browser Exploit Against SSL/TLS</em>. Sfrutta il fatto che in
+                    vecchie versioni (TLS 1.0) i vettori di inizializzazione (IV) erano prevedibili.
+                </p>
+                <div
+                    style="background: #2d2d2d; padding: 10px; border-radius: 4px; margin-top: 10px; font-size: 0.9rem;">
+                    <i class="fas fa-eye"></i> <strong>Tecnica:</strong> Chosen Plaintext Attack per decifrare parti
+                    sensibili (es. cookie).
+                </div>
+            </div>
+
+            <!-- 4. PKI Vulnerabilities -->
+            <div
+                style="background: rgba(255,107,107,0.1); border: 1px solid rgba(255,107,107,0.3); padding: 15px; border-radius: 8px;">
+                <h3 style="color: #ff6b6b; margin-top: 0;"><i class="fas fa-bug"></i> Bug nella PKI (OpenSSL)</h3>
+                <p style="font-size: 0.95rem;">
+                    <strong>L'Attacco:</strong> Non matematico, ma implementativo. Bug nel codice di librerie come
+                    OpenSSL (es. Heartbleed) o GnuTLS che saltano controlli vitali.
+                </p>
+                <div
+                    style="background: #2d2d2d; padding: 10px; border-radius: 4px; margin-top: 10px; font-size: 0.9rem;">
+                    <i class="fas fa-code"></i> <strong>Debolezza:</strong> Un errore di programmazione in C può esporre
+                    la chiave privata del server.
+                </div>
+            </div>
+
+            <!-- 5. DoS (THC) -->
+            <div
+                style="background: rgba(255,107,107,0.1); border: 1px solid rgba(255,107,107,0.3); padding: 15px; border-radius: 8px;">
+                <h3 style="color: #ff6b6b; margin-top: 0;"><i class="fas fa-server"></i> DoS (The Hackers Choice)</h3>
+                <p style="font-size: 0.95rem;">
+                    <strong>L'Attacco:</strong> Asimmetria di calcolo. Il client chiede 1000 handshake. Per il client
+                    costa poco chiedere, per il server costa tantissimo (CPU) calcolare le chiavi.
+                </p>
+                <div
+                    style="background: #2d2d2d; padding: 10px; border-radius: 4px; margin-top: 10px; font-size: 0.9rem;">
+                    <i class="fas fa-fire"></i> <strong>Effetto:</strong> Il server collassa cercando di fare
+                    crittografia per richieste false.
+                </div>
+            </div>
+
+        </div>
+
         <div style="text-align: center; margin-top: 50px; margin-bottom: 20px;">
             <a href="/" style="text-decoration: none;">
                 <button
